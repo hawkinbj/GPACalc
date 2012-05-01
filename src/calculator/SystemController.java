@@ -10,6 +10,11 @@ public class SystemController {
 	protected User activeUser;
 	protected ArrayList<User> users;
 
+	// need a data structure to store user data - perhaps a map with users as
+	// the key, classes as the value. (Can replace classes with some collection
+	// of data is necessary, i.e. - multiple schools).
+	
+
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		// TODO Auto-generated method stub

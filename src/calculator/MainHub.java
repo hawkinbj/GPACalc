@@ -1,3 +1,5 @@
+//TO DO !!
+
 package calculator;
 
 import java.awt.GridLayout;
@@ -40,23 +42,21 @@ public class MainHub extends JFrame implements ActionListener {
 		fileMenu.add(newAction);
 		fileMenu.add(openAction);
 
-		// Logout button.
-
-		// New course button.
-		JButton newCourseBtn = new JButton("New course...");
-		newCourseBtn.setActionCommand("newCourse");
-		newCourseBtn.addActionListener(this);
+		// Course List button.
+		JButton CoursesBtn = new JButton("Courses");
+		CoursesBtn.setActionCommand("courses");
+		CoursesBtn.addActionListener(this);
 
 		// Layout.
 		panel = new JPanel(new GridLayout(3, 1));
-		panel.add(newCourseBtn);
+		panel.add(CoursesBtn);
 		add(panel);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		if (action.equals("newCourse")) {
+		if (action.equals("courses")) {
 			new CourseFrame(controller, this).setVisible(true);
 			this.setVisible(false);
 		}
