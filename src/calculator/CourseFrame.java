@@ -29,10 +29,10 @@ public class CourseFrame extends JFrame implements ActionListener {
 		this.controller = controller;
 		this.previousFrame = previousFrame;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ShowCourses();
+		showCourses();
 	}
 
-	private void ShowCourses() {
+	private void showCourses() {
 		// Add course button.
 		JButton addCourse = new JButton("Add New...");
 		addCourse.setActionCommand("addCourse");
@@ -50,7 +50,7 @@ public class CourseFrame extends JFrame implements ActionListener {
 		add(coursePanel);
 	}
 
-	private void AddCourse() {
+	private void addCourse() {
 
 		// Course name entry label.
 		JLabel courseNameLbl = new JLabel("Course name: ");
@@ -95,7 +95,7 @@ public class CourseFrame extends JFrame implements ActionListener {
 
 		// Next button.
 		JButton doneBtn = new JButton("Next");
-		doneBtn.setActionCommand("Next");
+		doneBtn.setActionCommand("next");
 		doneBtn.addActionListener(this);
 
 		// Nav panel.
@@ -125,7 +125,7 @@ public class CourseFrame extends JFrame implements ActionListener {
 		}
 		if (action.equals("addCourse")) {
 			coursePanel.setVisible(false);
-			AddCourse();
+			addCourse();
 		}
 		if (action.equals("next")) { // may need to rename.
 			// Check that a valid course name was entered.

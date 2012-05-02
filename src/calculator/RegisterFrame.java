@@ -62,7 +62,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
 		if (action.equals("submit")) {
 			// open MainHub window if valid registration
 			if (controller.register(username, password)) {
-				new GradingScaleFrame(controller, this).setVisible(true);
+				new MainHub(controller).setVisible(true);
 				setVisible(false);
 			} else { // if this excutes it means username is already in use
 				JOptionPane

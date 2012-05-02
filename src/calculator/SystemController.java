@@ -9,31 +9,70 @@ public class SystemController {
 	protected final String ROOTDIR = System.getenv("APPDATA") + "\\GPACalcJava";
 	protected User activeUser;
 	protected ArrayList<User> users;
-
-	// need a data structure to store user data - perhaps a map with users as
-	// the key, classes as the value. (Can replace classes with some collection
-	// of data is necessary, i.e. - multiple schools).
-	
-
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
-		return super.clone();
-	}
+	protected ArrayList<School> schools; // List of known schools.
 
 	public SystemController() {
 
-		this.activeUser = null;
-		this.users = new ArrayList<User>();
-
-		// System.out.println(new File(ROOTDIR).exists());
+		activeUser = null;
+		users = new ArrayList<User>();
+		schools = new ArrayList<School>();
 
 		if (!new File(ROOTDIR).exists()) {
 			new File(ROOTDIR).mkdir();
+			populateSchools();
 		} else {
+			loadSchoolList();
 			loadUserList();
 		}
+	}
 
+	// Populates list of known schools. Only run on the first execution of
+	// program. Probably should be part of the installer if one is ever made...
+	private void populateSchools() {
+		schools.add(new School("GMU"));
+		schools.add(new School("UTSA"));
+		schools.add(new School("TNCC"));
+		schools.add(new School("ODU"));
+		saveSchoolList();
+	}
+
+	protected boolean addSchool(String name) {
+		for (int i = 0; i < schools.size(); i++) {
+			if (schools.get(i).getName().equals(name)) {
+				return false;
+			}
+		}
+		schools.add(new School(name));
+		saveSchoolList();
+		return true;
+	}
+
+	protected void removeSchool(String name) {
+		// TODO
+	}
+
+	// NEED TO CHECK THIS.
+	private void saveSchoolList() {
+		try {
+			FileOutputStream fos = new FileOutputStream(ROOTDIR + "\\schools");
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(schools);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadSchoolList() {
+		try {
+			FileInputStream fis = new FileInputStream(ROOTDIR + "\\schools");
+			ObjectInputStream in = new ObjectInputStream(fis);
+			schools = (ArrayList<School>) in.readObject();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Returns true if username is available, false otherwise.
@@ -76,7 +115,7 @@ public class SystemController {
 	}
 
 	// Can be used anywhere but ALWAYS called on exit.
-	protected void saveUserList() {
+	private void saveUserList() {
 		try {
 			for (int i = 0; i < users.size(); i++) {
 				System.out.println(users.get(i).getUsername()

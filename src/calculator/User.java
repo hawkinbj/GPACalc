@@ -3,10 +3,11 @@ package calculator;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User implements Serializable { // might be able to get rid of this
-											// b/c just serializing arraylist
+public class User implements Serializable {
+
 	private String username;
 	private String password;
+
 	// Holds users transcripts - possibly from multiple institutions.
 	private ArrayList<Transcript> transcripts;
 
@@ -16,12 +17,12 @@ public class User implements Serializable { // might be able to get rid of this
 		transcripts = new ArrayList<Transcript>();
 	}
 
-	protected void addTranscript(Transcript transcript) {
-		transcripts.add(transcript);
-	}
-
 	protected String getUsername() {
 		return username;
+	}
+
+	protected void addTranscript(Transcript transcript) {
+		transcripts.add(transcript);
 	}
 
 	protected ArrayList<Transcript> getTranscripts() {

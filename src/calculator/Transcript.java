@@ -5,15 +5,19 @@
 
 package calculator;
 
-import java.util.HashMap;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Transcript {
+public class Transcript implements Serializable {
 
-	private HashMap<String, Semester> transcript;
+	private ArrayList<Semester> transcript;
+	private String school;
 
 	// private HashMap<String, int[]> gradingScale;
 
-	public Transcript() {
+	public Transcript(String school) {
+		this.school = school;
+		transcript = new ArrayList<Semester>();
 		// gradingScale = new HashMap<String, int[]>();
 	}
 }
