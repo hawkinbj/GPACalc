@@ -117,10 +117,6 @@ public class SystemController {
 	// Can be used anywhere but ALWAYS called on exit.
 	private void saveUserList() {
 		try {
-			for (int i = 0; i < users.size(); i++) {
-				System.out.println(users.get(i).getUsername()
-						+ " saveUserList()");
-			}
 			FileOutputStream fos = new FileOutputStream(ROOTDIR + "\\userlist");
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(users);
