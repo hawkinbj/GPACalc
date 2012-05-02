@@ -7,24 +7,28 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class SelectSchoolFrame extends JFrame implements ActionListener {
+public class SchoolFrame extends JFrame implements ActionListener {
 
 	private SystemController controller;
 	private MainHub previousFrame;
-	private JTextField schoolNameField;
-	private JPanel schoolsPanel;
+	private JTextField newSchoolNameField;
+	private JPanel schoolsPanel, newSchoolPanel;
 
-	public SelectSchoolFrame(SystemController controller, MainHub previousFrame) {
+	public SchoolFrame(SystemController controller, MainHub previousFrame) {
 
 		setSize(300, 300);
 		this.controller = controller;
 		this.previousFrame = previousFrame;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Select School");
+		addComponentsToPane();
+	}
 
+	private void addComponentsToPane() {
 		// Schools panel.
 		schoolsPanel = new JPanel(new GridLayout(controller.schools.size() + 4,
 				1));
@@ -40,9 +44,9 @@ public class SelectSchoolFrame extends JFrame implements ActionListener {
 			schoolBtn.addActionListener(this);
 			schoolsPanel.add(schoolBtn);
 		}
-		
+
 		JButton addSchoolBtn = new JButton("Add new...");
-		addSchoolBtn.setActionCommand("addSchool");
+		addSchoolBtn.setActionCommand("newSchoolPanel");
 		addSchoolBtn.addActionListener(this);
 		schoolsPanel.add(addSchoolBtn);
 
@@ -59,23 +63,56 @@ public class SelectSchoolFrame extends JFrame implements ActionListener {
 		add(schoolsPanel);
 	}
 
+	private void newSchoolMenu() {
+		// Label and textfield to enter new school name.
+		JLabel addSchoolInstructionLbl = new JLabel("School name: ");
+		newSchoolNameField = new JTextField(10); // int = entry spaces.
+		// Done button.
+		JButton doneBtn = new JButton("Done");
+		doneBtn.setActionCommand("done");
+		doneBtn.addActionListener(this);
+		// Layout.
+		newSchoolPanel = new JPanel(new GridLayout(5, 1));
+		newSchoolPanel.add(addSchoolInstructionLbl);
+		newSchoolPanel.add(newSchoolNameField);
+		newSchoolPanel.add(doneBtn);
+		add(newSchoolPanel);
+		schoolsPanel.setVisible(false);
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("cancel")) {
 			setVisible(false);
 			previousFrame.setVisible(true);
-		if (action.equals("addSchool")){
-			// IMPLEMENT THIS
-			// controller.addSchool();
 		}
+		if (action.equals("newSchoolPanel")) {
+			newSchoolMenu();
+		}
+		if (action.equals("done")) { // Added a school.
+			String newSchoolName = newSchoolNameField.getText();
+			if (!controller.addSchool(newSchoolName)) {
+				JOptionPane.showMessageDialog(this,
+						"That school already exists.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} else {
+				JButton newSchoolBtn = new JButton(newSchoolName);
+				newSchoolBtn.setActionCommand(newSchoolName);
+				newSchoolBtn.addActionListener(this);
+				schoolsPanel.add(newSchoolBtn);
+				newSchoolPanel.setVisible(false);
+				addComponentsToPane();
+				schoolsPanel.setVisible(true);
+
+			}
 		} else {
 			for (School school : controller.schools) {
 				String schoolName = school.getName();
 				if (schoolName.equals(action)) {
-					System.out.println("asdfasl;djasdf");
+					controller.addTranscript(new Transcript(schoolName));
 					JButton selectedSchoolBtn = new JButton(schoolName);
 					selectedSchoolBtn.setActionCommand(schoolName);
-					selectedSchoolBtn.addActionListener(this);
+					selectedSchoolBtn.addActionListener(previousFrame);
 					previousFrame.mainMenuPanel.add(selectedSchoolBtn);
 					previousFrame.setVisible(true);
 					setVisible(false);

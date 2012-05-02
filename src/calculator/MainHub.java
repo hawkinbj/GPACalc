@@ -10,7 +10,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class MainHub extends JFrame implements ActionListener {
@@ -19,7 +18,7 @@ public class MainHub extends JFrame implements ActionListener {
 	protected JPanel mainMenuPanel;
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
-	private JMenuItem newAction, openAction;
+	private JMenuItem newAction, openAction; // temporary.
 	private JButton selectSchool;
 
 	public MainHub(SystemController controller) {
@@ -43,14 +42,23 @@ public class MainHub extends JFrame implements ActionListener {
 		fileMenu.add(newAction);
 		fileMenu.add(openAction);
 
-		// Add school button.
-		selectSchool = new JButton("Add School...");
+		// Select school button.
+		selectSchool = new JButton("Select School...");
 		selectSchool.setActionCommand("selectSchool");
 		selectSchool.addActionListener(this);
 
 		// Layout.
-		mainMenuPanel = new JPanel(new GridLayout(3, 1));
+		mainMenuPanel = new JPanel(new GridLayout(controller.activeUser
+				.getTranscripts().size() + 2, 1));
 		mainMenuPanel.add(selectSchool);
+		// Load active users information (if any) and display on screen.
+		for (Transcript transcript : controller.activeUser.getTranscripts()) {
+			String schoolName = transcript.getSchoolName();
+			JButton schoolBtn = new JButton(schoolName);
+			schoolBtn.setActionCommand(schoolName);
+			schoolBtn.addActionListener(this);
+			mainMenuPanel.add(schoolBtn);
+		}
 		add(mainMenuPanel);
 	}
 
@@ -58,8 +66,19 @@ public class MainHub extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("selectSchool")) {
-			new SelectSchoolFrame(controller, this).setVisible(true);
+			new SchoolFrame(controller, this).setVisible(true);
 			setVisible(false);
+		} else {
+			for (School school : controller.schools) {
+				String schoolName = school.getName();
+				if (schoolName.equals(action)) {
+					// go to SemesterFrame
+					new SemesterFrame(controller, this, schoolName)
+							.setVisible(true);
+					setVisible(false);
+				}
+			}
+
 		}
 	}
 }

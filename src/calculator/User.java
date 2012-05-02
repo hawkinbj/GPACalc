@@ -9,6 +9,7 @@ public class User implements Serializable {
 	private String password;
 
 	// Holds users transcripts - possibly from multiple institutions.
+	// List element names are the names of the school.
 	private ArrayList<Transcript> transcripts;
 
 	public User(String username, String password) {

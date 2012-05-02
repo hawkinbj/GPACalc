@@ -51,6 +51,11 @@ public class SystemController {
 		// TODO
 	}
 
+	protected void addTranscript(Transcript transcript) {
+		activeUser.addTranscript(transcript);
+		saveUserList();
+	}
+
 	// NEED TO CHECK THIS.
 	private void saveSchoolList() {
 		try {

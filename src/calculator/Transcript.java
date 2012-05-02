@@ -20,4 +20,12 @@ public class Transcript implements Serializable {
 		transcript = new ArrayList<Semester>();
 		// gradingScale = new HashMap<String, int[]>();
 	}
+
+	protected String getSchoolName() {
+		return school;
+	}
+
+	protected ArrayList<Semester> getSemesters() {
+		return transcript;
+	}
 }
