@@ -3,6 +3,9 @@ package calculator;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class SchoolFrame extends JFrame implements ActionListener {
 
@@ -89,7 +93,7 @@ public class SchoolFrame extends JFrame implements ActionListener {
 		if (action.equals("newSchoolPanel")) {
 			newSchoolMenu();
 		}
-		if (action.equals("done")) { // Added a school.
+		if (action.equals("done")) { // Selected a school.
 			String newSchoolName = newSchoolNameField.getText();
 			if (!controller.addSchool(newSchoolName)) {
 				JOptionPane.showMessageDialog(this,
@@ -98,6 +102,7 @@ public class SchoolFrame extends JFrame implements ActionListener {
 			} else {
 				JButton newSchoolBtn = new JButton(newSchoolName);
 				newSchoolBtn.setActionCommand(newSchoolName);
+				newSchoolBtn.addActionListener(previousFrame);
 				newSchoolBtn.addActionListener(this);
 				schoolsPanel.add(newSchoolBtn);
 				newSchoolPanel.setVisible(false);
@@ -112,6 +117,7 @@ public class SchoolFrame extends JFrame implements ActionListener {
 					controller.addTranscript(new Transcript(schoolName));
 					JButton selectedSchoolBtn = new JButton(schoolName);
 					selectedSchoolBtn.setActionCommand(schoolName);
+					selectedSchoolBtn.addMouseListener(previousFrame);
 					selectedSchoolBtn.addActionListener(previousFrame);
 					previousFrame.mainMenuPanel.add(selectedSchoolBtn);
 					previousFrame.setVisible(true);

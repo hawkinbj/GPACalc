@@ -3,6 +3,9 @@ package calculator;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,9 +13,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 @SuppressWarnings("serial")
-public class MainHub extends JFrame implements ActionListener {
+public class MainHub extends JFrame implements ActionListener, MouseListener {
 
 	private SystemController controller;
 	protected JPanel mainMenuPanel;
@@ -80,5 +84,39 @@ public class MainHub extends JFrame implements ActionListener {
 			}
 
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (SwingUtilities.isRightMouseButton(e)) {
+			System.out.println("Right button");
+		} else {
+			System.out.println("NOT A RIGHT BUTTON");
+		}
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

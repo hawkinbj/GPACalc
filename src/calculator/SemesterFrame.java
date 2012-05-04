@@ -3,13 +3,19 @@ package calculator;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class SemesterFrame extends JFrame implements ActionListener {
 
@@ -19,6 +25,7 @@ public class SemesterFrame extends JFrame implements ActionListener {
 	private String schoolName;
 	private Transcript transcript; // active transcript
 	private JPanel semestersPanel, newSchoolPanel;
+	private JPopupMenu removeSchoolMenu;
 
 	// private Transcript transcript;
 
@@ -50,9 +57,7 @@ public class SemesterFrame extends JFrame implements ActionListener {
 		// Buttons to represent semesters.
 		for (Semester semester : transcript.getSemesters()) {
 			String semesterName = semester.getSemesterName();
-			JButton semesterBtn = new JButton(semesterName); // Might need to
-																// uniquely
-																// name....
+			JButton semesterBtn = new JButton(semesterName);
 			semesterBtn.setActionCommand(semesterName);
 			semesterBtn.addActionListener(this);
 			semestersPanel.add(semesterBtn);
@@ -99,5 +104,6 @@ public class SemesterFrame extends JFrame implements ActionListener {
 			setVisible(false);
 			previousFrame.setVisible(true);
 		}
+
 	}
 }
