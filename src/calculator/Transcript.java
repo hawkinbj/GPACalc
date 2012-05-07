@@ -7,17 +7,21 @@ package calculator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Transcript implements Serializable {
 
-	private ArrayList<Semester> transcript;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6258413269754654426L;
+	private HashMap<String, Semester> transcript;
 	private String school;
 
 	// private HashMap<String, int[]> gradingScale;
 
-	public Transcript(String school) {
-		this.school = school;
-		transcript = new ArrayList<Semester>();
+	public Transcript() {
+		transcript = new HashMap<String, Semester>();
 		// gradingScale = new HashMap<String, int[]>();
 	}
 
@@ -25,7 +29,7 @@ public class Transcript implements Serializable {
 		return school;
 	}
 
-	protected ArrayList<Semester> getSemesters() {
+	protected HashMap<String, Semester> getSemesters() {
 		return transcript;
 	}
 }

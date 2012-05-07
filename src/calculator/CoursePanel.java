@@ -13,20 +13,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-@SuppressWarnings("serial")
-public class CourseFrame extends JFrame implements ActionListener {
+public class CoursePanel extends GUIFrame implements ActionListener {
 
+	private static final long serialVersionUID = -6768153191699813450L;
 	// NEED TO STORE COURSES.
-	private SystemController controller;
-	private MainHub previousFrame;
+	private MainMenuPanel previousFrame;
 	private JPanel coursePanel, addCoursePanel, quizPanel;
 	private JTextField courseNameField;
 
-	public CourseFrame(SystemController controller, MainHub previousFrame) {
-		// Initialization.
+	public CoursePanel(SystemController controller, MainMenuPanel previousFrame) {
+
+		super(controller);
 		setSize(300, 300);
 		setTitle("New Course");
-		this.controller = controller;
 		this.previousFrame = previousFrame;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		showCourses();

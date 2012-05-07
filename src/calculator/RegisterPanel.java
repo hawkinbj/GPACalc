@@ -5,23 +5,15 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-@SuppressWarnings("serial")
-public class RegisterFrame extends JFrame implements ActionListener {
-	private JFrame previousFrame;
+public class RegisterPanel extends GUIPanel {
+
+	private static final long serialVersionUID = -5184321484494774189L;
 	private JLabel usernameLabel, passwordLabel;
-	private JButton backButton, submitButton;
 	private JTextField usernameField, passwordField;
-	private SystemController controller;
 	private JPanel panel;
 
-	public RegisterFrame(SystemController controller, JFrame previousFrame) {
-
-		setSize(300, 300);
-		setTitle("Register");
-		this.controller = controller;
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.previousFrame = previousFrame;
-		this.controller = controller;
+	public RegisterPanel(SystemController controller) {
+		super(controller);
 		addComponentsToPane();
 	}
 
@@ -33,24 +25,14 @@ public class RegisterFrame extends JFrame implements ActionListener {
 		passwordLabel = new JLabel("Password:");
 		passwordField = new JPasswordField(15);
 
-		// back button
-		backButton = new JButton("Back");
-		backButton.setActionCommand("back");
-		backButton.addActionListener(this);
-
-		// Submit button
-		submitButton = new JButton("Submit");
-		submitButton.setActionCommand("submit");
-		submitButton.addActionListener(this);
-
 		// layout
 		panel = new JPanel(new GridLayout(3, 1));
 		panel.add(usernameLabel);
 		panel.add(usernameField);
 		panel.add(passwordLabel);
 		panel.add(passwordField);
-		panel.add(backButton);
-		panel.add(submitButton);
+		panel.add(createButton("back", "Back"));
+		panel.add(createButton("submit", "Submit"));
 		add(panel);
 	}
 
@@ -62,22 +44,25 @@ public class RegisterFrame extends JFrame implements ActionListener {
 		if (action.equals("submit")) {
 			// open MainHub window if valid registration
 			if (controller.register(username, password)) {
-				new MainHub(controller).setVisible(true);
-				setVisible(false);
-			} else { // if this excutes it means username is already in use
+				System.out
+						.println("Successfully registered. Printed from RegisterPanel");
+				controller.addPanel(new MainMenuPanel(controller), "mainMenu");
+				controller.showPanel("mainMenu", this);
+			} else { // if this executes it means username is already in use
 				JOptionPane
 						.showMessageDialog(
 								this,
 								"That username is already taken. Please enter a different username",
 								"Error", JOptionPane.ERROR_MESSAGE);
-				setVisible(false);
-				new RegisterFrame(controller, previousFrame).setVisible(true);
+				// new RegisterPanel(controller,
+				// previousFrame).setVisible(true);
 			}
-			// open previous menu if back button pressed
+
 		}
+		// open previous menu if back button pressed
 		if (action.equals("back")) {
-			setVisible(false);
-			previousFrame.setVisible(true);
+			controller.showPanel("welcome", this);
+
 		}
 	}
 

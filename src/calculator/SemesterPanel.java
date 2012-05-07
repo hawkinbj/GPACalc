@@ -1,11 +1,9 @@
 package calculator;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,67 +15,47 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-public class SemesterFrame extends JFrame implements ActionListener {
+public class SemesterPanel extends GUIPanel implements ActionListener {
 
-	private SystemController controller;
-	private MainHub previousFrame;
+	private static final long serialVersionUID = -3839021242565662981L;
+	private MainMenuPanel previousFrame;
 	private JTextField newSemesterField;
 	private String schoolName;
 	private Transcript transcript; // active transcript
-	private JPanel semestersPanel, newSchoolPanel;
+	private JPanel semestersPanel;
 	private JPopupMenu removeSchoolMenu;
 
 	// private Transcript transcript;
 
-	public SemesterFrame(SystemController controller, MainHub previousFrame,
-			String schoolName) {
-
-		setSize(300, 300);
-		this.controller = controller;
-		this.previousFrame = previousFrame;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		for (Transcript transcript : controller.activeUser.getTranscripts()) {
-			if (transcript.getSchoolName().equals(schoolName))
-				this.transcript = transcript;
-		}
-
+	public SemesterPanel(SystemController controller, String schoolName) {
+		super(controller);
+		this.transcript = controller.activeUser.getTranscripts()
+				.get(schoolName);
 		this.schoolName = schoolName;
-		setTitle(schoolName);
 		addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
 		// Semesters panel.
-		semestersPanel = new JPanel(new GridLayout(transcript.getSemesters()
-				.size() + 4, 1));
+		semestersPanel = new JPanel();
+		semestersPanel.setLayout(new BoxLayout(semestersPanel,
+				BoxLayout.PAGE_AXIS));
 		// Instructions label.
 		JLabel semestersInstructionLbl = new JLabel("Choose a semester:");
 		semestersPanel.add(semestersInstructionLbl);
 		// Buttons to represent semesters.
-		for (Semester semester : transcript.getSemesters()) {
-			String semesterName = semester.getSemesterName();
-			JButton semesterBtn = new JButton(semesterName);
-			semesterBtn.setActionCommand(semesterName);
-			semesterBtn.addActionListener(this);
-			semestersPanel.add(semesterBtn);
+		for (String key : transcript.getSemesters().keySet()) {
+			semestersPanel.add(createButton(key));
 		}
 
-		JButton addSemesterBtn = new JButton("Add new...");
-		addSemesterBtn.setActionCommand("newSemesterPanel");
-		addSemesterBtn.addActionListener(this);
-		semestersPanel.add(addSemesterBtn);
+		semestersPanel.add(createButton("newSemesterPanel", "Add new..."));
 
 		// Navigation label/separator.
 		JLabel semesterNavLbl = new JLabel("Navigation");
 		semestersPanel.add(semesterNavLbl);
 
 		// Back button.
-		JButton backBtn = new JButton("Back");
-		backBtn.setActionCommand("back");
-		backBtn.addActionListener(this);
-
-		semestersPanel.add(backBtn);
+		semestersPanel.add(createButton("back", "Back"));
 		add(semestersPanel);
 	}
 

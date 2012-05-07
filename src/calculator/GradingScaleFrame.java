@@ -12,6 +12,10 @@ import javax.swing.JTextArea;
 
 public class GradingScaleFrame extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2825014072171370846L;
 	private SystemController controller;
 	private JFrame previousFrame;
 	private JTextArea instructionArea;

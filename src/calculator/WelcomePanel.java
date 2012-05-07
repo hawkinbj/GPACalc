@@ -2,26 +2,20 @@ package calculator;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-@SuppressWarnings("serial")
-public class WelcomeFrame extends JFrame implements ActionListener {
+public class WelcomePanel extends GUIPanel {
+
+	private static final long serialVersionUID = -6797117896418157857L;
 	private JButton loginButton, registerButton;
 	private JPanel panel;
 	private JTextArea instructionArea;
-	private final SystemController controller;
 
-	WelcomeFrame(SystemController controller) {
-
-		setSize(300, 300);
-		setTitle("GPACalc");
-		this.controller = controller;
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public WelcomePanel(SystemController controller) {
+		super(controller);
 		addComponentsToPane();
 	}
 
@@ -48,7 +42,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 		add(registerButton);
 
 		// layout
-		panel = new JPanel(new GridLayout(3, 0));
+		panel = new JPanel(new GridLayout(3,1));
 		panel.add(instructionArea);
 		panel.add(registerButton);
 		panel.add(loginButton);
@@ -57,12 +51,12 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
 	private void menuHandler(String menuAction) {
 		if (menuAction.equals("login")) {
-			setVisible(false);
-			new LoginFrame(controller, this).setVisible(true);
+			controller.addPanel(new LoginPanel(controller), "login");
+			controller.showPanel("login", this);
 		}
 		if (menuAction.equals("register")) {
-			new RegisterFrame(controller, this).setVisible(true);
-			setVisible(false);
+			controller.addPanel(new RegisterPanel(controller), "register");
+			controller.showPanel("register", this);
 		}
 	}
 
