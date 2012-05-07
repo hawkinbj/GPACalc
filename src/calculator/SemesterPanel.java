@@ -1,8 +1,6 @@
 package calculator;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,7 +13,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-public class SemesterPanel extends GUIPanel implements ActionListener {
+public class SemesterPanel extends GUIPanel {
 
 	private static final long serialVersionUID = -3839021242565662981L;
 	private MainMenuPanel previousFrame;
@@ -56,6 +54,8 @@ public class SemesterPanel extends GUIPanel implements ActionListener {
 
 		// Back button.
 		semestersPanel.add(createButton("back", "Back"));
+
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		add(semestersPanel);
 	}
 
@@ -79,8 +79,7 @@ public class SemesterPanel extends GUIPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
-			setVisible(false);
-			previousFrame.setVisible(true);
+			controller.showPanel("mainMenu", this);
 		}
 
 	}

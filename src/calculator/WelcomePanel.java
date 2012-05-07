@@ -2,7 +2,6 @@ package calculator;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -42,7 +41,7 @@ public class WelcomePanel extends GUIPanel {
 		add(registerButton);
 
 		// layout
-		panel = new JPanel(new GridLayout(3,1));
+		panel = new JPanel(new GridLayout(3, 1));
 		panel.add(instructionArea);
 		panel.add(registerButton);
 		panel.add(loginButton);

@@ -73,7 +73,7 @@ public class SchoolPanel extends GUIPanel {
 				this.revalidate();
 			}
 		} else {
-			controller.activeUser.addTranscript(action, new Transcript());
+			controller.activeUser.addTranscript(action, new Transcript(action));
 			controller.saveUserList();
 			MainMenuPanel previousFrame = (MainMenuPanel) controller.panels
 					.get("mainMenu");

@@ -3,6 +3,7 @@ package calculator;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,7 +17,7 @@ public class LoginPanel extends GUIPanel {
 	private JFrame previousFrame;
 	private JLabel usernameLabel, passwordLabel;
 	private JTextField usernameField, passwordField;
-	private JPanel panel;
+	private JPanel entryPanel, navigationPanel;
 
 	public LoginPanel(SystemController controller) {
 		super(controller);
@@ -32,14 +33,19 @@ public class LoginPanel extends GUIPanel {
 		passwordField = new JPasswordField(15);
 
 		// layout
-		panel = new JPanel(new GridLayout(3, 1));
-		panel.add(usernameLabel);
-		panel.add(usernameField);
-		panel.add(passwordLabel);
-		panel.add(passwordField);
-		panel.add(createButton("back", "Back"));
-		panel.add(createButton("submit", "Submit"));
-		add(panel);
+		entryPanel = new JPanel(new GridLayout(4, 2));
+		// panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		entryPanel.add(usernameLabel);
+		entryPanel.add(usernameField);
+		entryPanel.add(passwordLabel);
+		entryPanel.add(passwordField);
+
+		navigationPanel = new JPanel(new GridLayout(2, 1));
+		navigationPanel.add(createButton("submit", "Submit"));
+		navigationPanel.add(createButton("back", "Back"));
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		add(entryPanel);
+		add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -57,8 +63,7 @@ public class LoginPanel extends GUIPanel {
 			}
 		}
 		if (action.equals("back")) {
-			setVisible(false);
-			previousFrame.setVisible(true);
+			controller.showPanel("welcome", this);
 		}
 	}
 }

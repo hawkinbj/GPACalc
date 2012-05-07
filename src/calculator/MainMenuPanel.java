@@ -2,13 +2,8 @@ package calculator;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-
 import java.awt.event.MouseEvent;
-
 import javax.swing.BoxLayout;
-
-import javax.swing.JLabel;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -34,6 +29,7 @@ public class MainMenuPanel extends GUIPanel {
 				.keySet()) {
 			mainMenuPanel.add(createButton(schoolName));
 		}
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		add(mainMenuPanel);
 	}
 
@@ -53,12 +49,13 @@ public class MainMenuPanel extends GUIPanel {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Component component = e.getComponent();
-		if (SwingUtilities.isRightMouseButton(e)) {
+		// If right click and a school button.
+		if (SwingUtilities.isRightMouseButton(e)
+				&& controller.schools.containsKey(component.getName())) {
 			int response = JOptionPane.showConfirmDialog(null,
 					"Are you sure you wish to remove this school?", "Confirm",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (response == JOptionPane.YES_OPTION) {
-				System.out.println(controller.activeUser.getTranscripts());
 				controller.activeUser.getTranscripts().remove(
 						component.getName());
 				controller.saveUserList();
