@@ -21,13 +21,9 @@ public class CoursePanel extends GUIFrame implements ActionListener {
 	private JPanel coursePanel, addCoursePanel, quizPanel;
 	private JTextField courseNameField;
 
-	public CoursePanel(SystemController controller, MainMenuPanel previousFrame) {
+	public CoursePanel(SystemController controller) {
 
 		super(controller);
-		setSize(300, 300);
-		setTitle("New Course");
-		this.previousFrame = previousFrame;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		showCourses();
 	}
 

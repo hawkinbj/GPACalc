@@ -1,5 +1,6 @@
 package calculator;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -16,14 +17,9 @@ import javax.swing.SwingUtilities;
 public class SemesterPanel extends GUIPanel {
 
 	private static final long serialVersionUID = -3839021242565662981L;
-	private MainMenuPanel previousFrame;
-	private JTextField newSemesterField;
 	private String schoolName;
-	private Transcript transcript; // active transcript
-	private JPanel semestersPanel;
-	private JPopupMenu removeSchoolMenu;
-
-	// private Transcript transcript;
+	protected Transcript transcript; // active transcript
+	protected JPanel semestersPanel, navigationPanel;
 
 	public SemesterPanel(SystemController controller, String schoolName) {
 		super(controller);
@@ -38,6 +34,11 @@ public class SemesterPanel extends GUIPanel {
 		semestersPanel = new JPanel();
 		semestersPanel.setLayout(new BoxLayout(semestersPanel,
 				BoxLayout.PAGE_AXIS));
+
+		// School label.
+		JLabel schoolLbl = new JLabel("School: " + schoolName + "\n");
+		schoolLbl.setForeground(Color.blue);
+		semestersPanel.add(schoolLbl);
 		// Instructions label.
 		JLabel semestersInstructionLbl = new JLabel("Choose a semester:");
 		semestersPanel.add(semestersInstructionLbl);
@@ -46,41 +47,28 @@ public class SemesterPanel extends GUIPanel {
 			semestersPanel.add(createButton(key));
 		}
 
-		semestersPanel.add(createButton("newSemesterPanel", "Add new..."));
-
 		// Navigation label/separator.
-		JLabel semesterNavLbl = new JLabel("Navigation");
-		semestersPanel.add(semesterNavLbl);
-
+		navigationPanel = new JPanel();
+		navigationPanel.setLayout(new BoxLayout(navigationPanel,
+				BoxLayout.PAGE_AXIS));
+		navigationPanel.add(new JLabel("Navigation"));
+		// New school screen button.
+		navigationPanel.add(createButton("newSemesterPanel", "Add new..."));
 		// Back button.
-		semestersPanel.add(createButton("back", "Back"));
+		navigationPanel.add(createButton("back", "Back"));
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		add(semestersPanel);
+		add(navigationPanel);
 	}
-
-	// private void newSchoolMenu() {
-	// // Label and textfield to enter new school name.
-	// JLabel addSchoolInstructionLbl = new JLabel("School name: ");
-	// newSchoolNameField = new JTextField(10); // int = entry spaces.
-	// // Done button.
-	// JButton doneBtn = new JButton("Done");
-	// doneBtn.setActionCommand("done");
-	// doneBtn.addActionListener(this);
-	// // Layout.
-	// newSchoolPanel = new JPanel(new GridLayout(5, 1));
-	// newSchoolPanel.add(addSchoolInstructionLbl);
-	// newSchoolPanel.add(newSchoolNameField);
-	// newSchoolPanel.add(doneBtn);
-	// add(newSchoolPanel);
-	// semestersPanel.setVisible(false);
-	// }
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
 			controller.showPanel("mainMenu", this);
 		}
-
+		if (action.equals("newSemesterPanel")) {
+			SemesterDialog newSemesterDialog = new SemesterDialog(controller);
+		}
 	}
 }

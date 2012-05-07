@@ -56,8 +56,10 @@ public class SchoolPanel extends GUIPanel {
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		if (action.equals("cancel"))
+		if (action.equals("cancel")) {
 			controller.showPanel("mainMenu", this);
+			return;
+		}
 		if (action.equals("newSchoolPanel")) {
 			String newSchoolName = JOptionPane.showInputDialog(this,
 					"Name of new school:");
@@ -72,13 +74,13 @@ public class SchoolPanel extends GUIPanel {
 				schoolsPanel.add(createButton(newSchoolName));
 				this.revalidate();
 			}
+			return;
 		} else {
 			controller.activeUser.addTranscript(action, new Transcript(action));
 			controller.saveUserList();
 			MainMenuPanel previousFrame = (MainMenuPanel) controller.panels
 					.get("mainMenu");
 			previousFrame.mainMenuPanel.add(previousFrame.createButton(action));
-			// previousFrame.revalidate();
 			controller.showPanel("mainMenu", this);
 		}
 	}

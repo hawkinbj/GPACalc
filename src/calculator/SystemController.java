@@ -1,16 +1,12 @@
 package calculator;
 
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.io.*;
 
 import java.util.HashMap;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 public class SystemController {
 
@@ -20,7 +16,7 @@ public class SystemController {
 	protected HashMap<String, School> schools; // List of known schools.
 	protected JFrame rootFrame; // Top level container.
 	protected Container contentPane; // Top level Container - add panels to
-										// this.
+	// this.
 	// Panel manager - consider making a new class.
 	protected HashMap<String, GUIPanel> panels;
 
@@ -39,27 +35,9 @@ public class SystemController {
 			loadUserList();
 		}
 
-		rootFrame = new JFrame("GPACalc");
-		rootFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		rootFrame.setSize(300, 300);
-		rootFrame.setVisible(true);
+		rootFrame = new RootFrame(this);
 		contentPane = rootFrame.getContentPane();
-		contentPane.setLayout(new CardLayout());
-		// Menu.
-		JMenuBar menuBar = new JMenuBar();
-		rootFrame.setJMenuBar(menuBar);
 
-		// Define and add two drop down menu to the menubar.
-		JMenu fileMenu = new JMenu("File");
-		menuBar.add(fileMenu);
-
-		// Create and add menu item to drop down menus.
-		JMenuItem newAction = new JMenuItem("New");
-		JMenuItem openAction = new JMenuItem("Open");
-		fileMenu.add(newAction);
-		fileMenu.add(openAction);
-
-		addPanel(new WelcomePanel(this), "welcome");
 	}
 
 	// Adds new panel to rootFrame and stores in map.
@@ -71,6 +49,12 @@ public class SystemController {
 
 	protected void showPanel(String name, GUIPanel panelToHide) {
 		panelToHide.setVisible(false);
+		CardLayout cl = (CardLayout) contentPane.getLayout();
+		cl.show(contentPane, name);
+		contentPane.validate();
+	}
+
+	protected void showPanel(String name) {
 		CardLayout cl = (CardLayout) contentPane.getLayout();
 		cl.show(contentPane, name);
 		contentPane.validate();
