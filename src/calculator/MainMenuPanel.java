@@ -16,6 +16,7 @@ public class MainMenuPanel extends GUIPanel {
 	public MainMenuPanel(SystemController controller) {
 		super(controller);
 
+		controller.rootFrame.setSize(200, 300);
 		// Layout.
 		mainMenuPanel = new JPanel();
 		mainMenuPanel.setLayout(new BoxLayout(mainMenuPanel,
@@ -51,7 +52,7 @@ public class MainMenuPanel extends GUIPanel {
 		Component component = e.getComponent();
 		// If right click and a school button.
 		if (SwingUtilities.isRightMouseButton(e)
-				&& controller.schools.containsKey(component.getName())) {
+				&& controller.schools.containsKey(component.getName())) {		
 			int response = JOptionPane.showConfirmDialog(null,
 					"Are you sure you wish to remove this school?", "Confirm",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);

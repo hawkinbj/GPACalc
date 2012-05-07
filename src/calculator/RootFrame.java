@@ -21,6 +21,7 @@ public class RootFrame extends JFrame implements ActionListener {
 		setTitle("GPACalc");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(300, 300);
+		this.setLocation(600, 200);
 		setVisible(true);
 		contentPane = getContentPane();
 		contentPane.setLayout(new CardLayout());
