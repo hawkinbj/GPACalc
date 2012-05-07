@@ -1,17 +1,11 @@
 package calculator;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 public class SchoolPanel extends GUIPanel {
 
@@ -80,7 +74,8 @@ public class SchoolPanel extends GUIPanel {
 			controller.saveUserList();
 			MainMenuPanel previousFrame = (MainMenuPanel) controller.panels
 					.get("mainMenu");
-			previousFrame.mainMenuPanel.add(previousFrame.createButton(action));
+			previousFrame.instructionPanel.add(previousFrame
+					.createButton(action));
 			controller.showPanel("mainMenu", this);
 		}
 	}

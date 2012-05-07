@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Container;
 import java.io.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
@@ -11,6 +12,7 @@ import javax.swing.JFrame;
 public class SystemController {
 
 	protected final String ROOTDIR = System.getenv("APPDATA") + "\\GPACalcJava";
+	protected ArrayList<String> gradeTypes;
 	protected User activeUser;
 	protected HashMap<String, User> users;
 	protected HashMap<String, School> schools; // List of known schools.
@@ -26,12 +28,15 @@ public class SystemController {
 		users = new HashMap<String, User>();
 		schools = new HashMap<String, School>();
 		panels = new HashMap<String, GUIPanel>();
+		gradeTypes = new ArrayList<String>();
 
 		if (!new File(ROOTDIR).exists()) {
 			new File(ROOTDIR).mkdir();
 			populateSchools();
+			populateGradeTypes();
 		} else {
 			loadSchoolList();
+			loadGradeTypeList();
 			loadUserList();
 		}
 
@@ -48,6 +53,7 @@ public class SystemController {
 	}
 
 	protected void showPanel(String name, GUIPanel panelToHide) {
+		rootFrame.setSize(200, 300);
 		panelToHide.setVisible(false);
 		CardLayout cl = (CardLayout) contentPane.getLayout();
 		cl.show(contentPane, name);
@@ -55,9 +61,52 @@ public class SystemController {
 	}
 
 	protected void showPanel(String name) {
+		rootFrame.setSize(200, 300);
 		CardLayout cl = (CardLayout) contentPane.getLayout();
 		cl.show(contentPane, name);
 		contentPane.validate();
+	}
+
+	// Populates list of grade types. Only run on the first execution of
+	// program. Probably should be part of the installer if one is ever made...
+	private void populateGradeTypes() {
+		gradeTypes.add("Quiz");
+		gradeTypes.add("Test");
+		gradeTypes.add("Final");
+		gradeTypes.add("Midterm");
+		gradeTypes.add("Homework");
+		gradeTypes.add("Project");
+		gradeTypes.add("Lab");
+		saveGradeTypeList();
+	}
+
+	protected void addGradeType(String name) {
+
+	}
+
+	private void saveGradeTypeList() {
+		try {
+			FileOutputStream fos = new FileOutputStream(ROOTDIR
+					+ "\\gradeTypes");
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(gradeTypes);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void loadGradeTypeList() {
+		try {
+			FileInputStream fis = new FileInputStream(ROOTDIR + "\\gradeTypes");
+			ObjectInputStream in = new ObjectInputStream(fis);
+			gradeTypes = (ArrayList<String>) in.readObject();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Populates list of known schools. Only run on the first execution of

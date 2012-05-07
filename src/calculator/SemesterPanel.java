@@ -1,17 +1,14 @@
 package calculator;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class SemesterPanel extends GUIPanel {
@@ -27,6 +24,7 @@ public class SemesterPanel extends GUIPanel {
 				.get(schoolName);
 		this.schoolName = schoolName;
 		addComponentsToPane();
+		System.out.println(this.getClass());
 	}
 
 	private void addComponentsToPane() {
@@ -66,9 +64,38 @@ public class SemesterPanel extends GUIPanel {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
 			controller.showPanel("mainMenu", this);
+		} else if (action.equals("newSemesterPanel")) {
+			controller.addPanel(new SemesterDialog(controller),
+					"semesterDialog");
+			controller.showPanel("semesterDialog", this);
+		} else {
+			controller.addPanel(new CoursePanel(controller, transcript
+					.getSemesters().get(action)), "coursePanel");
+			controller.showPanel("coursePanel", this);
 		}
-		if (action.equals("newSemesterPanel")) {
-			SemesterDialog newSemesterDialog = new SemesterDialog(controller);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		Component component = e.getComponent();
+		// If right click and a semester button.
+		if (SwingUtilities.isRightMouseButton(e) && component.getName() != null) {
+			int response = JOptionPane.showConfirmDialog(null,
+					"Are you sure you wish to remove this semester?",
+					"Confirm", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+			if (response == JOptionPane.YES_OPTION) {
+				controller.activeUser.getTranscripts().get(schoolName)
+						.removeSemester(component.getName());
+				controller.saveUserList();
+				semestersPanel.remove(component);
+				semestersPanel.revalidate();
+				semestersPanel.repaint();
+			} else if (response == JOptionPane.CLOSED_OPTION) {
+				return;
+			}
+		} else {
+			return;
 		}
 	}
 }

@@ -1,146 +1,103 @@
 package calculator;
 
-import java.awt.GridLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
-public class CoursePanel extends GUIFrame implements ActionListener {
+public class CoursePanel extends GUIPanel implements ActionListener {
 
 	private static final long serialVersionUID = -6768153191699813450L;
 	// NEED TO STORE COURSES.
-	private MainMenuPanel previousFrame;
-	private JPanel coursePanel, addCoursePanel, quizPanel;
-	private JTextField courseNameField;
+	protected JPanel coursePanel, navigationPanel;
+	private String semesterName;
+	protected Semester semester;
 
-	public CoursePanel(SystemController controller) {
-
+	public CoursePanel(SystemController controller, Semester semester) {
 		super(controller);
-		showCourses();
+		this.semester = semester;
+		this.semesterName = semester.getSemesterName();
+		addComponentsToPane();
+		System.out.println(this.getClass());
 	}
 
-	private void showCourses() {
-		// Add course button.
-		JButton addCourse = new JButton("Add New...");
-		addCourse.setActionCommand("addCourse");
-		addCourse.addActionListener(this);
-
-		// Main menu button.
-		JButton mainMenu = new JButton("Main Menu");
-		mainMenu.setActionCommand("mainMenu");
-		mainMenu.addActionListener(this);
+	private void addComponentsToPane() {
 
 		// Layout.
-		coursePanel = new JPanel(new GridLayout(5, 1));
-		coursePanel.add(addCourse);
-		coursePanel.add(mainMenu);
-		add(coursePanel);
-	}
+		coursePanel = new JPanel();
+		coursePanel.setLayout(new BoxLayout(coursePanel, BoxLayout.PAGE_AXIS));
 
-	private void addCourse() {
-
-		// Course name entry label.
-		JLabel courseNameLbl = new JLabel("Course name: ");
-		courseNameField = new JTextField(10); // # of entry spaces.
-		courseNameField.addActionListener(this);
-		JLabel gradeTypesLbl = new JLabel("Select grade types:");
-
-		// namePanel.
-		JPanel namePanel = new JPanel(new GridLayout(2, 1));
-		namePanel.add(courseNameLbl);
-		namePanel.add(courseNameField);
-		namePanel.add(gradeTypesLbl);
-
-		// Grade types checkboxes - stored in a list.
-		ArrayList<JCheckBox> gradeTypes = new ArrayList<JCheckBox>();
-		// Grade type checkboxes.
-		JCheckBox quizCheckBox = new JCheckBox("Quiz");
-		gradeTypes.add(quizCheckBox);
-		JCheckBox testCheckBox = new JCheckBox("Test");
-		gradeTypes.add(testCheckBox);
-		JCheckBox projectCheckBox = new JCheckBox("Project");
-		gradeTypes.add(projectCheckBox);
-		JCheckBox midtermCheckBox = new JCheckBox("Midterm");
-		gradeTypes.add(midtermCheckBox);
-		JCheckBox finalCheckBox = new JCheckBox("Final");
-		gradeTypes.add(finalCheckBox);
-		JCheckBox labCheckBox = new JCheckBox("Lab");
-		gradeTypes.add(labCheckBox);
-
-		// Grade types panel.
-		JPanel gradeTypesPanel = new JPanel(new GridLayout(2,
-				(gradeTypes.size() / 2)));
-		for (int i = 0; i < gradeTypes.size(); i++) {
-			// Add checkboxes to panel.
-			gradeTypesPanel.add(gradeTypes.get(i));
+		// Semester label.
+		JLabel semesterLbl = new JLabel("Semester: " + semesterName + "\n");
+		semesterLbl.setForeground(Color.blue);
+		coursePanel.add(semesterLbl);
+		// Instructions label.
+		JLabel semestersInstructionLbl = new JLabel("Choose a class:");
+		coursePanel.add(semestersInstructionLbl);
+		// Buttons to represent courses.
+		for (String key : semester.getCourses().keySet()) {
+			coursePanel.add(createButton(key));
 		}
 
-		// Cancel button.
-		JButton cancelBtn = new JButton("Cancel");
-		cancelBtn.setActionCommand("cancel");
-		cancelBtn.addActionListener(this);
+		// Navigation label/separator.
+		navigationPanel = new JPanel();
+		navigationPanel.setLayout(new BoxLayout(navigationPanel,
+				BoxLayout.PAGE_AXIS));
+		navigationPanel.add(new JLabel("Navigation"));
+		// Add course button.
+		navigationPanel.add(createButton("addCourse", "Add new..."));
+		// Back button.
+		navigationPanel.add(createButton("back", "Back"));
 
-		// Next button.
-		JButton doneBtn = new JButton("Next");
-		doneBtn.setActionCommand("next");
-		doneBtn.addActionListener(this);
-
-		// Nav panel.
-		JPanel navPanel = new JPanel(new GridLayout(2, 1));
-		navPanel.add(cancelBtn);
-		navPanel.add(doneBtn);
-
-		// Add all sub-panels to a super-panel.
-		addCoursePanel = new JPanel(new GridLayout(3, 1));
-		addCoursePanel.add(namePanel);
-		addCoursePanel.add(gradeTypesPanel);
-		addCoursePanel.add(navPanel);
-		add(addCoursePanel);
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		add(coursePanel);
+		add(navigationPanel);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		// Consider using Switch here **!!
-		if (action.equals("mainMenu")) {
-			setVisible(false);
-			previousFrame.setVisible(true);
-		}
-		if (action.equals("cancel")) {
-			addCoursePanel.setVisible(false);
-			coursePanel.setVisible(true);
-		}
-		if (action.equals("addCourse")) {
-			coursePanel.setVisible(false);
-			addCourse();
-		}
-		if (action.equals("next")) { // may need to rename.
-			// Check that a valid course name was entered.
-			String courseName = courseNameField.getText();
-			if (courseName.equals("")) {
-				JOptionPane.showMessageDialog(this,
-						"Please enter a course name.", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			} else {
+		if (action.equals("back")) {
+			controller.showPanel("semesterPanel", this);
+		} else if (action.equals("addCourse")) {
+			controller.addPanel(new CourseDialog(controller), "courseDialog");
+			controller.showPanel("courseDialog", this);
+			controller.rootFrame.setSize(300, 300);
+		} else {
+			controller.addPanel(new CourseInfoPanel(controller, semester
+					.getCourses().get(action)), "courseInfoPanel");
+			controller.showPanel("courseInfoPanel", this);
 
-				// Need this stuff after all info is entered.
-				// JButton newCourseBtn = new JButton(courseName);
-				// newCourseBtn.setActionCommand(courseName);
-				// newCourseBtn.addActionListener(this);
-				// coursePanel.add(newCourseBtn);
-				// addCoursePanel.setVisible(false);
-				// coursePanel.setVisible(true);
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		Component component = e.getComponent();
+		// If right click and a semester button.
+		if (SwingUtilities.isRightMouseButton(e) && component.getName() != null) {
+			int response = JOptionPane.showConfirmDialog(null,
+					"Are you sure you wish to remove this course?", "Confirm",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (response == JOptionPane.YES_OPTION) {
+				semester.getCourses().remove(component.getName());
+				controller.saveUserList();
+				coursePanel.remove(component);
+				coursePanel.revalidate();
+				coursePanel.repaint();
+			} else if (response == JOptionPane.CLOSED_OPTION) {
+				return;
 			}
-
+		} else {
+			return;
 		}
-
 	}
 }

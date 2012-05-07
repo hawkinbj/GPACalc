@@ -4,7 +4,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,7 +13,6 @@ import javax.swing.JTextField;
 public class LoginPanel extends GUIPanel {
 
 	private static final long serialVersionUID = 2318278158794448042L;
-	private JFrame previousFrame;
 	private JLabel usernameLabel, passwordLabel;
 	private JTextField usernameField, passwordField;
 	private JPanel entryPanel, navigationPanel;

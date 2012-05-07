@@ -28,6 +28,11 @@ public class Transcript implements Serializable {
 
 	protected void addSemester(String semesterName, Semester semester) {
 		semesters.put(semesterName, semester);
+		semesters.get(semesterName).setSchoolName(schoolName);
+	}
+
+	protected void removeSemester(String semesterName) {
+		semesters.remove(semesterName);
 	}
 
 	protected HashMap<String, Semester> getSemesters() {
