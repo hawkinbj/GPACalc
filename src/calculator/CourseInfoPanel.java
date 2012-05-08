@@ -92,7 +92,7 @@ public class CourseInfoPanel extends GUIPanel {
 			controller.addPanel(new GradePanel(controller, course.getGrades()
 					.get(action)), "gradePanel");
 			controller.showPanel("gradePanel", this);
-			controller.rootFrame.setSize(300, 300);
+			controller.rootFrame.setSize(325, 300);
 		}
 	}
 

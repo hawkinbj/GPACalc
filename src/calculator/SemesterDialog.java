@@ -29,10 +29,8 @@ public class SemesterDialog extends GUIPanel {
 		instructionPanel.setLayout(new BoxLayout(instructionPanel,
 				BoxLayout.PAGE_AXIS));
 		instructionPanel.add(new JLabel("Select a term:"));
-
+		//
 		fallRadioBtn = new JRadioButton("Fall", true);
-		fallRadioBtn.setActionCommand("radio");
-		fallRadioBtn.addActionListener(this);
 		springRadioBtn = new JRadioButton("Spring", false);
 
 		ButtonGroup radioBtns = new ButtonGroup();

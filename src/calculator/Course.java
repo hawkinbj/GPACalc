@@ -15,7 +15,30 @@ public class Course implements Serializable {
 		this.setCourseName(courseName);
 		this.creditHours = creditHours;
 		grades = new HashMap<String, Grade>();
+	}
 
+	protected double getTotalPointsEarned() {
+		double total = 0;
+		for (Grade grade : grades.values()) {
+			total += grade.getTotalEarned();
+		}
+		return total;
+	}
+
+	protected int getTotalPointsPossible() {
+		int total = 0;
+		for (Grade grade : grades.values()) {
+			total += grade.getTotalPossible();
+		}
+		return total;
+	}
+
+	protected double getWeightedTotalPointsEarned() {
+		double total = 0;
+		for (Grade grade : grades.values()) {
+			total += (grade.getTotalEarned() * grade.getPercentWeight());
+		}
+		return total;
 	}
 
 	protected void addGrade(String type, Grade grade) {

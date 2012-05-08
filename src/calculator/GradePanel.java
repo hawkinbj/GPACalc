@@ -77,11 +77,13 @@ public class GradePanel extends GUIPanel {
 
 		// Load existing data (if any).
 		if (grade.getPointsPossiblePer() != 0) {
-			earnedField.setText(Integer.toString(grade.getTotalEarned()));
-			numOfGradesComboBox.setSelectedItem(grade.getNumOfGrades());
+			earnedField.setText(Double.toString(grade.getTotalEarned()));
+			numOfGradesComboBox.setSelectedItem(Integer.toString(grade
+					.getNumOfGrades()));
 			possibleField
 					.setText(Integer.toString(grade.getPointsPossiblePer()));
-			percentComboBox.setSelectedItem(grade.getPercentWeight());
+			percentComboBox.setSelectedItem(Integer.toString(grade
+					.getPercentWeight()));
 			if (grade.getDropLowest()) {
 				dropLowestBox.setSelected(true);
 			}
@@ -106,7 +108,7 @@ public class GradePanel extends GUIPanel {
 				int numOfGrades = Integer.parseInt((String) numOfGradesComboBox
 						.getSelectedItem());
 				int pointsPossiblePer = Integer.parseInt(pointsPer);
-				int totalEarned = Integer.parseInt(total);
+				double totalEarned = Double.parseDouble(total);
 				if (totalEarned > (pointsPossiblePer * numOfGrades)) {
 					JOptionPane
 							.showMessageDialog(

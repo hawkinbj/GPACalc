@@ -7,12 +7,12 @@ public class Grade implements Serializable {
 	private static final long serialVersionUID = 9191538844602888225L;
 	private String type;
 	private int pointsPossiblePer;
-	private int totalEarned;
+	double totalEarned;
 	private int percentWeight;
 	private boolean dropLowest;
 	private int numOfGrades;
 
-	public Grade(String type, int pointsPossiblePer, int totalEarned,
+	public Grade(String type, int pointsPossiblePer, double totalEarned,
 			int numOfGrades, int percentWeight, boolean dropLowest) {
 		this.setType(type);
 		this.setPointsPossiblePer(pointsPossiblePer);
@@ -51,11 +51,11 @@ public class Grade implements Serializable {
 		this.pointsPossiblePer = pointsPossiblePer;
 	}
 
-	protected int getTotalEarned() {
+	protected double getTotalEarned() {
 		return totalEarned;
 	}
 
-	protected void setTotalEarned(int totalEarned) {
+	protected void setTotalEarned(double totalEarned) {
 		this.totalEarned = totalEarned;
 	}
 

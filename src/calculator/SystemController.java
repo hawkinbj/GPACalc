@@ -115,17 +115,17 @@ public class SystemController {
 	// Populates list of known schools. Only run on the first execution of
 	// program. Probably should be part of the installer if one is ever made...
 	private void populateSchools() {
-		schools.put("GMU", new School("GMU"));
-		schools.put("UTSA", new School("UTSA"));
-		schools.put("TNCC", new School("TNCC"));
-		schools.put("ODU", new School("ODU"));
+		schools.put("GMU", new School("GMU", new GradingScale(true)));
+		schools.put("UTSA", new School("UTSA", new GradingScale(true)));
+		schools.put("TNCC", new School("TNCC", new GradingScale(false)));
+		schools.put("ODU", new School("ODU", new GradingScale(false)));
 		saveSchoolList();
 	}
 
-	protected boolean addSchool(String name) {
+	protected boolean addSchool(String name, GradingScale gradingScale) {
 		if (schools.containsKey(name) || name.equals(""))
 			return false;
-		schools.put(name, new School(name));
+		schools.put(name, new School(name, gradingScale));
 		saveSchoolList();
 		return true;
 	}

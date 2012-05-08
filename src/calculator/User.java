@@ -23,8 +23,11 @@ public class User implements Serializable {
 		return username;
 	}
 
-	protected void addTranscript(String schoolName, Transcript transcript) {
+	protected boolean addTranscript(String schoolName, Transcript transcript) {
+		if (transcripts.keySet().contains(schoolName))
+			return false;
 		transcripts.put(schoolName, transcript);
+		return true;
 	}
 
 	protected void removeTranscript(String schoolName) {

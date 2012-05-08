@@ -19,7 +19,7 @@ public class CourseDialog extends GUIPanel {
 	protected JTextField courseNameField;
 	private JPanel addCoursePanel, namePanel, gradeTypesPanel, setGradePanel,
 			navigationPanel;
-	private JComboBox creditHrsComboBox;
+	private JComboBox creditHrsComboBox, letterGradeComboBox;
 	protected ArrayList<JCheckBox> gradeCheckBoxes;
 
 	public CourseDialog(SystemController controller) {
@@ -31,11 +31,12 @@ public class CourseDialog extends GUIPanel {
 		// Course name entry label.
 		courseNameField = new JTextField(10); // # of entry spaces.
 		// namePanel.
-		namePanel = new JPanel(new GridLayout(4, 2));
+		namePanel = new JPanel(new GridLayout(3, 2));
 		namePanel.add(new JLabel("Course name:"));
 		namePanel.add(courseNameField);
 		namePanel.add(new JLabel("Credit hours:"));
 		creditHrsComboBox = new JComboBox(controller.CREDITHOURS);
+		creditHrsComboBox.setSelectedItem("3");
 		namePanel.add(creditHrsComboBox);
 		namePanel.add(new JLabel("Select grade types:"));
 
@@ -47,7 +48,8 @@ public class CourseDialog extends GUIPanel {
 		}
 
 		// Final grade panel
-		///gradeTypesPanel.add(new JLabel("Set final letter grade"));
+		setGradePanel = new JPanel(new GridLayout(1, 2));
+		setGradePanel.add(new JLabel("Set final letter grade"));
 
 		// Nav panel.
 		navigationPanel = new JPanel();

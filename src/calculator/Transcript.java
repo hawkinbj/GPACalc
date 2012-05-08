@@ -14,12 +14,9 @@ public class Transcript implements Serializable {
 	private HashMap<String, Semester> semesters;
 	private String schoolName;
 
-	// private HashMap<String, int[]> gradingScale;
-
 	public Transcript(String schoolName) {
 		this.schoolName = schoolName;
 		semesters = new HashMap<String, Semester>();
-		// gradingScale = new HashMap<String, int[]>();
 	}
 
 	protected String getSchoolName() {
