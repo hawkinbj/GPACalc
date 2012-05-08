@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 public class SystemController {
 
+	protected static final String[] CREDITHOURS = { "1", "2", "3", "4" };
 	protected final String ROOTDIR = System.getenv("APPDATA") + "\\GPACalcJava";
 	protected ArrayList<String> gradeTypes;
 	protected User activeUser;

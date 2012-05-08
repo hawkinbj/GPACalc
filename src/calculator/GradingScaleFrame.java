@@ -2,7 +2,6 @@ package calculator;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -10,24 +9,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class GradingScaleFrame extends JFrame implements ActionListener {
+public class GradingScaleFrame extends GUIPanel  {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2825014072171370846L;
-	private SystemController controller;
 	private JFrame previousFrame;
 	private JTextArea instructionArea;
 	private JComboBox scaleBox;
 	private JPanel panel;
 	private JButton backButton, submitButton;
 
-	public GradingScaleFrame(SystemController controller, JFrame previousFrame) {
-		setSize(300, 300);
-		this.controller = controller;
-		this.previousFrame = previousFrame;
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public GradingScaleFrame(SystemController controller) {
+		super(controller);
 		addComponentsToPane();
 	}
 

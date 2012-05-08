@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,7 +17,9 @@ public class CourseDialog extends GUIPanel {
 
 	private static final long serialVersionUID = -6080991655918955653L;
 	protected JTextField courseNameField;
-	private JPanel addCoursePanel, namePanel, gradeTypesPanel, navigationPanel;
+	private JPanel addCoursePanel, namePanel, gradeTypesPanel, setGradePanel,
+			navigationPanel;
+	private JComboBox creditHrsComboBox;
 	protected ArrayList<JCheckBox> gradeCheckBoxes;
 
 	public CourseDialog(SystemController controller) {
@@ -26,16 +29,15 @@ public class CourseDialog extends GUIPanel {
 		System.out.println(this.getClass());
 
 		// Course name entry label.
-		JLabel courseNameLbl = new ;
 		courseNameField = new JTextField(10); // # of entry spaces.
-
-		JLabel gradeTypesLbl = new JLabel("Select grade types:");
-
 		// namePanel.
-		namePanel = new JPanel(new GridLayout(2, 1));
-		namePanel.add(courseNameLbl);
+		namePanel = new JPanel(new GridLayout(4, 2));
+		namePanel.add(new JLabel("Course name:"));
 		namePanel.add(courseNameField);
-		namePanel.add(gradeTypesLbl);
+		namePanel.add(new JLabel("Credit hours:"));
+		creditHrsComboBox = new JComboBox(controller.CREDITHOURS);
+		namePanel.add(creditHrsComboBox);
+		namePanel.add(new JLabel("Select grade types:"));
 
 		// Grade types panel.
 		gradeTypesPanel = new JPanel(new GridLayout(3,
@@ -43,6 +45,9 @@ public class CourseDialog extends GUIPanel {
 		for (String gradeType : controller.gradeTypes) {
 			addGradeCheckBox(gradeType);
 		}
+
+		// Final grade panel
+		///gradeTypesPanel.add(new JLabel("Set final letter grade"));
 
 		// Nav panel.
 		navigationPanel = new JPanel();
@@ -118,8 +123,11 @@ public class CourseDialog extends GUIPanel {
 				}
 			}
 			// All clear to add new course and button.
-			previousFrame.semester
-					.addCourse(courseName, new Course(courseName));
+			previousFrame.semester.addCourse(
+					courseName,
+					new Course(courseName, Integer
+							.parseInt((String) creditHrsComboBox
+									.getSelectedItem())));
 			// Add new Grade objects for each checked gradtype box.
 			for (JCheckBox checkBox : gradeCheckBoxes) {
 				String gradeType = checkBox.getName();
