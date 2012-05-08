@@ -1,5 +1,6 @@
 package calculator;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -25,10 +26,17 @@ public class CourseInfoPanel extends GUIPanel {
 	}
 
 	private void addComponentsToPane() {
+
 		// Instruction panel.
 		instructionPanel = new JPanel();
 		instructionPanel.setLayout(new BoxLayout(instructionPanel,
 				BoxLayout.PAGE_AXIS));
+
+		// Course label.
+		JLabel courseLbl = new JLabel("Course: " + course.getCourseName()
+				+ "\n");
+		courseLbl.setForeground(Color.blue);
+		instructionPanel.add(courseLbl);
 		// Instructions label.
 		JLabel InstructionLbl = new JLabel("Choose a grade type to edit:");
 		instructionPanel.add(InstructionLbl);
@@ -46,8 +54,10 @@ public class CourseInfoPanel extends GUIPanel {
 		navigationPanel.setLayout(new BoxLayout(navigationPanel,
 				BoxLayout.PAGE_AXIS));
 		navigationPanel.add(new JLabel("Navigation"));
-		// Edit course button.
+		// Edit course button - MOVE THIS TO CoursePanel right-click menu...
 		navigationPanel.add(createButton("edit", "Edit..."));
+		// Calculate button.
+		navigationPanel.add(createButton("calculate", "Calculate"));
 		// Back button.
 		navigationPanel.add(createButton("back", "Back"));
 
@@ -61,8 +71,10 @@ public class CourseInfoPanel extends GUIPanel {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
 			controller.showPanel("coursePanel");
-		}
-		if (action.equals("edit")) {
+		} else if (action.equals("calculate")) {
+			controller.addPanel(new CalcPanel(controller, course), "calcPanel");
+			controller.showPanel("calcPanel");
+		} else if (action.equals("edit")) {
 			controller.addPanel(new CourseDialog(controller), "courseDialog");
 			CourseDialog previousFrame = (CourseDialog) controller.panels
 					.get("courseDialog");
@@ -75,6 +87,11 @@ public class CourseInfoPanel extends GUIPanel {
 				}
 			}
 			controller.showPanel("courseDialog", this);
+			controller.rootFrame.setSize(425, 300);
+		} else {
+			controller.addPanel(new GradePanel(controller, course.getGrades()
+					.get(action)), "gradePanel");
+			controller.showPanel("gradePanel", this);
 			controller.rootFrame.setSize(300, 300);
 		}
 	}

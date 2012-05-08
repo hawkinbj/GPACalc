@@ -1,5 +1,6 @@
 package calculator;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.Calendar;
 
@@ -33,15 +34,12 @@ public class SemesterDialog extends GUIPanel {
 		fallRadioBtn.setActionCommand("radio");
 		fallRadioBtn.addActionListener(this);
 		springRadioBtn = new JRadioButton("Spring", false);
-		springRadioBtn.setActionCommand("radio");
-		springRadioBtn.addActionListener(this);
 
 		ButtonGroup radioBtns = new ButtonGroup();
 		radioBtns.add(fallRadioBtn);
 		radioBtns.add(springRadioBtn);
 
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+		mainPanel = new JPanel(new GridLayout(4, 1));
 		mainPanel.add(fallRadioBtn);
 		mainPanel.add(springRadioBtn);
 
@@ -53,9 +51,7 @@ public class SemesterDialog extends GUIPanel {
 		mainPanel.add(spinner);
 
 		// add cancel button and navigation panel
-		navigationPanel = new JPanel();
-		navigationPanel.setLayout(new BoxLayout(navigationPanel,
-				BoxLayout.PAGE_AXIS));
+		navigationPanel = new JPanel(new GridLayout(3, 1));
 		navigationPanel.add(createButton("done", "Done"));
 		navigationPanel.add(createButton("cancel", "Cancel"));
 

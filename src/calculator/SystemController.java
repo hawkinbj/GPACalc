@@ -77,6 +77,8 @@ public class SystemController {
 		gradeTypes.add("Homework");
 		gradeTypes.add("Project");
 		gradeTypes.add("Lab");
+		gradeTypes.add("BlackBoard Post");
+		gradeTypes.add("Class Participation");
 		saveGradeTypeList();
 	}
 

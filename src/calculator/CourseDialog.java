@@ -26,9 +26,8 @@ public class CourseDialog extends GUIPanel {
 		System.out.println(this.getClass());
 
 		// Course name entry label.
-		JLabel courseNameLbl = new JLabel("Course name: ");
+		JLabel courseNameLbl = new ;
 		courseNameField = new JTextField(10); // # of entry spaces.
-		courseNameField.addActionListener(this);
 
 		JLabel gradeTypesLbl = new JLabel("Select grade types:");
 
@@ -84,9 +83,11 @@ public class CourseDialog extends GUIPanel {
 				JOptionPane.showMessageDialog(this,
 						"Please enter a course name.", "Error",
 						JOptionPane.ERROR_MESSAGE);
+				return;
 			}
 			// Course already exists. Overwrite?
-			if (previousFrame.semester.getCourses().containsKey(courseName)) {
+			else if (previousFrame.semester.getCourses()
+					.containsKey(courseName)) {
 				int response = JOptionPane
 						.showConfirmDialog(null,
 								"Course alread exists. Overwrite?", "Confirm",
@@ -123,8 +124,11 @@ public class CourseDialog extends GUIPanel {
 			for (JCheckBox checkBox : gradeCheckBoxes) {
 				String gradeType = checkBox.getName();
 				if (checkBox.isSelected()) {
-					previousFrame.semester.getCourses().get(courseName)
-							.addGrade(gradeType, new Grade(gradeType, 0, 0));
+					previousFrame.semester
+							.getCourses()
+							.get(courseName)
+							.addGrade(gradeType,
+									new Grade(gradeType, 0, 0, 0, 0, false));
 				}
 			}
 			// Show next panel and save data.

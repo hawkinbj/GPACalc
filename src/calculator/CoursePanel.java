@@ -15,15 +15,12 @@ import javax.swing.SwingUtilities;
 public class CoursePanel extends GUIPanel implements ActionListener {
 
 	private static final long serialVersionUID = -6768153191699813450L;
-	// NEED TO STORE COURSES.
 	protected JPanel coursePanel, navigationPanel;
-	private String semesterName;
 	protected Semester semester;
 
 	public CoursePanel(SystemController controller, Semester semester) {
 		super(controller);
 		this.semester = semester;
-		this.semesterName = semester.getSemesterName();
 		addComponentsToPane();
 		System.out.println(this.getClass());
 	}
@@ -35,7 +32,8 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		coursePanel.setLayout(new BoxLayout(coursePanel, BoxLayout.PAGE_AXIS));
 
 		// Semester label.
-		JLabel semesterLbl = new JLabel("Semester: " + semesterName + "\n");
+		JLabel semesterLbl = new JLabel("Semester: " + semester.getSchoolName()
+				+ " " + semester.getSemesterName() + "\n");
 		semesterLbl.setForeground(Color.blue);
 		coursePanel.add(semesterLbl);
 		// Instructions label.
@@ -64,13 +62,12 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		// Consider using Switch here **!!
 		if (action.equals("back")) {
 			controller.showPanel("semesterPanel", this);
 		} else if (action.equals("addCourse")) {
 			controller.addPanel(new CourseDialog(controller), "courseDialog");
 			controller.showPanel("courseDialog", this);
-			controller.rootFrame.setSize(300, 300);
+			controller.rootFrame.setSize(425, 300);
 		} else {
 			controller.addPanel(new CourseInfoPanel(controller, semester
 					.getCourses().get(action)), "courseInfoPanel");
