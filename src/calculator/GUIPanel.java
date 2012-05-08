@@ -1,5 +1,6 @@
 package calculator;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +26,7 @@ public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 		newBtn.setActionCommand(btnName);
 		newBtn.addMouseListener(this);
 		newBtn.addActionListener(this);
-		// newBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		newBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
 		newBtn.setMaximumSize(new Dimension(200, 50));
 		return newBtn;
 	}
@@ -36,7 +37,7 @@ public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 		newBtn.setName(btnName);
 		newBtn.addMouseListener(this);
 		newBtn.addActionListener(this);
-		// newBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		newBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
 		newBtn.setMaximumSize(new Dimension(200, 50));
 		return newBtn;
 	}

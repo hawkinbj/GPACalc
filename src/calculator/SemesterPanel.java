@@ -18,11 +18,11 @@ public class SemesterPanel extends GUIPanel {
 	protected Transcript transcript; // active transcript
 	protected JPanel semestersPanel, navigationPanel;
 
-	public SemesterPanel(SystemController controller, String schoolName) {
+	public SemesterPanel(SystemController controller) {
 		super(controller);
+		schoolName = controller.activeSchool.getName();
 		this.transcript = controller.activeUser.getTranscripts()
 				.get(schoolName);
-		this.schoolName = schoolName;
 		addComponentsToPane();
 		System.out.println(this.getClass());
 	}

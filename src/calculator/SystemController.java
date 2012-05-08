@@ -15,6 +15,7 @@ public class SystemController {
 	protected final String ROOTDIR = System.getenv("APPDATA") + "\\GPACalcJava";
 	protected ArrayList<String> gradeTypes;
 	protected User activeUser;
+	protected School activeSchool;
 	protected HashMap<String, User> users;
 	protected HashMap<String, School> schools; // List of known schools.
 	protected JFrame rootFrame; // Top level container.
@@ -26,6 +27,7 @@ public class SystemController {
 	public SystemController() {
 
 		activeUser = null;
+		activeSchool = null;
 		users = new HashMap<String, User>();
 		schools = new HashMap<String, School>();
 		panels = new HashMap<String, GUIPanel>();
@@ -80,6 +82,7 @@ public class SystemController {
 		gradeTypes.add("Lab");
 		gradeTypes.add("BlackBoard Post");
 		gradeTypes.add("Class Participation");
+		gradeTypes.add("Essay");
 		saveGradeTypeList();
 	}
 

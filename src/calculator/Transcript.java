@@ -12,20 +12,20 @@ public class Transcript implements Serializable {
 
 	private static final long serialVersionUID = 6258413269754654426L;
 	private HashMap<String, Semester> semesters;
-	private String schoolName;
+	private School school;
 
-	public Transcript(String schoolName) {
-		this.schoolName = schoolName;
+	public Transcript(School school) {
+		this.school = school;
 		semesters = new HashMap<String, Semester>();
 	}
 
-	protected String getSchoolName() {
-		return schoolName;
+	protected School getSchool() {
+		return school;
 	}
 
 	protected void addSemester(String semesterName, Semester semester) {
 		semesters.put(semesterName, semester);
-		semesters.get(semesterName).setSchoolName(schoolName);
+		semesters.get(semesterName).setSchoolName(school.getName());
 	}
 
 	protected void removeSemester(String semesterName) {

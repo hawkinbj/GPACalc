@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
@@ -16,14 +17,19 @@ import javax.swing.JTextField;
 public class CourseDialog extends GUIPanel {
 
 	private static final long serialVersionUID = -6080991655918955653L;
-	protected JTextField courseNameField;
-	private JPanel addCoursePanel, namePanel, gradeTypesPanel, setGradePanel,
-			navigationPanel;
+	protected JTextField courseNameField, newGradeTypeField;
+	private JPanel namePanel, gradeTypesPanel, newGradeTypePanel,
+			setGradePanel, navigationPanel;
 	private JComboBox creditHrsComboBox, letterGradeComboBox;
+	private Object[] letterGrades; // Will actually be of type String[]
 	protected ArrayList<JCheckBox> gradeCheckBoxes;
 
 	public CourseDialog(SystemController controller) {
 		super(controller);
+		// Convert GradingScale's gradingScaleMap to array of choices.
+		letterGrades = controller.activeSchool.getGradingScale()
+				.getGradingScaleMap().keySet().toArray();
+		Arrays.sort(letterGrades); // not sure how it will sort...
 		controller.rootFrame.setSize(300, 300);
 		gradeCheckBoxes = new ArrayList<JCheckBox>();
 		System.out.println(this.getClass());
@@ -41,30 +47,37 @@ public class CourseDialog extends GUIPanel {
 		namePanel.add(new JLabel("Select grade types:"));
 
 		// Grade types panel.
-		gradeTypesPanel = new JPanel(new GridLayout(3,
-				(controller.gradeTypes.size() / 2)));
+		gradeTypesPanel = new JPanel(new GridLayout(
+				(controller.gradeTypes.size() / 2) + 2, 2));
 		for (String gradeType : controller.gradeTypes) {
 			addGradeCheckBox(gradeType);
 		}
 
+		// New grade type panel.
+		newGradeTypePanel = new JPanel(new GridLayout(1, 2));
+		newGradeTypePanel.add(new JLabel("Add new type: "));
+		newGradeTypeField = new JTextField(10);
+		newGradeTypePanel.add(newGradeTypeField);
+
 		// Final grade panel
 		setGradePanel = new JPanel(new GridLayout(1, 2));
 		setGradePanel.add(new JLabel("Set final letter grade"));
+		letterGradeComboBox = new JComboBox(letterGrades);
+		setGradePanel.add(letterGradeComboBox);
 
 		// Nav panel.
-		navigationPanel = new JPanel();
-		navigationPanel.setLayout(new BoxLayout(navigationPanel,
-				BoxLayout.PAGE_AXIS));
+		navigationPanel = new JPanel(new GridLayout(3, 1));
 		navigationPanel.add(new JLabel("Navigation"));
 		navigationPanel.add(createButton("next", "Next"));
 		navigationPanel.add(createButton("cancel", "Cancel"));
 
-		// Add all sub-panels to a super-panel.
-		addCoursePanel = new JPanel(new GridLayout(3, 1));
-		addCoursePanel.add(namePanel);
-		addCoursePanel.add(gradeTypesPanel);
-		addCoursePanel.add(navigationPanel);
-		add(addCoursePanel);
+		// layout.
+		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		add(namePanel);
+		add(gradeTypesPanel);
+		add(newGradeTypePanel);
+		add(setGradePanel);
+		add(navigationPanel);
 	}
 
 	private void addGradeCheckBox(String name) {

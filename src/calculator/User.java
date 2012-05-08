@@ -35,6 +35,10 @@ public class User implements Serializable {
 		transcripts.remove(schoolName);
 	}
 
+	protected Transcript getTranscript(String schoolName) {
+		return transcripts.get(schoolName);
+	}
+
 	protected HashMap<String, Transcript> getTranscripts() {
 		return transcripts;
 	}

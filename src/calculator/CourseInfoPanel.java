@@ -74,6 +74,7 @@ public class CourseInfoPanel extends GUIPanel {
 		} else if (action.equals("calculate")) {
 			controller.addPanel(new CalcPanel(controller, course), "calcPanel");
 			controller.showPanel("calcPanel");
+			controller.rootFrame.setSize(300,300);
 		} else if (action.equals("edit")) {
 			controller.addPanel(new CourseDialog(controller), "courseDialog");
 			CourseDialog previousFrame = (CourseDialog) controller.panels
@@ -87,7 +88,7 @@ public class CourseInfoPanel extends GUIPanel {
 				}
 			}
 			controller.showPanel("courseDialog", this);
-			controller.rootFrame.setSize(425, 300);
+			controller.rootFrame.setSize(300, 500);
 		} else {
 			controller.addPanel(new GradePanel(controller, course.getGrades()
 					.get(action)), "gradePanel");

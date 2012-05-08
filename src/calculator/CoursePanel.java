@@ -67,7 +67,7 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		} else if (action.equals("addCourse")) {
 			controller.addPanel(new CourseDialog(controller), "courseDialog");
 			controller.showPanel("courseDialog", this);
-			controller.rootFrame.setSize(425, 300);
+			controller.rootFrame.setSize(300, 500);
 		} else {
 			controller.addPanel(new CourseInfoPanel(controller, semester
 					.getCourses().get(action)), "courseInfoPanel");

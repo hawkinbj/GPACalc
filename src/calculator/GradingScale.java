@@ -19,6 +19,10 @@ public class GradingScale implements Serializable {
 		return plusMinus;
 	}
 
+	protected HashMap<String, Double> getGradingScaleMap() {
+		return gradingScaleMap;
+	}
+
 	public void setPlusMinus(boolean plusMinus) {
 		this.plusMinus = plusMinus;
 		if (plusMinus) {

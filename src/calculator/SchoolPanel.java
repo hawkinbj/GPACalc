@@ -72,9 +72,9 @@ public class SchoolPanel extends GUIPanel {
 			panel.add(plusMinusRadio);
 			panel.add(regularRadio);
 			//
-			int test = JOptionPane.showOptionDialog(this, panel, "Radio Test",
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-					null, null, null);
+			int test = JOptionPane.showOptionDialog(this, panel,
+					"Add New School", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, null, null);
 			//
 			String newSchoolName = newSchoolField.getText();
 			boolean plusMinus = false;
@@ -100,7 +100,7 @@ public class SchoolPanel extends GUIPanel {
 			}
 		} else {
 			if (controller.activeUser.addTranscript(action, new Transcript(
-					action))) {
+					controller.schools.get(action)))) {
 				controller.saveUserList();
 				MainMenuPanel previousFrame = (MainMenuPanel) controller.panels
 						.get("mainMenu");
