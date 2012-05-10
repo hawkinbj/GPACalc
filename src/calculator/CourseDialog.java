@@ -91,7 +91,12 @@ public class CourseDialog extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("cancel")) {
-			controller.showPanel("coursePanel", this);
+			// if (controller.panels.get("courseInfoPanel") == null)
+			// controller.showPanel("coursePanel", this);
+			// // controller.addPanel(new CourseInfoPanel(controller,
+			// // previousFrame.course), "courseInfoPanel");
+			// else
+				controller.showPanel("courseInfoPanel", this);
 		}
 		addCourseLbl: if (action.equals("next")) {
 			// Check that a valid course name was entered.

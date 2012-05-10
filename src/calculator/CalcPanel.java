@@ -28,13 +28,16 @@ public class CalcPanel extends GUIPanel {
 		double average = (WeightedTotalPointsEarned / totalPointsPossible);
 
 		// Stats panel.
-		statsPanel = new JPanel(new GridLayout(3, 2));
+		statsPanel = new JPanel(new GridLayout(5, 2));
 		statsPanel.add(new JLabel("Total points earned: "));
 		statsPanel.add(new JLabel(Double.toString(totalPointsEarned)));
 		statsPanel.add(new JLabel("Total points possible: "));
 		statsPanel.add(new JLabel(Double.toString(totalPointsPossible)));
 		statsPanel.add(new JLabel("Current average: "));
 		statsPanel.add(new JLabel(Double.toString(average)));
+		statsPanel.add(new JLabel("Credit hours: "
+				+ Integer.toString(course.getCreditHours())));
+		statsPanel.add(new JLabel("Final grade: " + course.getFinalGrade()));
 
 		// Navigation panel.
 		navigationPanel = new JPanel(new GridLayout(2, 1));

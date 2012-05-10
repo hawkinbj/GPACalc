@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 public class CourseInfoPanel extends GUIPanel {
 
 	private static final long serialVersionUID = 1488575000302467412L;
-	private Course course;
+	protected Course course;
 	protected JPanel infoPanel, instructionPanel, gradeTypesPanel,
 			navigationPanel;
 
@@ -32,12 +32,12 @@ public class CourseInfoPanel extends GUIPanel {
 		infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
 		// Labels.
-		JLabel courseLbl = new JLabel("Course: " + course.getCourseName()
-				+ "\n");
+		JLabel courseLbl = new JLabel("Course: " + course.getCourseName());
 		courseLbl.setForeground(Color.blue);
 		infoPanel.add(courseLbl);
 		infoPanel.add(new JLabel("Credit hours: "
 				+ Integer.toString(course.getCreditHours())));
+		infoPanel.add(new JLabel("Final grade: " + course.getFinalGrade()));
 
 		// Instruction panel.
 		instructionPanel = new JPanel();
@@ -54,6 +54,7 @@ public class CourseInfoPanel extends GUIPanel {
 		for (String gradeType : course.getGrades().keySet()) {
 			gradeTypesPanel.add(createButton(gradeType));
 		}
+		gradeTypesPanel.add(createButton("finalGrade", "Final Grade"));
 
 		// Navigation panel.
 		navigationPanel = new JPanel();

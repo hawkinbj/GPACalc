@@ -70,6 +70,9 @@ public class Course implements Serializable {
 	}
 
 	public String getFinalGrade() {
+		if (finalGrade == null) {
+			return "N/A";
+		}
 		return finalGrade;
 	}
 

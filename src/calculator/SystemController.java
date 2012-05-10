@@ -66,16 +66,17 @@ public class SystemController {
 	protected void showPanel(String name) {
 		rootFrame.setSize(200, 300);
 		CardLayout cl = (CardLayout) contentPane.getLayout();
+		cl.previous(contentPane);
 		cl.show(contentPane, name);
 		contentPane.validate();
 	}
-
+	
 	// Populates list of grade types. Only run on the first execution of
 	// program. Probably should be part of the installer if one is ever made...
 	private void populateGradeTypes() {
 		gradeTypes.add("Quiz");
 		gradeTypes.add("Test");
-		gradeTypes.add("Final");
+		gradeTypes.add("Final Exam");
 		gradeTypes.add("Midterm");
 		gradeTypes.add("Homework");
 		gradeTypes.add("Project");
