@@ -2,6 +2,7 @@ package calculator;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
@@ -16,7 +17,8 @@ public class CourseInfoPanel extends GUIPanel {
 
 	private static final long serialVersionUID = 1488575000302467412L;
 	private Course course;
-	protected JPanel instructionPanel, gradeTypesPanel, navigationPanel;
+	protected JPanel infoPanel, instructionPanel, gradeTypesPanel,
+			navigationPanel;
 
 	public CourseInfoPanel(SystemController controller, Course course) {
 		super(controller);
@@ -26,17 +28,21 @@ public class CourseInfoPanel extends GUIPanel {
 	}
 
 	private void addComponentsToPane() {
+		// Info panel.
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
+		// Labels.
+		JLabel courseLbl = new JLabel("Course: " + course.getCourseName()
+				+ "\n");
+		courseLbl.setForeground(Color.blue);
+		infoPanel.add(courseLbl);
+		infoPanel.add(new JLabel("Credit hours: "
+				+ Integer.toString(course.getCreditHours())));
 
 		// Instruction panel.
 		instructionPanel = new JPanel();
 		instructionPanel.setLayout(new BoxLayout(instructionPanel,
 				BoxLayout.PAGE_AXIS));
-
-		// Course label.
-		JLabel courseLbl = new JLabel("Course: " + course.getCourseName()
-				+ "\n");
-		courseLbl.setForeground(Color.blue);
-		instructionPanel.add(courseLbl);
 		// Instructions label.
 		JLabel InstructionLbl = new JLabel("Choose a grade type to edit:");
 		instructionPanel.add(InstructionLbl);
@@ -54,6 +60,7 @@ public class CourseInfoPanel extends GUIPanel {
 		navigationPanel.setLayout(new BoxLayout(navigationPanel,
 				BoxLayout.PAGE_AXIS));
 		navigationPanel.add(new JLabel("Navigation"));
+		// Set final grade button
 		// Edit course button - MOVE THIS TO CoursePanel right-click menu...
 		navigationPanel.add(createButton("edit", "Edit..."));
 		// Calculate button.
@@ -62,6 +69,7 @@ public class CourseInfoPanel extends GUIPanel {
 		navigationPanel.add(createButton("back", "Back"));
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		add(infoPanel);
 		add(instructionPanel);
 		add(gradeTypesPanel);
 		add(navigationPanel);
@@ -74,7 +82,7 @@ public class CourseInfoPanel extends GUIPanel {
 		} else if (action.equals("calculate")) {
 			controller.addPanel(new CalcPanel(controller, course), "calcPanel");
 			controller.showPanel("calcPanel");
-			controller.rootFrame.setSize(300,300);
+			controller.rootFrame.setSize(300, 300);
 		} else if (action.equals("edit")) {
 			controller.addPanel(new CourseDialog(controller), "courseDialog");
 			CourseDialog previousFrame = (CourseDialog) controller.panels
@@ -102,7 +110,7 @@ public class CourseInfoPanel extends GUIPanel {
 		Component component = e.getComponent();
 		// If right click and a semester button.
 		if (SwingUtilities.isRightMouseButton(e) && component.getName() != null) {
-			int response = JOptionPane.showConfirmDialog(null,
+			int response = JOptionPane.showConfirmDialog(this,
 					"Are you sure you wish to remove this grade type?",
 					"Confirm", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);

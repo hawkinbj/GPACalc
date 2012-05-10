@@ -23,7 +23,7 @@ public class GradePanel extends GUIPanel {
 	private static final String[] NUMOFGRADES = { "1", "2", "3", "4", "5", "6",
 			"7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
 	private JComboBox percentComboBox, numOfGradesComboBox;
-	private JCheckBox dropLowestBox;
+	private JCheckBox dropLowestBox, extraCreditBox;
 	private String gradeType;
 	private JTextField earnedField, possibleField;
 
@@ -44,7 +44,7 @@ public class GradePanel extends GUIPanel {
 		instructionPanel.add(new JLabel("Enter values."));
 
 		// Entry panel.
-		entryPanel = new JPanel(new GridLayout(5, 2));
+		entryPanel = new JPanel(new GridLayout(6, 2));
 		// Points earned.
 		entryPanel.add(new JLabel("Cumulative points earned: "));
 		earnedField = new JTextField(3);
@@ -63,6 +63,10 @@ public class GradePanel extends GUIPanel {
 		percentComboBox = new JComboBox(PERCENTAGES);
 		percentComboBox.setSelectedIndex(0);
 		entryPanel.add(percentComboBox);
+		// Extra credit allowed?
+		entryPanel.add(new JLabel("Extra credit offered?"));
+		extraCreditBox = new JCheckBox();
+		entryPanel.add(extraCreditBox);
 		// Drop lowest? (checkbox).
 		entryPanel.add(new JLabel("Drop lowest " + gradeType + "?"));
 		dropLowestBox = new JCheckBox();
@@ -109,11 +113,12 @@ public class GradePanel extends GUIPanel {
 						.getSelectedItem());
 				int pointsPossiblePer = Integer.parseInt(pointsPer);
 				double totalEarned = Double.parseDouble(total);
-				if (totalEarned > (pointsPossiblePer * numOfGrades)) {
+				if ((totalEarned > (pointsPossiblePer * numOfGrades))
+						&& !extraCreditBox.isSelected()) {
 					JOptionPane
 							.showMessageDialog(
 									this,
-									"The cumulative points earned you entered is not possible. Try again.",
+									"The cumulative points earned you entered is not possible. If extra credit was offered, check the extra credit box.",
 									"Error", JOptionPane.ERROR_MESSAGE);
 					return; // might need to break
 				}
