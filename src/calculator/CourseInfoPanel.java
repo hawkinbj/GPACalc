@@ -2,7 +2,6 @@ package calculator;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
@@ -54,7 +53,7 @@ public class CourseInfoPanel extends GUIPanel {
 		for (String gradeType : course.getGrades().keySet()) {
 			gradeTypesPanel.add(createButton(gradeType));
 		}
-		gradeTypesPanel.add(createButton("finalGrade", "Final Grade"));
+		// gradeTypesPanel.add(createButton("finalGrade", "Final Grade"));
 
 		// Navigation panel.
 		navigationPanel = new JPanel();
@@ -79,29 +78,29 @@ public class CourseInfoPanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
-			controller.showPanel("coursePanel");
+			controller.rootFrame.showPanel("coursePanel", this);
 		} else if (action.equals("calculate")) {
-			controller.addPanel(new CalcPanel(controller, course), "calcPanel");
-			controller.showPanel("calcPanel");
+			controller.rootFrame.addPanel(new CalcPanel(controller, course),
+					"calcPanel");
+			controller.rootFrame.showPanel("calcPanel", this);
 			controller.rootFrame.setSize(300, 300);
 		} else if (action.equals("edit")) {
-			controller.addPanel(new CourseDialog(controller), "courseDialog");
-			CourseDialog previousFrame = (CourseDialog) controller.panels
-					.get("courseDialog");
-			previousFrame.courseNameField.setText(course.getCourseName());
+			CourseDialog courseDialog = new CourseDialog(controller);
+			courseDialog.courseNameField.setText(course.getCourseName());
 			// Check the appropriate checkboxes.
-			for (int i = 0; i < previousFrame.gradeCheckBoxes.size(); i++) {
-				JCheckBox checkBox = previousFrame.gradeCheckBoxes.get(i);
+			for (int i = 0; i < courseDialog.gradeCheckBoxes.size(); i++) {
+				JCheckBox checkBox = courseDialog.gradeCheckBoxes.get(i);
 				if (course.getGrades().get(checkBox.getName()) != null) {
 					checkBox.setSelected(true);
 				}
 			}
-			controller.showPanel("courseDialog", this);
+			controller.rootFrame.addPanel(courseDialog, "courseDialog");
+			controller.rootFrame.showPanel("courseDialog", this);
 			controller.rootFrame.setSize(300, 500);
 		} else {
-			controller.addPanel(new GradePanel(controller, course.getGrades()
-					.get(action)), "gradePanel");
-			controller.showPanel("gradePanel", this);
+			controller.rootFrame.addPanel(new GradePanel(controller, course
+					.getGrades().get(action)), "gradePanel");
+			controller.rootFrame.showPanel("gradePanel", this);
 			controller.rootFrame.setSize(325, 300);
 		}
 	}

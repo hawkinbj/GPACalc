@@ -71,8 +71,8 @@ public class SemesterDialog extends GUIPanel {
 			if (springRadioBtn.isSelected()) {
 				semesterName += " Spring";
 			}
-			SemesterPanel previousFrame = (SemesterPanel) controller.panels
-					.get("semesterPanel");
+			SemesterPanel previousFrame = (SemesterPanel) controller.rootFrame
+					.getPreviousPanel();
 			if (previousFrame.transcript.getSemesters().containsKey(
 					semesterName)) {
 				JOptionPane
@@ -90,6 +90,6 @@ public class SemesterDialog extends GUIPanel {
 			}
 		}
 		// Always exit to previous panel no matter what.
-		controller.showPanel("semesterPanel", this);
+		controller.rootFrame.showPanel("semesterPanel", this);
 	}
 }

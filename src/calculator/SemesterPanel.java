@@ -63,15 +63,15 @@ public class SemesterPanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
-			controller.showPanel("mainMenu", this);
+			controller.rootFrame.showPanel("mainMenu", this);
 		} else if (action.equals("newSemesterPanel")) {
-			controller.addPanel(new SemesterDialog(controller),
+			controller.rootFrame.addPanel(new SemesterDialog(controller),
 					"semesterDialog");
-			controller.showPanel("semesterDialog", this);
+			controller.rootFrame.showPanel("semesterDialog", this);
 		} else {
-			controller.addPanel(new CoursePanel(controller, transcript
-					.getSemesters().get(action)), "coursePanel");
-			controller.showPanel("coursePanel", this);
+			controller.rootFrame.addPanel(new CoursePanel(controller,
+					transcript.getSemesters().get(action)), "coursePanel");
+			controller.rootFrame.showPanel("coursePanel", this);
 		}
 	}
 

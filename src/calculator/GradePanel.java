@@ -102,7 +102,7 @@ public class GradePanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("cancel")) {
-			controller.showPanel("courseInfoPanel", this);
+			controller.rootFrame.showPanel("courseInfoPanel", this);
 		} else if (action.equals("done")) {
 
 			String total = earnedField.getText();
@@ -137,7 +137,7 @@ public class GradePanel extends GUIPanel {
 				if (dropLowestBox.isSelected())
 					grade.setDropLowest(true);
 				controller.saveUserList();
-				controller.showPanel("courseInfoPanel", this);
+				controller.rootFrame.showPanel("courseInfoPanel", this);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"You left some values blank. Try again.", "Error",

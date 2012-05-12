@@ -1,119 +1,37 @@
 package calculator;
 
-import java.awt.CardLayout;
-import java.awt.Container;
 import java.io.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.swing.JFrame;
 
 public class SystemController {
 
-	protected static final String[] CREDITHOURS = { "1", "2", "3", "4" };
 	protected final String ROOTDIR = System.getenv("APPDATA") + "\\GPACalcJava";
-	protected ArrayList<String> gradeTypes;
 	protected User activeUser;
 	protected School activeSchool;
+	protected Course activeCourse;
 	protected HashMap<String, User> users;
 	protected HashMap<String, School> schools; // List of known schools.
-	protected JFrame rootFrame; // Top level container.
-	protected Container contentPane; // Top level Container - add panels to
-	// this.
-	// Panel manager - consider making a new class.
-	protected HashMap<String, GUIPanel> panels;
+	protected RootFrame rootFrame;
 
 	public SystemController() {
 
 		activeUser = null;
 		activeSchool = null;
+		activeCourse = null;
 		users = new HashMap<String, User>();
 		schools = new HashMap<String, School>();
-		panels = new HashMap<String, GUIPanel>();
-		gradeTypes = new ArrayList<String>();
+		// panels = new HashMap<String, GUIPanel>();
 
 		if (!new File(ROOTDIR).exists()) {
 			new File(ROOTDIR).mkdir();
 			populateSchools();
-			populateGradeTypes();
 		} else {
 			loadSchoolList();
-			loadGradeTypeList();
 			loadUserList();
 		}
 
 		rootFrame = new RootFrame(this);
-		contentPane = rootFrame.getContentPane();
-
-	}
-
-	// Adds new panel to rootFrame and stores in map.
-	protected void addPanel(GUIPanel panel, String name) {
-		contentPane.add(panel, name);
-		panels.put(name, panel);
-		contentPane.validate();
-	}
-
-	protected void showPanel(String name, GUIPanel panelToHide) {
-		rootFrame.setSize(200, 300);
-		panelToHide.setVisible(false);
-		CardLayout cl = (CardLayout) contentPane.getLayout();
-		cl.show(contentPane, name);
-		contentPane.validate();
-	}
-
-	protected void showPanel(String name) {
-		rootFrame.setSize(200, 300);
-		CardLayout cl = (CardLayout) contentPane.getLayout();
-		cl.previous(contentPane);
-		cl.show(contentPane, name);
-		contentPane.validate();
-	}
-	
-	// Populates list of grade types. Only run on the first execution of
-	// program. Probably should be part of the installer if one is ever made...
-	private void populateGradeTypes() {
-		gradeTypes.add("Quiz");
-		gradeTypes.add("Test");
-		gradeTypes.add("Final Exam");
-		gradeTypes.add("Midterm");
-		gradeTypes.add("Homework");
-		gradeTypes.add("Project");
-		gradeTypes.add("Lab");
-		gradeTypes.add("BlackBoard Post");
-		gradeTypes.add("Class Participation");
-		gradeTypes.add("Essay");
-		saveGradeTypeList();
-	}
-
-	protected void addGradeType(String name) {
-
-	}
-
-	private void saveGradeTypeList() {
-		try {
-			FileOutputStream fos = new FileOutputStream(ROOTDIR
-					+ "\\gradeTypes");
-			ObjectOutputStream out = new ObjectOutputStream(fos);
-			out.writeObject(gradeTypes);
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private void loadGradeTypeList() {
-		try {
-			FileInputStream fis = new FileInputStream(ROOTDIR + "\\gradeTypes");
-			ObjectInputStream in = new ObjectInputStream(fis);
-			gradeTypes = (ArrayList<String>) in.readObject();
-			in.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	// Populates list of known schools. Only run on the first execution of

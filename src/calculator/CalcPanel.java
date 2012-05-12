@@ -50,7 +50,7 @@ public class CalcPanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
-			controller.showPanel("courseInfoPanel", this);
+			controller.rootFrame.showPanel("courseInfoPanel", this);
 		}
 	}
 }

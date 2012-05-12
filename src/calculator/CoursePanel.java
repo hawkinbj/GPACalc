@@ -63,15 +63,19 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
-			controller.showPanel("semesterPanel", this);
+			controller.rootFrame.showPanel("semesterPanel", this);
 		} else if (action.equals("addCourse")) {
-			controller.addPanel(new CourseDialog(controller), "courseDialog");
-			controller.showPanel("courseDialog", this);
+			controller.rootFrame.addPanel(new CourseDialog(controller),
+					"courseDialog");
+			controller.rootFrame.showPanel("courseDialog", this);
 			controller.rootFrame.setSize(300, 500);
 		} else {
-			controller.addPanel(new CourseInfoPanel(controller, semester
-					.getCourses().get(action)), "courseInfoPanel");
-			controller.showPanel("courseInfoPanel", this);
+			// Set active course.
+			controller.activeCourse = semester.getCourses().get(action);
+			controller.rootFrame.addPanel(new CourseInfoPanel(controller,
+					semester.getCourses().get(action)), "courseInfoPanel");
+			controller.rootFrame.showPanel("courseInfoPanel", this);
+			controller.rootFrame.setSize(500, 500);
 
 		}
 	}

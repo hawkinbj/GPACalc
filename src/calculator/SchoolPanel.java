@@ -56,7 +56,7 @@ public class SchoolPanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("cancel")) {
-			controller.showPanel("mainMenu", this);
+			controller.rootFrame.showPanel("mainMenu", this);
 			return;
 		} else if (action.equals("newSchoolPanel")) {
 			JPanel panel = new JPanel(new GridLayout(2, 2));
@@ -102,11 +102,11 @@ public class SchoolPanel extends GUIPanel {
 			if (controller.activeUser.addTranscript(action, new Transcript(
 					controller.schools.get(action)))) {
 				controller.saveUserList();
-				MainMenuPanel previousFrame = (MainMenuPanel) controller.panels
-						.get("mainMenu");
+				MainMenuPanel previousFrame = (MainMenuPanel) controller.rootFrame
+						.getPreviousPanel();
 				previousFrame.instructionPanel.add(previousFrame
 						.createButton(action));
-				controller.showPanel("mainMenu", this);
+				controller.rootFrame.showPanel("mainMenu", this);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"That school already exists.", "Error",

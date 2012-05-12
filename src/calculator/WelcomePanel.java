@@ -50,12 +50,12 @@ public class WelcomePanel extends GUIPanel {
 
 	private void menuHandler(String menuAction) {
 		if (menuAction.equals("login")) {
-			controller.addPanel(new LoginPanel(controller), "login");
-			controller.showPanel("login", this);
+			controller.rootFrame.addPanel(new LoginPanel(controller), "login");
+			controller.rootFrame.showPanel("login", this);
 		}
 		if (menuAction.equals("register")) {
-			controller.addPanel(new RegisterPanel(controller), "register");
-			controller.showPanel("register", this);
+			controller.rootFrame.addPanel(new RegisterPanel(controller), "register");
+			controller.rootFrame.showPanel("register", this);
 		}
 	}
 

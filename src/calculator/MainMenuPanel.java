@@ -51,14 +51,16 @@ public class MainMenuPanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("selectSchool")) {
-			controller.addPanel(new SchoolPanel(controller), "schoolPanel");
-			controller.showPanel("schoolPanel", this);
+			controller.rootFrame.addPanel(new SchoolPanel(controller),
+					"schoolPanel");
+			controller.rootFrame.showPanel("schoolPanel", this);
 		} else {
 			// Set active school.
 			controller.activeSchool = controller.activeUser.getTranscript(
 					action).getSchool();
-			controller.addPanel(new SemesterPanel(controller), "semesterPanel");
-			controller.showPanel("semesterPanel", this);
+			controller.rootFrame.addPanel(new SemesterPanel(controller),
+					"semesterPanel");
+			controller.rootFrame.showPanel("semesterPanel", this);
 		}
 	}
 
