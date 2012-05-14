@@ -32,10 +32,10 @@ public class GradePanel extends GUIPanel {
 		this.grade = grade;
 		this.gradeType = grade.getType();
 		addComponentsToPane();
-		System.out.println(this.getClass());
 	}
 
 	private void addComponentsToPane() {
+		
 		// Instructions.
 		instructionPanel = new JPanel(new GridLayout(2, 1));
 		JLabel gradeTypeLbl = new JLabel("Grade Type - " + gradeType);
@@ -102,7 +102,7 @@ public class GradePanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("cancel")) {
-			controller.rootFrame.showPanel("courseInfoPanel", this);
+			controller.rootFrame.showPanel("CourseInfoPanel", this);
 		} else if (action.equals("done")) {
 
 			String total = earnedField.getText();
@@ -137,7 +137,7 @@ public class GradePanel extends GUIPanel {
 				if (dropLowestBox.isSelected())
 					grade.setDropLowest(true);
 				controller.saveUserList();
-				controller.rootFrame.showPanel("courseInfoPanel", this);
+				controller.rootFrame.showPanel("CourseInfoPanel", this);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"You left some values blank. Try again.", "Error",

@@ -28,34 +28,24 @@ public class WelcomePanel extends GUIPanel {
 		instructionArea.setOpaque(false);
 		instructionArea.setFocusable(false);
 
-		// login button
-		loginButton = new JButton("Login");
-		loginButton.setActionCommand("login");
-		loginButton.addActionListener(this);
-		add(loginButton);
-
-		// register button
-		registerButton = new JButton("Register");
-		registerButton.setActionCommand("register");
-		registerButton.addActionListener(this);
-		add(registerButton);
-
 		// layout
 		panel = new JPanel(new GridLayout(3, 1));
 		panel.add(instructionArea);
-		panel.add(registerButton);
-		panel.add(loginButton);
+		// login button.
+		panel.add(createButton("login", "Login"));
+		// register button.
+		panel.add(createButton("register", "Register"));
 		add(panel);
 	}
 
 	private void menuHandler(String menuAction) {
 		if (menuAction.equals("login")) {
-			controller.rootFrame.addPanel(new LoginPanel(controller), "login");
-			controller.rootFrame.showPanel("login", this);
+			controller.rootFrame.addPanel(new LoginPanel(controller), this);
+			// controller.rootFrame.showPanel("login", this);
 		}
 		if (menuAction.equals("register")) {
-			controller.rootFrame.addPanel(new RegisterPanel(controller), "register");
-			controller.rootFrame.showPanel("register", this);
+			controller.rootFrame.addPanel(new RegisterPanel(controller), this);
+			// controller.rootFrame.showPanel("register", this);
 		}
 	}
 

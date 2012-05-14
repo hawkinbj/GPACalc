@@ -23,8 +23,12 @@ public class SemesterDialog extends GUIPanel {
 
 	public SemesterDialog(SystemController controller) {
 		super(controller);
-		System.out.println(this.getClass());
+		addComponentsToPane();
+	}
 
+	private void addComponentsToPane() {
+
+		// Instruction panel.
 		instructionPanel = new JPanel();
 		instructionPanel.setLayout(new BoxLayout(instructionPanel,
 				BoxLayout.PAGE_AXIS));
@@ -62,7 +66,9 @@ public class SemesterDialog extends GUIPanel {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		if (action.equals("done")) {
+		if (action.equals("cancel")) {
+			controller.rootFrame.showPanel("SemesterPanel", this);
+		} else if (action.equals("done")) {
 			String semesterName = spinner.getValue().toString();
 
 			if (fallRadioBtn.isSelected()) {
@@ -71,25 +77,26 @@ public class SemesterDialog extends GUIPanel {
 			if (springRadioBtn.isSelected()) {
 				semesterName += " Spring";
 			}
-			SemesterPanel previousFrame = (SemesterPanel) controller.rootFrame
-					.getPreviousPanel();
-			if (previousFrame.transcript.getSemesters().containsKey(
-					semesterName)) {
+			if (controller.activeUser
+					.getTranscript(controller.activeSchool.getName())
+					.getSemesters().containsKey(semesterName)) {
+
 				JOptionPane
 						.showMessageDialog(
 								this,
 								"That semester already exists or no term was selected.",
 								"Error", JOptionPane.ERROR_MESSAGE);
-				return;
+				controller.rootFrame.showPanel("semesterPanel", this);
 			} else {
-				previousFrame.semestersPanel.add(previousFrame
-						.createButton(semesterName));
-				previousFrame.transcript.addSemester(semesterName,
-						new Semester(semesterName));
+
+				controller.activeUser.getTranscript(
+						controller.activeSchool.getName()).addSemester(
+						semesterName, new Semester(semesterName));
 				controller.saveUserList();
+				// Re-create previous panel with update info.
+				controller.rootFrame.addPanel(new SemesterPanel(controller),
+						this);
 			}
 		}
-		// Always exit to previous panel no matter what.
-		controller.rootFrame.showPanel("semesterPanel", this);
 	}
 }

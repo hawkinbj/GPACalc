@@ -1,15 +1,11 @@
 package calculator;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
 public class SchoolPanel extends GUIPanel {
 
@@ -17,10 +13,8 @@ public class SchoolPanel extends GUIPanel {
 	private JPanel schoolsPanel, navigationPanel;
 
 	public SchoolPanel(SystemController controller) {
-
 		super(controller);
 		addComponentsToPane();
-		System.out.println(this.getClass());
 	}
 
 	private void addComponentsToPane() {
@@ -56,62 +50,21 @@ public class SchoolPanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("cancel")) {
-			controller.rootFrame.showPanel("mainMenu", this);
-			return;
+			controller.rootFrame.showPanel("MainMenuPanel", this);
 		} else if (action.equals("newSchoolPanel")) {
-			JPanel panel = new JPanel(new GridLayout(2, 2));
-			panel.add(new JLabel("Name of new school: "));
-			JTextField newSchoolField = new JTextField(5);
-			panel.add(newSchoolField);
-			//
-			ButtonGroup addSchoolBtns = new ButtonGroup();
-			JRadioButton plusMinusRadio = new JRadioButton("Plus/Minus", true);
-			JRadioButton regularRadio = new JRadioButton("Normal");
-			addSchoolBtns.add(plusMinusRadio);
-			addSchoolBtns.add(regularRadio);
-			panel.add(plusMinusRadio);
-			panel.add(regularRadio);
-			//
-			int test = JOptionPane.showOptionDialog(this, panel,
-					"Add New School", JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, null, null);
-			//
-			String newSchoolName = newSchoolField.getText();
-			boolean plusMinus = false;
-			//
-			if (plusMinusRadio.isSelected()) {
-				plusMinus = true;
-			}
-			if (test == 0) {
-				if (newSchoolName == null
-						|| !controller.addSchool(newSchoolName,
-								new GradingScale(plusMinus))) {
-					JOptionPane
-							.showMessageDialog(
-									this,
-									"That school already exists or no name was entered.",
-									"Error", JOptionPane.ERROR_MESSAGE);
-				} else {
-					schoolsPanel.add(createButton(newSchoolName));
-					this.revalidate();
-				}
-			} else {
-				return;
-			}
+			controller.rootFrame.addPanel(new SchoolDialog(controller), this);
 		} else {
 			if (controller.activeUser.addTranscript(action, new Transcript(
 					controller.schools.get(action)))) {
 				controller.saveUserList();
-				MainMenuPanel previousFrame = (MainMenuPanel) controller.rootFrame
-						.getPreviousPanel();
-				previousFrame.instructionPanel.add(previousFrame
-						.createButton(action));
-				controller.rootFrame.showPanel("mainMenu", this);
+				controller.rootFrame.addPanel(new MainMenuPanel(controller),
+						this);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"That school already exists.", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+
 	}
 }

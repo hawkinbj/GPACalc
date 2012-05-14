@@ -21,10 +21,8 @@ public class SemesterPanel extends GUIPanel {
 	public SemesterPanel(SystemController controller) {
 		super(controller);
 		schoolName = controller.activeSchool.getName();
-		this.transcript = controller.activeUser.getTranscripts()
-				.get(schoolName);
+		transcript = controller.activeUser.getTranscripts().get(schoolName);
 		addComponentsToPane();
-		System.out.println(this.getClass());
 	}
 
 	private void addComponentsToPane() {
@@ -32,7 +30,6 @@ public class SemesterPanel extends GUIPanel {
 		semestersPanel = new JPanel();
 		semestersPanel.setLayout(new BoxLayout(semestersPanel,
 				BoxLayout.PAGE_AXIS));
-
 		// School label.
 		JLabel schoolLbl = new JLabel("School: " + schoolName + "\n");
 		schoolLbl.setForeground(Color.blue);
@@ -63,15 +60,12 @@ public class SemesterPanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
-			controller.rootFrame.showPanel("mainMenu", this);
+			controller.rootFrame.showPanel("MainMenuPanel", this);
 		} else if (action.equals("newSemesterPanel")) {
-			controller.rootFrame.addPanel(new SemesterDialog(controller),
-					"semesterDialog");
-			controller.rootFrame.showPanel("semesterDialog", this);
+			controller.rootFrame.addPanel(new SemesterDialog(controller), this);
 		} else {
-			controller.rootFrame.addPanel(new CoursePanel(controller,
-					transcript.getSemesters().get(action)), "coursePanel");
-			controller.rootFrame.showPanel("coursePanel", this);
+			controller.activeSemester = transcript.getSemesters().get(action);
+			controller.rootFrame.addPanel(new CoursePanel(controller), this);
 		}
 	}
 
@@ -80,7 +74,7 @@ public class SemesterPanel extends GUIPanel {
 		Component component = e.getComponent();
 		// If right click and a semester button.
 		if (SwingUtilities.isRightMouseButton(e) && component.getName() != null) {
-			int response = JOptionPane.showConfirmDialog(null,
+			int response = JOptionPane.showConfirmDialog(this,
 					"Are you sure you wish to remove this semester?",
 					"Confirm", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);

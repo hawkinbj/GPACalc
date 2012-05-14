@@ -16,13 +16,10 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 
 	private static final long serialVersionUID = -6768153191699813450L;
 	protected JPanel coursePanel, navigationPanel;
-	protected Semester semester;
 
-	public CoursePanel(SystemController controller, Semester semester) {
+	public CoursePanel(SystemController controller) {
 		super(controller);
-		this.semester = semester;
 		addComponentsToPane();
-		System.out.println(this.getClass());
 	}
 
 	private void addComponentsToPane() {
@@ -32,15 +29,16 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		coursePanel.setLayout(new BoxLayout(coursePanel, BoxLayout.PAGE_AXIS));
 
 		// Semester label.
-		JLabel semesterLbl = new JLabel("Semester: " + semester.getSchoolName()
-				+ " " + semester.getSemesterName() + "\n");
+		JLabel semesterLbl = new JLabel("Semester: "
+				+ controller.activeSemester.getSchoolName() + " "
+				+ controller.activeSemester.getSemesterName() + "\n");
 		semesterLbl.setForeground(Color.blue);
 		coursePanel.add(semesterLbl);
 		// Instructions label.
 		JLabel semestersInstructionLbl = new JLabel("Choose a class:");
 		coursePanel.add(semestersInstructionLbl);
 		// Buttons to represent courses.
-		for (String key : semester.getCourses().keySet()) {
+		for (String key : controller.activeSemester.getCourses().keySet()) {
 			coursePanel.add(createButton(key));
 		}
 
@@ -63,20 +61,16 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
-			controller.rootFrame.showPanel("semesterPanel", this);
+			controller.activeSemester = null;
+			controller.rootFrame.showPanel("SemesterPanel", this);
 		} else if (action.equals("addCourse")) {
-			controller.rootFrame.addPanel(new CourseDialog(controller),
-					"courseDialog");
-			controller.rootFrame.showPanel("courseDialog", this);
-			controller.rootFrame.setSize(300, 500);
+			controller.rootFrame.addPanel(new CourseDialog(controller), this);
 		} else {
 			// Set active course.
-			controller.activeCourse = semester.getCourses().get(action);
-			controller.rootFrame.addPanel(new CourseInfoPanel(controller,
-					semester.getCourses().get(action)), "courseInfoPanel");
-			controller.rootFrame.showPanel("courseInfoPanel", this);
-			controller.rootFrame.setSize(500, 500);
-
+			controller.activeCourse = controller.activeSemester.getCourses()
+					.get(action);
+			controller.rootFrame
+					.addPanel(new CourseInfoPanel(controller), this);
 		}
 	}
 
@@ -85,11 +79,12 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		Component component = e.getComponent();
 		// If right click and a semester button.
 		if (SwingUtilities.isRightMouseButton(e) && component.getName() != null) {
-			int response = JOptionPane.showConfirmDialog(null,
+			int response = JOptionPane.showConfirmDialog(this,
 					"Are you sure you wish to remove this course?", "Confirm",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (response == JOptionPane.YES_OPTION) {
-				semester.getCourses().remove(component.getName());
+				controller.activeSemester.getCourses().remove(
+						component.getName());
 				controller.saveUserList();
 				coursePanel.remove(component);
 				coursePanel.revalidate();

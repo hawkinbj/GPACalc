@@ -53,8 +53,8 @@ public class LoginPanel extends GUIPanel {
 		if (action.equals("submit")) {
 			if (controller.login(username, password)) {
 				controller.rootFrame.addPanel(new MainMenuPanel(controller),
-						"mainMenu");
-				controller.rootFrame.showPanel("mainMenu", this);
+						this);
+				// controller.rootFrame.showPanel("mainMenu", this);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"Incorrect login or password", "Error",
@@ -62,7 +62,7 @@ public class LoginPanel extends GUIPanel {
 			}
 		}
 		if (action.equals("back")) {
-			controller.rootFrame.showPanel("welcome", this);
+			controller.rootFrame.showPanel("WelcomePanel", this);
 		}
 	}
 }

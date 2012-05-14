@@ -17,6 +17,9 @@ public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 
 	public GUIPanel(SystemController controller) {
 		this.controller = controller;
+		this.setMinimumSize(new Dimension(200, 200));
+		// Auto-name instances.
+		this.setName(this.getClass().getSimpleName());
 	}
 
 	// Helper method to facilitate creating buttons. This version allows
@@ -24,6 +27,7 @@ public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 	protected JButton createButton(String btnName, String btnTxt) {
 		JButton newBtn = new JButton(btnTxt);
 		newBtn.setActionCommand(btnName);
+		newBtn.setName(btnName);
 		newBtn.addMouseListener(this);
 		newBtn.addActionListener(this);
 		newBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -77,5 +81,4 @@ public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-
 }

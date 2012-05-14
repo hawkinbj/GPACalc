@@ -1,7 +1,6 @@
 package calculator;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Course implements Serializable {
@@ -11,36 +10,11 @@ public class Course implements Serializable {
 	private HashMap<String, Grade> grades;
 	private int creditHours;
 	private String finalGrade;
-	// Each course has a default list of gradetypes. Can be edited.
-	private ArrayList<String> gradeTypes;
 
 	public Course(String courseName, int creditHours) {
 		this.setCourseName(courseName);
 		this.creditHours = creditHours;
 		grades = new HashMap<String, Grade>();
-		gradeTypes = new ArrayList<String>();
-		populateGradeTypes();
-	}
-
-	private void populateGradeTypes() {
-		gradeTypes.add("Quiz");
-		gradeTypes.add("Test");
-		gradeTypes.add("Final Exam");
-		gradeTypes.add("Midterm");
-		gradeTypes.add("Homework");
-		gradeTypes.add("Project");
-		gradeTypes.add("Lab");
-		gradeTypes.add("BlackBoard Post");
-		gradeTypes.add("Class Participation");
-		gradeTypes.add("Essay");
-	}
-
-	protected void addGradeType(String name) {
-		gradeTypes.add(name);
-	}
-
-	public ArrayList<String> getGradeTypes() {
-		return gradeTypes;
 	}
 
 	protected double getTotalPointsEarned() {

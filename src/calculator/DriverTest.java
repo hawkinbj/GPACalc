@@ -11,7 +11,8 @@ public class DriverTest {
 
 		// FOR TESTING TO SKIP LOGIN -
 		controller.login("test", "test");
-		controller.rootFrame.addPanel(new MainMenuPanel(controller), "mainMenu");
+		controller.rootFrame.addPanel(new MainMenuPanel(controller),
+				new WelcomePanel(controller));
 
 	}
 }

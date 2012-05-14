@@ -1,8 +1,15 @@
+/*TODO
+ * 
+ * -add activeSemester and get rid of references to "previousFrame" in all panel classes.
+ * 
+ */
+
 package calculator;
 
 import java.io.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class SystemController {
 
@@ -10,18 +17,19 @@ public class SystemController {
 	protected User activeUser;
 	protected School activeSchool;
 	protected Course activeCourse;
+	protected Semester activeSemester;
 	protected HashMap<String, User> users;
 	protected HashMap<String, School> schools; // List of known schools.
 	protected RootFrame rootFrame;
+	protected final HashSet<String> gradeTypes;
 
 	public SystemController() {
 
-		activeUser = null;
-		activeSchool = null;
-		activeCourse = null;
+		logOut();
 		users = new HashMap<String, User>();
 		schools = new HashMap<String, School>();
-		// panels = new HashMap<String, GUIPanel>();
+		gradeTypes = new HashSet<String>();
+		populateGradeTypes();
 
 		if (!new File(ROOTDIR).exists()) {
 			new File(ROOTDIR).mkdir();
@@ -32,6 +40,20 @@ public class SystemController {
 		}
 
 		rootFrame = new RootFrame(this);
+	}
+
+	// Needs to be called every time program runs as this list isn't saved.
+	private void populateGradeTypes() {
+		gradeTypes.add("Quiz");
+		gradeTypes.add("Test");
+		gradeTypes.add("Final Exam");
+		gradeTypes.add("Midterm");
+		gradeTypes.add("Homework");
+		gradeTypes.add("Project");
+		gradeTypes.add("Lab");
+		gradeTypes.add("BlackBoard Post");
+		gradeTypes.add("Class Participation");
+		gradeTypes.add("Essay");
 	}
 
 	// Populates list of known schools. Only run on the first execution of
@@ -104,6 +126,13 @@ public class SystemController {
 		}
 		// Invalid user/pass.
 		return false;
+	}
+
+	protected void logOut() {
+		activeUser = null;
+		activeSchool = null;
+		activeCourse = null;
+		activeSemester = null;
 	}
 
 	// Can be used anywhere but ALWAYS called on exit.

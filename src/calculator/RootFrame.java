@@ -1,6 +1,6 @@
 /* TODO
  * 
- * -create an auto-resize method.
+ * 
  * 
  * 
  */
@@ -9,10 +9,10 @@ package calculator;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -22,23 +22,22 @@ import javax.swing.JMenuItem;
 public class RootFrame extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = -1406044665804707164L;
-	private Container contentPane;
+	protected Container contentPane;
 	private SystemController controller;
 	private HashMap<String, GUIPanel> panels;
 	private String previous, current;
-	//private LinkedList<GUIPanel> panelsList;
 
 	public RootFrame(SystemController controller) {
 		this.controller = controller;
+		setDefaultLookAndFeelDecorated(true);
 		setTitle("GPACalc");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(200, 300);
+		this.setMinimumSize(new Dimension(200, 300));
 		this.setLocation(600, 200);
 		contentPane = getContentPane();
 		contentPane.setLayout(new CardLayout());
 		panels = new HashMap<String, GUIPanel>();
 		previous = current = null;
-		//panelsList = new LinkedList<GUIPanel>();
 		addComponentsToPane();
 		setVisible(true);
 	}
@@ -74,23 +73,29 @@ public class RootFrame extends JFrame implements ActionListener {
 	}
 
 	// Adds new panel to rootFrame and stores in map.
-	protected void addPanel(GUIPanel panel, String name) {
-		contentPane.add(panel, name);
-		panels.put(name, panel);
-		contentPane.validate();
+	protected void addPanel(GUIPanel panelToAdd, GUIPanel panelToHide) {
+		String panelToAddName = panelToAdd.getName();
+		panels.put(panelToAddName, panelToAdd);
+		showPanel(panelToAddName, panelToHide);
 	}
 
+	// I want to GET RID OF THIS but can't figure out how (CourseDialog
+	// dependency).
 	protected GUIPanel getPreviousPanel() {
 		return panels.get(previous);
 	}
 
 	protected void showPanel(String newPanelName, GUIPanel panelToHide) {
-		setSize(200, 300);
+		System.out.println(newPanelName); // For navigation debugging.
 		previous = current;
 		current = newPanelName;
+		// This is necessary to properly display panels.
+		contentPane.remove(panelToHide);
+		contentPane.add(panels.get(newPanelName), newPanelName);
 		panelToHide.setVisible(false);
+		panels.get(newPanelName).repaint();
 		panels.get(newPanelName).setVisible(true);
-		contentPane.validate();
+		pack();
 	}
 
 	@Override
@@ -99,9 +104,8 @@ public class RootFrame extends JFrame implements ActionListener {
 		if (action.equals("logOut")) {
 			controller.activeUser = null;
 			panels.clear();
-			addPanel(new WelcomePanel(controller), "welcome");
-			CardLayout cl = (CardLayout) contentPane.getLayout();
-			cl.show(contentPane, "welcome");
+			contentPane.removeAll();
+			addPanel(new WelcomePanel(controller), new GUIPanel(controller));
 		}
 	}
 }

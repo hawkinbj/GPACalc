@@ -54,24 +54,22 @@ public class RegisterPanel extends GUIPanel {
 		if (action.equals("submit")) {
 			// open MainHub window if valid registration
 			if (controller.register(username, password)) {
-				controller.rootFrame.addPanel(new MainMenuPanel(controller), "mainMenu");
-				controller.rootFrame.showPanel("mainMenu", this);
+				controller.rootFrame.addPanel(new MainMenuPanel(controller),
+						this);
+				// controller.rootFrame.showPanel("mainMenu", this);
 			} else { // if this executes it means username is already in use
 				JOptionPane
 						.showMessageDialog(
 								this,
 								"That username is already taken. Please enter a different username",
 								"Error", JOptionPane.ERROR_MESSAGE);
-				// new RegisterPanel(controller,
-				// previousFrame).setVisible(true);
 			}
 
 		}
 		// open previous menu if back button pressed
 		if (action.equals("back")) {
-			controller.rootFrame.showPanel("welcome", this);
+			controller.rootFrame.showPanel("WelcomePanel", this);
 
 		}
 	}
-
 }

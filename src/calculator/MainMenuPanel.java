@@ -16,14 +16,18 @@ public class MainMenuPanel extends GUIPanel {
 
 	public MainMenuPanel(SystemController controller) {
 		super(controller);
+		addComponentsToPane();
+	}
 
-		controller.rootFrame.setSize(200, 300);
-		// mainMenuPanel
+	private void addComponentsToPane() {
+
+		// Instruction panel.
 		instructionPanel = new JPanel();
 		instructionPanel.setLayout(new BoxLayout(instructionPanel,
 				BoxLayout.PAGE_AXIS));
 		instructionPanel.add(new JLabel("Instructions go here."));
 
+		// Schools panel.
 		schoolsPanel = new JPanel();
 		schoolsPanel
 				.setLayout(new BoxLayout(schoolsPanel, BoxLayout.PAGE_AXIS));
@@ -51,16 +55,14 @@ public class MainMenuPanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("selectSchool")) {
-			controller.rootFrame.addPanel(new SchoolPanel(controller),
-					"schoolPanel");
-			controller.rootFrame.showPanel("schoolPanel", this);
+			controller.rootFrame.addPanel(new SchoolPanel(controller), this);
+			// controller.rootFrame.showPanel("schoolPanel", this);
 		} else {
 			// Set active school.
 			controller.activeSchool = controller.activeUser.getTranscript(
 					action).getSchool();
-			controller.rootFrame.addPanel(new SemesterPanel(controller),
-					"semesterPanel");
-			controller.rootFrame.showPanel("semesterPanel", this);
+			controller.rootFrame.addPanel(new SemesterPanel(controller), this);
+			// controller.rootFrame.showPanel("semesterPanel", this);
 		}
 	}
 
@@ -70,15 +72,15 @@ public class MainMenuPanel extends GUIPanel {
 		System.out.println(component.getName());
 		// If right click and a school button.
 		if (SwingUtilities.isRightMouseButton(e) && component.getName() != null) {
-			int response = JOptionPane.showConfirmDialog(null,
+			int response = JOptionPane.showConfirmDialog(this,
 					"Are you sure you wish to remove this school?", "Confirm",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (response == JOptionPane.YES_OPTION) {
 				controller.activeUser.removeTranscript(component.getName());
 				controller.saveUserList();
-				instructionPanel.remove(component);
-				instructionPanel.revalidate();
-				instructionPanel.repaint();
+				schoolsPanel.remove(component);
+				schoolsPanel.revalidate();
+				schoolsPanel.repaint();
 			} else if (response == JOptionPane.CLOSED_OPTION) {
 				return;
 			}
