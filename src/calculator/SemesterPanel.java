@@ -34,6 +34,9 @@ public class SemesterPanel extends GUIPanel {
 		JLabel schoolLbl = new JLabel("School: " + schoolName + "\n");
 		schoolLbl.setForeground(Color.blue);
 		semestersPanel.add(schoolLbl);
+		// GPA label.
+		semestersPanel
+				.add(new JLabel("GPA: " + controller.calcTranscriptGPA()));
 		// Instructions label.
 		JLabel semestersInstructionLbl = new JLabel("Choose a semester:");
 		semestersPanel.add(semestersInstructionLbl);

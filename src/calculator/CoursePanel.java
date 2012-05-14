@@ -28,12 +28,19 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		coursePanel = new JPanel();
 		coursePanel.setLayout(new BoxLayout(coursePanel, BoxLayout.PAGE_AXIS));
 
-		// Semester label.
-		JLabel semesterLbl = new JLabel("Semester: "
+		// Information label.
+		JLabel informationLabel = new JLabel("Semester: "
 				+ controller.activeSemester.getSchoolName() + " "
 				+ controller.activeSemester.getSemesterName() + "\n");
-		semesterLbl.setForeground(Color.blue);
-		coursePanel.add(semesterLbl);
+		informationLabel.setForeground(Color.blue);
+		coursePanel.add(informationLabel);
+		// Total credit hours attempted this semester.
+		coursePanel.add(new JLabel("Total credit hours: "
+				+ controller.activeSemester.getTotalHoursAttempted()));
+		//
+		coursePanel.add(new JLabel("Semester GPA: "
+				+ controller.calcSemseterGPA()));
+
 		// Instructions label.
 		JLabel semestersInstructionLbl = new JLabel("Choose a class:");
 		coursePanel.add(semestersInstructionLbl);
@@ -62,7 +69,7 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
 			controller.activeSemester = null;
-			controller.rootFrame.showPanel("SemesterPanel", this);
+			controller.rootFrame.addPanel(new SemesterPanel(controller), this);
 		} else if (action.equals("addCourse")) {
 			controller.rootFrame.addPanel(new CourseDialog(controller), this);
 		} else {

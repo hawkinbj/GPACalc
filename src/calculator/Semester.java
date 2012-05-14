@@ -11,10 +11,12 @@ public class Semester implements Serializable {
 	private HashMap<String, Course> courses;
 	private String semesterName; // e.g. - Spring 2012
 	private String schoolName;
+	private double GPA;
 
 	public Semester(String semesterName) {
 		courses = new HashMap<String, Course>();
 		this.semesterName = semesterName;
+		GPA = 0;
 	}
 
 	protected String getSemesterName() {
@@ -23,6 +25,22 @@ public class Semester implements Serializable {
 
 	protected void addCourse(String courseName, Course course) {
 		courses.put(courseName, course);
+	}
+
+	protected void setGPA(double GPA) {
+		this.GPA = GPA;
+	}
+
+	protected double getGPA() {
+		return GPA;
+	}
+
+	protected int getTotalHoursAttempted() {
+		int total = 0;
+		for (Course course : courses.values()) {
+			total += course.getCreditHours();
+		}
+		return total;
 	}
 
 	protected void removeCourse(String courseName) {
@@ -40,5 +58,4 @@ public class Semester implements Serializable {
 	public void setSchoolName(String schoolName) {
 		this.schoolName = schoolName;
 	}
-
 }

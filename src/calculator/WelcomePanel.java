@@ -2,14 +2,12 @@ package calculator;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class WelcomePanel extends GUIPanel {
 
 	private static final long serialVersionUID = -6797117896418157857L;
-	private JButton loginButton, registerButton;
 	private JPanel panel;
 	private JTextArea instructionArea;
 

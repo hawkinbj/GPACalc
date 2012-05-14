@@ -13,10 +13,12 @@ public class Transcript implements Serializable {
 	private static final long serialVersionUID = 6258413269754654426L;
 	private HashMap<String, Semester> semesters;
 	private School school;
+	private double GPA;
 
 	public Transcript(School school) {
 		this.school = school;
 		semesters = new HashMap<String, Semester>();
+		GPA = 0;
 	}
 
 	protected School getSchool() {
@@ -34,5 +36,13 @@ public class Transcript implements Serializable {
 
 	protected HashMap<String, Semester> getSemesters() {
 		return semesters;
+	}
+
+	public double getGPA() {
+		return GPA;
+	}
+
+	public void setGPA(double GPA) {
+		this.GPA = GPA;
 	}
 }

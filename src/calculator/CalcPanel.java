@@ -1,6 +1,5 @@
 package calculator;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
@@ -34,7 +33,8 @@ public class CalcPanel extends GUIPanel {
 				+ Double.toString(totalPointsEarned)));
 		statsPanel.add(new JLabel("Total points possible: "
 				+ Double.toString(totalPointsPossible)));
-		statsPanel.add(new JLabel("Current average: " + Double.toString(average)));
+		statsPanel.add(new JLabel("Current average: "
+				+ Double.toString(average)));
 		statsPanel.add(new JLabel("Credit hours: "
 				+ Integer.toString(controller.activeCourse.getCreditHours())));
 		statsPanel.add(new JLabel("Final grade: "

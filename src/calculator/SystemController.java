@@ -19,16 +19,16 @@ public class SystemController {
 	protected Course activeCourse;
 	protected Semester activeSemester;
 	protected HashMap<String, User> users;
-	protected HashMap<String, School> schools; // List of known schools.
-	protected RootFrame rootFrame;
-	protected final HashSet<String> gradeTypes;
+	// List of known schools.
+	protected HashMap<String, School> schools;
+	protected final RootFrame rootFrame;
+	protected final HashSet<String> gradeTypes = new HashSet<String>();
 
 	public SystemController() {
 
-		logOut();
+		logOut(); // sets to null.
 		users = new HashMap<String, User>();
 		schools = new HashMap<String, School>();
-		gradeTypes = new HashSet<String>();
 		populateGradeTypes();
 
 		if (!new File(ROOTDIR).exists()) {
@@ -159,5 +159,32 @@ public class SystemController {
 			e.printStackTrace();
 		}
 
+	}
+
+	protected double calcSemseterGPA() {
+		double qualityPoints = 0;
+		for (Course course : activeSemester.getCourses().values()) {
+			qualityPoints += activeSchool.getGradingScale()
+					.getGradingScaleMap().get(course.getFinalGrade())
+					* course.getCreditHours();
+		}
+		activeSemester.setGPA(qualityPoints
+				/ activeSemester.getTotalHoursAttempted());
+		saveUserList();
+		return activeSemester.getGPA();
+	}
+
+	protected double calcTranscriptGPA() {
+		double total = 0;
+		for (Semester semester : activeUser
+				.getTranscript(activeSchool.getName()).getSemesters().values()) {
+			total += semester.getGPA();
+		}
+		activeUser.getTranscript(activeSchool.getName()).setGPA(
+				total
+						/ activeUser.getTranscript(activeSchool.getName())
+								.getSemesters().size());
+		saveUserList();
+		return activeUser.getTranscript(activeSchool.getName()).getGPA();
 	}
 }
