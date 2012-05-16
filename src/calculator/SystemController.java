@@ -1,6 +1,6 @@
 /*TODO
  * 
- * -add activeSemester and get rid of references to "previousFrame" in all panel classes.
+ * - Implement drop lowest functionality.
  * 
  */
 
@@ -163,7 +163,12 @@ public class SystemController {
 
 	protected double calcSemseterGPA() {
 		double qualityPoints = 0;
+		System.out.println(activeSemester.getSemesterName());
+		System.out.println(activeSchool.getName());
 		for (Course course : activeSemester.getCourses().values()) {
+			// Return -1 if any of the courses' final grades aren't set.
+			if (course.getFinalGrade().equals("N/A"))
+				return -1;
 			qualityPoints += activeSchool.getGradingScale()
 					.getGradingScaleMap().get(course.getFinalGrade())
 					* course.getCreditHours();
