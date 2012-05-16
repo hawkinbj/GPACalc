@@ -42,7 +42,7 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		// Semester GPA.
 		double gpa = controller.calcSemseterGPA();
 		JLabel gpaLbl = new JLabel();
-		if (gpa == -1)
+		if (gpa == -1 || Double.isNaN(gpa))
 			gpaLbl.setText("Semester GPA: N/A");
 		else
 			gpaLbl.setText("Semester GPA: " + Double.toString(gpa));
