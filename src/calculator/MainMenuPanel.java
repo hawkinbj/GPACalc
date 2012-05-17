@@ -59,6 +59,7 @@ public class MainMenuPanel extends GUIPanel {
 			// controller.rootFrame.showPanel("schoolPanel", this);
 		} else {
 			// Set active school.
+			controller.activeTranscript= controller.activeUser.getTranscript(action);
 			controller.activeSchool = controller.activeUser.getTranscript(
 					action).getSchool();
 			controller.rootFrame.addPanel(new SemesterPanel(controller), this);

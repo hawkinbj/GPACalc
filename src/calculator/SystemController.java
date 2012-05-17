@@ -15,9 +15,10 @@ public class SystemController {
 
 	protected final String ROOTDIR = System.getenv("APPDATA") + "\\GPACalcJava";
 	protected User activeUser;
-	protected School activeSchool;
+	protected School activeSchool; // get rid of this.
 	protected Course activeCourse;
 	protected Semester activeSemester;
+	protected Transcript activeTranscript;
 	protected HashMap<String, User> users;
 	// List of known schools.
 	protected HashMap<String, School> schools;
@@ -133,6 +134,7 @@ public class SystemController {
 		activeSchool = null;
 		activeCourse = null;
 		activeSemester = null;
+		activeTranscript = null;
 	}
 
 	// Can be used anywhere but ALWAYS called on exit.
@@ -163,8 +165,6 @@ public class SystemController {
 
 	protected double calcSemseterGPA() {
 		double qualityPoints = 0;
-		System.out.println(activeSemester.getSemesterName());
-		System.out.println(activeSchool.getName());
 		for (Course course : activeSemester.getCourses().values()) {
 			// Return -1 if any of the courses' final grades aren't set.
 			if (course.getFinalGrade().equals("N/A"))

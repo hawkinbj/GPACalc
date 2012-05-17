@@ -16,7 +16,7 @@ import javax.swing.SpinnerNumberModel;
 public class SemesterDialog extends GUIPanel {
 
 	private static final long serialVersionUID = 4982367508399428981L;
-	private JRadioButton fallRadioBtn, springRadioBtn;
+	private JRadioButton fallRadioBtn, springRadioBtn, summerRadioBtn;
 	private JSpinner spinner;
 	private SpinnerNumberModel yearModel;
 	private JPanel instructionPanel, mainPanel, navigationPanel;
@@ -36,14 +36,17 @@ public class SemesterDialog extends GUIPanel {
 		//
 		fallRadioBtn = new JRadioButton("Fall", true);
 		springRadioBtn = new JRadioButton("Spring", false);
+		summerRadioBtn = new JRadioButton("Summer", false);
 
 		ButtonGroup radioBtns = new ButtonGroup();
 		radioBtns.add(fallRadioBtn);
 		radioBtns.add(springRadioBtn);
+		radioBtns.add(summerRadioBtn);
 
-		mainPanel = new JPanel(new GridLayout(4, 1));
+		mainPanel = new JPanel(new GridLayout(5, 1));
 		mainPanel.add(fallRadioBtn);
 		mainPanel.add(springRadioBtn);
+		mainPanel.add(summerRadioBtn);
 
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		yearModel = new SpinnerNumberModel(currentYear, currentYear - 10,
@@ -69,17 +72,17 @@ public class SemesterDialog extends GUIPanel {
 		if (action.equals("cancel")) {
 			controller.rootFrame.showPanel("SemesterPanel", this);
 		} else if (action.equals("done")) {
-			String semesterName = spinner.getValue().toString();
-
-			if (fallRadioBtn.isSelected()) {
-				semesterName += " Fall";
-			}
-			if (springRadioBtn.isSelected()) {
-				semesterName += " Spring";
-			}
+			// String semesterName = spinner.getValue().toString();
+			Semester newSemester = new Semester(null, null);
+			if (fallRadioBtn.isSelected())
+				newSemester.setTerm("Fall");
+			if (springRadioBtn.isSelected())
+				newSemester.setTerm("Spring");
+			if (summerRadioBtn.isSelected())
+				newSemester.setTerm("Summer");
 			if (controller.activeUser
 					.getTranscript(controller.activeSchool.getName())
-					.getSemesters().containsKey(semesterName)) {
+					.getSemesters().containsValue(newSemester.toString())) {
 
 				JOptionPane
 						.showMessageDialog(
@@ -89,9 +92,8 @@ public class SemesterDialog extends GUIPanel {
 				controller.rootFrame.showPanel("semesterPanel", this);
 			} else {
 
-				controller.activeUser.getTranscript(
-						controller.activeSchool.getName()).addSemester(
-						semesterName, new Semester(semesterName));
+				controller.activeTranscript.addSemester(newSemester.toString(),
+						newSemester);
 				controller.saveUserList();
 				// Re-create previous panel with update info.
 				controller.rootFrame.addPanel(new SemesterPanel(controller),

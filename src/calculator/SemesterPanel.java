@@ -2,21 +2,25 @@ package calculator;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class SemesterPanel extends GUIPanel {
 
 	private static final long serialVersionUID = -3839021242565662981L;
 	private String schoolName;
 	protected Transcript transcript; // active transcript
-	protected JPanel semestersPanel, navigationPanel;
+	protected JPanel infoPanel, semestersPanel, navigationPanel;
 
 	public SemesterPanel(SystemController controller) {
 		super(controller);
@@ -26,14 +30,16 @@ public class SemesterPanel extends GUIPanel {
 	}
 
 	private void addComponentsToPane() {
-		// Semesters panel.
-		semestersPanel = new JPanel();
-		semestersPanel.setLayout(new BoxLayout(semestersPanel,
-				BoxLayout.PAGE_AXIS));
+		// Info panel.
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
+		infoPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+				schoolName, TitledBorder.CENTER, TitledBorder.TOP));
 		// School label.
-		JLabel schoolLbl = new JLabel("School: " + schoolName + "\n");
-		schoolLbl.setForeground(Color.blue);
-		semestersPanel.add(schoolLbl);
+		// JLabel schoolLbl = new JLabel("School: " + schoolName + "\n");
+		// schoolLbl.setForeground(Color.blue);
+		// infoPanel.add(schoolLbl);
 		// GPA label.
 		double gpa = controller.calcTranscriptGPA();
 		JLabel gpaLbl = new JLabel();
@@ -41,26 +47,38 @@ public class SemesterPanel extends GUIPanel {
 			gpaLbl.setText("GPA: N/A");
 		else
 			gpaLbl.setText("GPA: " + Double.toString(gpa));
-		semestersPanel.add(gpaLbl);
-		// Instructions label.
-		JLabel semestersInstructionLbl = new JLabel("Choose a semester:");
-		semestersPanel.add(semestersInstructionLbl);
+		infoPanel.add(gpaLbl);
+
+		// Semester panel.
+		semestersPanel = new JPanel();
+		semestersPanel.setLayout(new BoxLayout(semestersPanel,
+				BoxLayout.PAGE_AXIS));
+		// TitledBorder border = BorderFactory.createTitledBorder(
+		// BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+		// "Choose a semester", TitledBorder.LEFT, TitledBorder.TOP);
+		// semestersPanel.setBorder(border);
+		semestersPanel.add(new JLabel("Choose semester:"));
+
 		// Buttons to represent semesters.
 		for (String key : transcript.getSemesters().keySet()) {
 			semestersPanel.add(createButton(key));
 		}
 
-		// Navigation label/separator.
+		// Navigation panel.
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(new BoxLayout(navigationPanel,
 				BoxLayout.PAGE_AXIS));
-		navigationPanel.add(new JLabel("Navigation"));
+		navigationPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+				"Navigation", TitledBorder.LEFT, TitledBorder.TOP));
+
 		// New school screen button.
 		navigationPanel.add(createButton("newSemesterPanel", "Add new..."));
 		// Back button.
 		navigationPanel.add(createButton("back", "Back"));
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		add(infoPanel);
 		add(semestersPanel);
 		add(navigationPanel);
 	}
@@ -68,6 +86,7 @@ public class SemesterPanel extends GUIPanel {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("back")) {
+			controller.activeTranscript = null;
 			controller.rootFrame.showPanel("MainMenuPanel", this);
 		} else if (action.equals("newSemesterPanel")) {
 			controller.rootFrame.addPanel(new SemesterDialog(controller), this);

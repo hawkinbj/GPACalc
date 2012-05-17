@@ -3,24 +3,37 @@ package calculator;
 import java.io.Serializable;
 import java.util.HashMap;
 
-// Not sure about extending...
 public class Semester implements Serializable {
 
 	private static final long serialVersionUID = -7113939304071168721L;
 	/* Stored in Transcript - it's a list of Course objects */
 	private HashMap<String, Course> courses;
-	private String semesterName; // e.g. - Spring 2012
+	private String term;
+	private String year; // yyyy
 	private String schoolName;
 	private double GPA;
 
-	public Semester(String semesterName) {
+	public Semester(String term, String year) {
 		courses = new HashMap<String, Course>();
-		this.semesterName = semesterName;
+		this.term = term;
+		this.year = year;
 		GPA = 0;
 	}
 
-	protected String getSemesterName() {
-		return semesterName;
+	protected String getYear() {
+		return year;
+	}
+
+	protected void setYear(String year) {
+		this.year = year;
+	}
+
+	protected String getTerm() {
+		return term;
+	}
+
+	protected void setTerm(String term) {
+		this.term = term;
 	}
 
 	protected void addCourse(String courseName, Course course) {
@@ -55,7 +68,12 @@ public class Semester implements Serializable {
 		return schoolName;
 	}
 
-	public void setSchoolName(String schoolName) {
+	protected void setSchoolName(String schoolName) {
 		this.schoolName = schoolName;
+	}
+
+	public String toString() {
+		// 2012 Spring
+		return year + " " + term;
 	}
 }

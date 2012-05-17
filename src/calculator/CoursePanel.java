@@ -31,7 +31,7 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		// Semester name.
 		JLabel semesterLbl = new JLabel("Semester: "
 				+ controller.activeSemester.getSchoolName() + " "
-				+ controller.activeSemester.getSemesterName());
+				+ controller.activeSemester);
 		semesterLbl.setForeground(Color.blue);
 		infoPanel.add(semesterLbl);
 		// Total credit hours attempted this semester.
