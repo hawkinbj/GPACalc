@@ -60,7 +60,8 @@ public class CourseDialog extends GUIPanel {
 
 		// Grade types panel.
 		gradeTypesPanel = new JPanel();
-		// Need to reference layout later to set rows on add custom gradetype.
+		
+		//CLEAN THIS UP.
 		layout = new GridLayout(
 				((course.getGrades().keySet().size() + controller.gradeTypes
 						.size()) / 2),

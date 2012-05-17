@@ -1,10 +1,10 @@
 package calculator;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -19,13 +19,11 @@ public class SemesterPanel extends GUIPanel {
 
 	private static final long serialVersionUID = -3839021242565662981L;
 	private String schoolName;
-	protected Transcript transcript; // active transcript
 	protected JPanel infoPanel, semestersPanel, navigationPanel;
 
 	public SemesterPanel(SystemController controller) {
 		super(controller);
 		schoolName = controller.activeSchool.getName();
-		transcript = controller.activeUser.getTranscripts().get(schoolName);
 		addComponentsToPane();
 	}
 
@@ -59,9 +57,12 @@ public class SemesterPanel extends GUIPanel {
 		// semestersPanel.setBorder(border);
 		semestersPanel.add(new JLabel("Choose semester:"));
 
-		// Buttons to represent semesters.
-		for (String key : transcript.getSemesters().keySet()) {
-			semestersPanel.add(createButton(key));
+		// Buttons to represent semesters. Sort them first.
+		Object[] sortedSemesters = controller.activeTranscript.getSemesters()
+				.keySet().toArray();
+		Arrays.sort(sortedSemesters, Collections.reverseOrder());
+		for (Object semester : sortedSemesters) {
+			semestersPanel.add(createButton((String) semester));
 		}
 
 		// Navigation panel.
@@ -91,7 +92,8 @@ public class SemesterPanel extends GUIPanel {
 		} else if (action.equals("newSemesterPanel")) {
 			controller.rootFrame.addPanel(new SemesterDialog(controller), this);
 		} else {
-			controller.activeSemester = transcript.getSemesters().get(action);
+			controller.activeSemester = controller.activeTranscript
+					.getSemesters().get(action);
 			controller.rootFrame.addPanel(new CoursePanel(controller), this);
 		}
 	}

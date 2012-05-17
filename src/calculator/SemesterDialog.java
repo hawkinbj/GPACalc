@@ -72,8 +72,7 @@ public class SemesterDialog extends GUIPanel {
 		if (action.equals("cancel")) {
 			controller.rootFrame.showPanel("SemesterPanel", this);
 		} else if (action.equals("done")) {
-			// String semesterName = spinner.getValue().toString();
-			Semester newSemester = new Semester(null, null);
+			Semester newSemester = new Semester(null, spinner.getValue().toString());
 			if (fallRadioBtn.isSelected())
 				newSemester.setTerm("Fall");
 			if (springRadioBtn.isSelected())
