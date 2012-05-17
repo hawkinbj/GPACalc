@@ -1,19 +1,17 @@
 package calculator;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Collections;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
 
 public class SemesterPanel extends GUIPanel {
 
@@ -30,14 +28,9 @@ public class SemesterPanel extends GUIPanel {
 	private void addComponentsToPane() {
 		// Info panel.
 		infoPanel = new JPanel();
+		// NEED TO FIGURE OUT HOW TO MAKE THIS CENTER AND MAX WIDTH
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
-		infoPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
-				schoolName, TitledBorder.CENTER, TitledBorder.TOP));
-		// School label.
-		// JLabel schoolLbl = new JLabel("School: " + schoolName + "\n");
-		// schoolLbl.setForeground(Color.blue);
-		// infoPanel.add(schoolLbl);
+		createTitledBorder(infoPanel, schoolName);
 		// GPA label.
 		double gpa = controller.calcTranscriptGPA();
 		JLabel gpaLbl = new JLabel();
@@ -51,33 +44,34 @@ public class SemesterPanel extends GUIPanel {
 		semestersPanel = new JPanel();
 		semestersPanel.setLayout(new BoxLayout(semestersPanel,
 				BoxLayout.PAGE_AXIS));
-		// TitledBorder border = BorderFactory.createTitledBorder(
-		// BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
-		// "Choose a semester", TitledBorder.LEFT, TitledBorder.TOP);
-		// semestersPanel.setBorder(border);
-		semestersPanel.add(new JLabel("Choose semester:"));
-
+		createTitledBorder(semestersPanel, "Select School");
 		// Buttons to represent semesters. Sort them first.
 		Object[] sortedSemesters = controller.activeTranscript.getSemesters()
 				.keySet().toArray();
-		Arrays.sort(sortedSemesters, Collections.reverseOrder());
-		for (Object semester : sortedSemesters) {
-			semestersPanel.add(createButton((String) semester));
+		// Show instructions if no semesters added yet.
+		if (sortedSemesters.length == 0) {
+			JLabel instructionLbl = new JLabel(
+					"Add a new semester to get started.");
+			instructionLbl.setForeground(Color.blue);
+			semestersPanel.add(instructionLbl);
+		} else {
+			Arrays.sort(sortedSemesters, Collections.reverseOrder());
+			for (Object semester : sortedSemesters) {
+				semestersPanel.add(createButton((String) semester));
+			}
 		}
 
 		// Navigation panel.
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(new BoxLayout(navigationPanel,
 				BoxLayout.PAGE_AXIS));
-		navigationPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
-				"Navigation", TitledBorder.LEFT, TitledBorder.TOP));
-
+		createTitledBorder(navigationPanel, "Navigation");
 		// New school screen button.
 		navigationPanel.add(createButton("newSemesterPanel", "Add new..."));
 		// Back button.
 		navigationPanel.add(createButton("back", "Back"));
 
+		// Layout.
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		add(infoPanel);
 		add(semestersPanel);
@@ -111,14 +105,10 @@ public class SemesterPanel extends GUIPanel {
 				controller.activeUser.getTranscripts().get(schoolName)
 						.removeSemester(component.getName());
 				controller.saveUserList();
-				semestersPanel.remove(component);
-				semestersPanel.revalidate();
-				semestersPanel.repaint();
-			} else if (response == JOptionPane.CLOSED_OPTION) {
-				return;
+				// Need to re-create as components have changed.
+				controller.rootFrame.addPanel(new SemesterPanel(controller),
+						this);
 			}
-		} else {
-			return;
 		}
 	}
 }

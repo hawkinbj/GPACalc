@@ -7,8 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 
@@ -27,7 +30,7 @@ public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 	protected JButton createButton(String btnName, String btnTxt) {
 		JButton newBtn = new JButton(btnTxt);
 		newBtn.setActionCommand(btnName);
-		newBtn.setName(btnName);
+		// newBtn.setName(btnName);
 		newBtn.addMouseListener(this);
 		newBtn.addActionListener(this);
 		newBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -35,6 +38,7 @@ public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 		return newBtn;
 	}
 
+	// Used to add courses, semesters, schools to screen.
 	protected JButton createButton(String btnName) {
 		JButton newBtn = new JButton(btnName);
 		newBtn.setActionCommand(btnName);
@@ -44,6 +48,12 @@ public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 		newBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
 		newBtn.setMaximumSize(new Dimension(200, 50));
 		return newBtn;
+	}
+
+	protected void createTitledBorder(JPanel panel, String borderTxt) {
+		panel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+				borderTxt, TitledBorder.LEFT, TitledBorder.TOP));
 	}
 
 	@Override

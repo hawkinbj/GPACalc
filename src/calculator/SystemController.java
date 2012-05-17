@@ -13,7 +13,7 @@ import java.util.HashSet;
 
 public class SystemController {
 
-	protected final String ROOTDIR = System.getenv("APPDATA") + "\\GPACalcJava";
+	private final String ROOTDIR = System.getenv("APPDATA") + "\\GPACalcJava";
 	protected User activeUser;
 	protected School activeSchool; // get rid of this.
 	protected Course activeCourse;
