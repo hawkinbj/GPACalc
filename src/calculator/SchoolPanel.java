@@ -22,9 +22,7 @@ public class SchoolPanel extends GUIPanel {
 		schoolsPanel = new JPanel();
 		schoolsPanel
 				.setLayout(new BoxLayout(schoolsPanel, BoxLayout.PAGE_AXIS));
-		// Instructions label.
-		JLabel schoolsInstructionLbl = new JLabel("Choose a school:");
-		schoolsPanel.add(schoolsInstructionLbl);
+		createTitledBorder(schoolsPanel, "Select School");
 		// Buttons to represent schools.
 		for (School school : controller.schools.values()) {
 			schoolsPanel.add(createButton(school.getName()));
@@ -34,7 +32,7 @@ public class SchoolPanel extends GUIPanel {
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(new BoxLayout(navigationPanel,
 				BoxLayout.PAGE_AXIS));
-		navigationPanel.add(new JLabel("Navigation"));
+		createTitledBorder(navigationPanel, "Navigation");
 
 		// New school screen button.
 		navigationPanel.add(createButton("newSchoolPanel", "Add new..."));

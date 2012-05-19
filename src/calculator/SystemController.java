@@ -1,6 +1,6 @@
 /*TODO
  * 
- * - Implement drop lowest functionality.
+ * -Stay logged in feature - remember user/pass. See comments in User.java
  * 
  */
 
@@ -20,27 +20,75 @@ public class SystemController {
 	protected Semester activeSemester;
 	protected Transcript activeTranscript;
 	protected HashMap<String, User> users;
-	// List of known schools.
 	protected HashMap<String, School> schools;
-	protected final RootFrame rootFrame;
+	protected final RootFrame rootFrame = new RootFrame(this);
 	protected final HashSet<String> gradeTypes = new HashSet<String>();
 
 	public SystemController() {
 
-		logOut(); // sets to null.
 		users = new HashMap<String, User>();
 		schools = new HashMap<String, School>();
 		populateGradeTypes();
 
+		// Program has never been run. Create directory.
 		if (!new File(ROOTDIR).exists()) {
 			new File(ROOTDIR).mkdir();
 			populateSchools();
-		} else {
+			saveUserList();
+		} else{
 			loadSchoolList();
 			loadUserList();
+		}	
+		activeUser = loadActiveUser();
+		// Bypass login.
+		if (activeUser != null) {
+			if (activeUser.getRememberLoginInfo()) {
+				rootFrame.addPanel(new MainMenuPanel(this), new GUIPanel(this));
+			}
+		} else {
+			activeUser = null;
+			rootFrame.addPanel(new WelcomePanel(this), new GUIPanel(this));
 		}
+	}
 
-		rootFrame = new RootFrame(this);
+	protected void saveActiveUser() {
+		try {
+			FileOutputStream fos = new FileOutputStream(ROOTDIR
+					+ "\\activeUser");
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(activeUser);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private User loadActiveUser() {
+		User user = null;
+		try {
+			if (new File(ROOTDIR + "\\activeUser").exists()) {
+				FileInputStream fis = new FileInputStream(ROOTDIR
+						+ "\\activeUser");
+				ObjectInputStream in = new ObjectInputStream(fis);
+				user = (User) in.readObject();
+				in.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	protected void logOut() {
+		activeUser.setRememberLoginInfo(false);
+		saveActiveUser();
+		activeUser = null;
+		activeSchool = null;
+		activeCourse = null;
+		activeSemester = null;
+		activeTranscript = null;
 	}
 
 	// Needs to be called every time program runs as this list isn't saved.
@@ -129,14 +177,6 @@ public class SystemController {
 		return false;
 	}
 
-	protected void logOut() {
-		activeUser = null;
-		activeSchool = null;
-		activeCourse = null;
-		activeSemester = null;
-		activeTranscript = null;
-	}
-
 	// Can be used anywhere but ALWAYS called on exit.
 	protected void saveUserList() {
 		try {
@@ -151,7 +191,7 @@ public class SystemController {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void loadUserList() {
+	protected void loadUserList() {
 		try {
 			FileInputStream fis = new FileInputStream(ROOTDIR + "\\userlist");
 			ObjectInputStream in = new ObjectInputStream(fis);
@@ -167,8 +207,10 @@ public class SystemController {
 		double qualityPoints = 0;
 		for (Course course : activeSemester.getCourses().values()) {
 			// Return -1 if any of the courses' final grades aren't set.
-			if (course.getFinalGrade().equals("N/A"))
+			if (course.getFinalGrade().equals("N/A")) {
+				activeSemester.setGPA(-1);
 				return -1;
+			}
 			qualityPoints += activeSchool.getGradingScale()
 					.getGradingScaleMap().get(course.getFinalGrade())
 					* course.getCreditHours();
@@ -180,16 +222,19 @@ public class SystemController {
 	}
 
 	protected double calcTranscriptGPA() {
-		double total = 0;
-		for (Semester semester : activeUser
-				.getTranscript(activeSchool.getName()).getSemesters().values()) {
-			total += semester.getGPA();
+		double gpaTotal = 0;
+		int numOfSemesters = 0;
+		for (Semester semester : activeTranscript.getSemesters().values()) {
+			// Don't include incomplete semesters in GPA calculation.
+			if (semester.getGPA() == -1)
+				continue;
+			else {
+				numOfSemesters += 1;
+				gpaTotal += semester.getGPA();
+			}
 		}
-		activeUser.getTranscript(activeSchool.getName()).setGPA(
-				total
-						/ activeUser.getTranscript(activeSchool.getName())
-								.getSemesters().size());
+		activeTranscript.setGPA(gpaTotal / numOfSemesters);
 		saveUserList();
-		return activeUser.getTranscript(activeSchool.getName()).getGPA();
+		return activeTranscript.getGPA();
 	}
 }

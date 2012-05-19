@@ -102,7 +102,7 @@ public class RootFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("logOut")) {
-			controller.activeUser = null;
+			controller.logOut();
 			panels.clear();
 			contentPane.removeAll();
 			addPanel(new WelcomePanel(controller), new GUIPanel(controller));

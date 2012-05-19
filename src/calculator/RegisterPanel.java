@@ -37,8 +37,10 @@ public class RegisterPanel extends GUIPanel {
 		entryPanel.add(usernameField);
 		entryPanel.add(passwordLabel);
 		entryPanel.add(passwordField);
-
+		createTitledBorder(entryPanel, "Register");
+		
 		navigationPanel = new JPanel(new GridLayout(2, 1));
+		createTitledBorder(navigationPanel, "Navigation");
 		navigationPanel.add(createButton("submit", "Submit"));
 		navigationPanel.add(createButton("back", "Back"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));

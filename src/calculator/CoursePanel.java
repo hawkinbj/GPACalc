@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 public class CoursePanel extends GUIPanel implements ActionListener {
 
 	private static final long serialVersionUID = -6768153191699813450L;
-	protected JPanel infoPanel, navigationPanel;
+	protected JPanel infoPanel, coursePanel, navigationPanel;
 
 	public CoursePanel(SystemController controller) {
 		super(controller);
@@ -28,14 +28,10 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		// Information panel.
 		infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
-		// Semester name.
-		JLabel semesterLbl = new JLabel("Semester: "
-				+ controller.activeSemester.getSchoolName() + " "
-				+ controller.activeSemester);
-		semesterLbl.setForeground(Color.blue);
-		infoPanel.add(semesterLbl);
+		createTitledBorder(infoPanel, controller.activeSemester.getSchoolName()
+				+ " " + controller.activeSemester);
 		// Total credit hours attempted this semester.
-		JLabel creditHoursLbl = new JLabel("Total credit hours: "
+		JLabel creditHoursLbl = new JLabel("Credit hours: "
 				+ Integer.toString(controller.activeSemester
 						.getTotalHoursAttempted()));
 		infoPanel.add(creditHoursLbl);
@@ -45,22 +41,30 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 		if (gpa == -1 || Double.isNaN(gpa))
 			gpaLbl.setText("Semester GPA: N/A");
 		else
-			gpaLbl.setText("Semester GPA: " + Double.toString(gpa));
+			gpaLbl.setText("Semester GPA: " + String.format("%.2f", gpa));
 		infoPanel.add(gpaLbl);
 
-		// Instructions label.
-		JLabel semestersInstructionLbl = new JLabel("Choose a class:");
-		infoPanel.add(semestersInstructionLbl);
-		// Buttons to represent courses.
-		for (String key : controller.activeSemester.getCourses().keySet()) {
-			infoPanel.add(createButton(key));
+		// Course panel.
+		coursePanel = new JPanel();
+		coursePanel.setLayout(new BoxLayout(coursePanel, BoxLayout.PAGE_AXIS));
+		createTitledBorder(coursePanel, "Select Course");
+		if (controller.activeSemester.getCourses().size() == 0) {
+			JLabel instructionLbl = new JLabel(
+					"Add a new course to get started.");
+			instructionLbl.setForeground(Color.blue);
+			coursePanel.add(instructionLbl);
+		} else {
+			// Buttons to represent courses.
+			for (String key : controller.activeSemester.getCourses().keySet()) {
+				coursePanel.add(createButton(key));
+			}
 		}
 
 		// Navigation label/separator.
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(new BoxLayout(navigationPanel,
 				BoxLayout.PAGE_AXIS));
-		navigationPanel.add(new JLabel("Navigation"));
+		createTitledBorder(navigationPanel, "Navigation");
 		// Add course button.
 		navigationPanel.add(createButton("addCourse", "Add new..."));
 		// Back button.
@@ -68,6 +72,7 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		add(infoPanel);
+		add(coursePanel);
 		add(navigationPanel);
 	}
 
@@ -81,8 +86,10 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 			controller.rootFrame.addPanel(new CourseDialog(controller), this);
 		} else {
 			// Set active course.
-			controller.activeCourse = controller.activeSemester.getCourses()
-					.get(action);
+//			System.out.println(controller.activeSemester.getCourses()
+//					.get(action).getCourseName());
+			controller.activeCourse = controller.activeSemester.getCourses().get(action);
+			System.out.println(controller.activeCourse.getCourseName());
 			controller.rootFrame
 					.addPanel(new CourseInfoPanel(controller), this);
 		}
@@ -100,9 +107,8 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 				controller.activeSemester.getCourses().remove(
 						component.getName());
 				controller.saveUserList();
-				infoPanel.remove(component);
-				infoPanel.revalidate();
-				infoPanel.repaint();
+				controller.rootFrame
+						.addPanel(new CoursePanel(controller), this);
 			} else if (response == JOptionPane.CLOSED_OPTION) {
 				return;
 			}

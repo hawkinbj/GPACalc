@@ -8,8 +8,8 @@ public class Driver {
 	public static void main(String[] args) {
 
 		final SystemController controller = new SystemController();
-		controller.rootFrame.addPanel(new WelcomePanel(controller),
-				new GUIPanel(controller));
+//		controller.rootFrame.addPanel(new WelcomePanel(controller),
+//				new GUIPanel(controller));
 
 	}
 }

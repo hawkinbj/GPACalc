@@ -17,7 +17,7 @@ public class Semester implements Serializable {
 		courses = new HashMap<String, Course>();
 		this.term = term;
 		this.year = year;
-		GPA = 0;
+		GPA = -1;
 	}
 
 	protected String getYear() {

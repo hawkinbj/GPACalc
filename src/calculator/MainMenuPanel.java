@@ -23,12 +23,6 @@ public class MainMenuPanel extends GUIPanel {
 
 	private void addComponentsToPane() {
 
-		// Instruction panel.
-		// instructionPanel = new JPanel();
-		// instructionPanel.setLayout(new BoxLayout(instructionPanel,
-		// BoxLayout.PAGE_AXIS));
-		// instructionPanel.add(new JLabel("Instructions go here."));
-
 		// Schools panel.
 		schoolsPanel = new JPanel();
 		schoolsPanel
@@ -41,7 +35,6 @@ public class MainMenuPanel extends GUIPanel {
 			instructionLbl.setForeground(Color.blue);
 			schoolsPanel.add(instructionLbl);
 		} else {
-
 			for (String schoolName : controller.activeUser.getTranscripts()
 					.keySet()) {
 				schoolsPanel.add(createButton(schoolName));
@@ -76,7 +69,6 @@ public class MainMenuPanel extends GUIPanel {
 			controller.activeSchool = controller.activeUser.getTranscript(
 					action).getSchool();
 			controller.rootFrame.addPanel(new SemesterPanel(controller), this);
-			// controller.rootFrame.showPanel("semesterPanel", this);
 		}
 	}
 

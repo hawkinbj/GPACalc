@@ -34,17 +34,18 @@ public class SemesterPanel extends GUIPanel {
 		// GPA label.
 		double gpa = controller.calcTranscriptGPA();
 		JLabel gpaLbl = new JLabel();
-		if (gpa == -1 || Double.isNaN(gpa))
+		if (Double.isNaN(gpa))
 			gpaLbl.setText("GPA: N/A");
 		else
-			gpaLbl.setText("GPA: " + Double.toString(gpa));
+			gpaLbl.setText("GPA: "
+					+ String.format("%.2f", gpa));
 		infoPanel.add(gpaLbl);
 
 		// Semester panel.
 		semestersPanel = new JPanel();
 		semestersPanel.setLayout(new BoxLayout(semestersPanel,
 				BoxLayout.PAGE_AXIS));
-		createTitledBorder(semestersPanel, "Select School");
+		createTitledBorder(semestersPanel, "Select Semester");
 		// Buttons to represent semesters. Sort them first.
 		Object[] sortedSemesters = controller.activeTranscript.getSemesters()
 				.keySet().toArray();

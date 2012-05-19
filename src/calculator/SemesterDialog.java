@@ -19,7 +19,7 @@ public class SemesterDialog extends GUIPanel {
 	private JRadioButton fallRadioBtn, springRadioBtn, summerRadioBtn;
 	private JSpinner spinner;
 	private SpinnerNumberModel yearModel;
-	private JPanel instructionPanel, mainPanel, navigationPanel;
+	private JPanel mainPanel, navigationPanel;
 
 	public SemesterDialog(SystemController controller) {
 		super(controller);
@@ -28,11 +28,6 @@ public class SemesterDialog extends GUIPanel {
 
 	private void addComponentsToPane() {
 
-		// Instruction panel.
-		instructionPanel = new JPanel();
-		instructionPanel.setLayout(new BoxLayout(instructionPanel,
-				BoxLayout.PAGE_AXIS));
-		instructionPanel.add(new JLabel("Select a term:"));
 		//
 		fallRadioBtn = new JRadioButton("Fall", true);
 		springRadioBtn = new JRadioButton("Spring", false);
@@ -43,25 +38,27 @@ public class SemesterDialog extends GUIPanel {
 		radioBtns.add(springRadioBtn);
 		radioBtns.add(summerRadioBtn);
 
-		mainPanel = new JPanel(new GridLayout(5, 1));
-		mainPanel.add(fallRadioBtn);
-		mainPanel.add(springRadioBtn);
-		mainPanel.add(summerRadioBtn);
+		mainPanel = new JPanel(new GridLayout(4, 1));
+		createTitledBorder(mainPanel, "Select Term");
 
+		// Year spinner.
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		yearModel = new SpinnerNumberModel(currentYear, currentYear - 10,
 				currentYear + 10, 1);
 		spinner = new JSpinner(yearModel);
 		spinner.setEditor(new JSpinner.NumberEditor(spinner, "#"));
 		mainPanel.add(spinner);
+		mainPanel.add(fallRadioBtn);
+		mainPanel.add(springRadioBtn);
+		mainPanel.add(summerRadioBtn);
 
 		// add cancel button and navigation panel
-		navigationPanel = new JPanel(new GridLayout(3, 1));
+		navigationPanel = new JPanel(new GridLayout(2, 1));
+		createTitledBorder(navigationPanel, "Navigation");
 		navigationPanel.add(createButton("done", "Done"));
 		navigationPanel.add(createButton("cancel", "Cancel"));
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		add(instructionPanel);
 		add(mainPanel);
 		add(navigationPanel);
 	}
@@ -71,24 +68,23 @@ public class SemesterDialog extends GUIPanel {
 		String action = e.getActionCommand();
 		if (action.equals("cancel")) {
 			controller.rootFrame.showPanel("SemesterPanel", this);
-		} else if (action.equals("done")) {
-			Semester newSemester = new Semester(null, spinner.getValue().toString());
+		}
+		if (action.equals("done")) {
+			Semester newSemester = new Semester(null, spinner.getValue()
+					.toString());
 			if (fallRadioBtn.isSelected())
 				newSemester.setTerm("Fall");
-			if (springRadioBtn.isSelected())
+			else if (springRadioBtn.isSelected())
 				newSemester.setTerm("Spring");
-			if (summerRadioBtn.isSelected())
+			else if (summerRadioBtn.isSelected())
 				newSemester.setTerm("Summer");
-			if (controller.activeUser
-					.getTranscript(controller.activeSchool.getName())
-					.getSemesters().containsValue(newSemester.toString())) {
-
+			if (controller.activeTranscript.getSemesters()
+					.containsKey(newSemester.toString())) {
 				JOptionPane
 						.showMessageDialog(
 								this,
 								"That semester already exists or no term was selected.",
 								"Error", JOptionPane.ERROR_MESSAGE);
-				controller.rootFrame.showPanel("semesterPanel", this);
 			} else {
 
 				controller.activeTranscript.addSemester(newSemester.toString(),

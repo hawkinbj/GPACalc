@@ -17,7 +17,6 @@ import javax.swing.SwingUtilities;
 public class CourseInfoPanel extends GUIPanel {
 
 	private static final long serialVersionUID = 1488575000302467412L;
-	// Try making these private.
 	private JPanel infoPanel, instructionPanel, gradeTypesPanel,
 			navigationPanel;
 	private JComboBox letterGradeComboBox;
@@ -32,11 +31,7 @@ public class CourseInfoPanel extends GUIPanel {
 		// Info panel.
 		infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
-		// Labels.
-		JLabel courseLbl = new JLabel("Course: "
-				+ controller.activeCourse.getCourseName());
-		courseLbl.setForeground(Color.blue);
-		infoPanel.add(courseLbl);
+		createTitledBorder(infoPanel, controller.activeCourse.getCourseName());
 		infoPanel.add(new JLabel("Credit hours: "
 				+ Integer.toString(controller.activeCourse.getCreditHours())));
 		// infoPanel.add(new JLabel("Final grade: " + course.getFinalGrade()));
@@ -44,18 +39,11 @@ public class CourseInfoPanel extends GUIPanel {
 				+ controller.activeCourse.getFinalGrade());
 		infoPanel.add(finalGradeLabel);
 
-		// Instruction panel.
-		instructionPanel = new JPanel();
-		instructionPanel.setLayout(new BoxLayout(instructionPanel,
-				BoxLayout.PAGE_AXIS));
-		// Instructions label.
-		JLabel InstructionLbl = new JLabel("Choose a grade type to edit:");
-		instructionPanel.add(InstructionLbl);
-
 		// Grade types panel.
 		gradeTypesPanel = new JPanel();
 		gradeTypesPanel.setLayout(new BoxLayout(gradeTypesPanel,
 				BoxLayout.PAGE_AXIS));
+		createTitledBorder(gradeTypesPanel, "Select Grade Type");
 		for (String gradeType : controller.activeCourse.getGrades().keySet()) {
 			gradeTypesPanel.add(createButton(gradeType));
 		}
@@ -66,17 +54,14 @@ public class CourseInfoPanel extends GUIPanel {
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(new BoxLayout(navigationPanel,
 				BoxLayout.PAGE_AXIS));
-		navigationPanel.add(new JLabel("Navigation"));
+		createTitledBorder(navigationPanel, "Navigation");
 		// Edit course button - MOVE THIS TO CoursePanel right-click menu...
 		navigationPanel.add(createButton("edit", "Edit Course..."));
-		// Calculate button.
-		navigationPanel.add(createButton("calculate", "Calculate"));
 		// Back button.
 		navigationPanel.add(createButton("back", "Back"));
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		add(infoPanel);
-		add(instructionPanel);
 		add(gradeTypesPanel);
 		add(navigationPanel);
 	}
@@ -113,8 +98,6 @@ public class CourseInfoPanel extends GUIPanel {
 			} else
 				// user clicked cancel.
 				return;
-		} else if (action.equals("calculate")) {
-			controller.rootFrame.addPanel(new CalcPanel(controller), this);
 		} else if (action.equals("edit")) {
 			controller.rootFrame.addPanel(new CourseDialog(controller), this);
 		} else {

@@ -2,6 +2,7 @@ package calculator;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.swing.BoxLayout;
@@ -18,7 +19,7 @@ public class CourseDialog extends GUIPanel {
 	protected JTextField courseNameField, newGradeTypeField;
 	private JPanel namePanel, gradeTypesPanel, newGradeTypePanel,
 			navigationPanel, rootPanel;
-	private JComboBox creditHrsComboBox;
+	private JComboBox creditHrsComboBox, letterGradeComboBox;
 	protected HashMap<String, JCheckBox> gradeCheckBoxes;
 	protected static final String[] CREDITHOURS = { "0", "1", "2", "3", "4" };
 	private Course course;
@@ -42,30 +43,41 @@ public class CourseDialog extends GUIPanel {
 		// Course name entry label.
 		courseNameField = new JTextField(10); // # of entry spaces.
 		courseNameField.setText(course.getCourseName());
+
 		// namePanel.
 		namePanel = new JPanel(new GridLayout(3, 2));
+		// createTitledBorder(namePanel, "")
 		namePanel.add(new JLabel("Course name:"));
 		namePanel.add(courseNameField);
 		namePanel.add(new JLabel("Credit hours:"));
 		creditHrsComboBox = new JComboBox(CREDITHOURS);
+
 		// Set credit hours if existing course.
 		if (course.getCreditHours() == -1)
 			creditHrsComboBox.setSelectedItem("3");
 		else
 			creditHrsComboBox.setSelectedItem(Integer.toString(course
 					.getCreditHours()));
-
 		namePanel.add(creditHrsComboBox);
-		namePanel.add(new JLabel("Select grade types:"));
+
+		// Set final grade.
+		namePanel.add(new JLabel("Set final grade: "));
+		Object[] letterGrades = controller.activeSchool.getGradingScale()
+				.getGradingScaleMap().keySet().toArray();
+		Arrays.sort(letterGrades);
+		letterGradeComboBox = new JComboBox(letterGrades);
+		String finalGrade = course.getFinalGrade();
+		System.out.println(finalGrade);
+		if (finalGrade.equals("N/A"))
+			letterGradeComboBox.setSelectedIndex(-1);
+		else
+			letterGradeComboBox.setSelectedItem(finalGrade);
+		namePanel.add(letterGradeComboBox);
 
 		// Grade types panel.
 		gradeTypesPanel = new JPanel();
-		
-		//CLEAN THIS UP.
-		layout = new GridLayout(
-				((course.getGrades().keySet().size() + controller.gradeTypes
-						.size()) / 2),
-				2);
+		createTitledBorder(gradeTypesPanel, "Select Grade Types");
+		layout = new GridLayout(gradeCheckBoxes.size() / 2, 2);
 		gradeTypesPanel.setLayout(layout);
 		for (String gradeType : controller.gradeTypes) {
 			addGradeCheckBox(gradeType);
@@ -79,13 +91,14 @@ public class CourseDialog extends GUIPanel {
 		}
 
 		newGradeTypePanel = new JPanel(new GridLayout(1, 2));
+		createTitledBorder(newGradeTypePanel, "New Grade Type");
 		newGradeTypeField = new JTextField(10);
 		newGradeTypePanel.add(newGradeTypeField);
 		newGradeTypePanel.add(createButton("add", "Add"));
 
 		// Nav panel.
-		navigationPanel = new JPanel(new GridLayout(3, 1));
-		navigationPanel.add(new JLabel("Navigation"));
+		navigationPanel = new JPanel(new GridLayout(2, 1));
+		createTitledBorder(navigationPanel, "Navigation");
 		navigationPanel.add(createButton("next", "Next"));
 		navigationPanel.add(createButton("cancel", "Cancel"));
 
@@ -105,6 +118,7 @@ public class CourseDialog extends GUIPanel {
 		newCheckBox.setName(name);
 		// Keep actual JCheckBoxes in list to iterate over values.
 		gradeCheckBoxes.put(name, newCheckBox);
+		layout.setRows(gradeCheckBoxes.size() / 2 + 1);
 		gradeTypesPanel.add(newCheckBox);
 
 	}
@@ -125,7 +139,7 @@ public class CourseDialog extends GUIPanel {
 			String newGradeType = newGradeTypeField.getText();
 			// Check valid type name.
 			if (newGradeType.equals("")
-					|| course.getGrades().containsKey(newGradeType)) {
+					|| gradeCheckBoxes.containsKey(newGradeType)) {
 				JOptionPane
 						.showMessageDialog(
 								this,
@@ -133,14 +147,9 @@ public class CourseDialog extends GUIPanel {
 								"Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else {
-				// For consistency, should probably
-				// controller.rootFrame.addPanel() but it's relatively
-				// expensive.
 				addGradeCheckBox(newGradeType);
 				newGradeTypeField.setText("");
-				layout.setRows((course.getGrades().keySet().size() + controller.gradeTypes
-						.size()) / 2);
-				validate();
+				revalidate();
 				repaint();
 				controller.rootFrame.pack();
 			}
@@ -173,6 +182,7 @@ public class CourseDialog extends GUIPanel {
 			}
 			// All clear to add new course and button.
 			course.setCourseName(courseName);
+			course.setFinalGrade((String) letterGradeComboBox.getSelectedItem());
 			course.setCreditHours(Integer.parseInt((String) creditHrsComboBox
 					.getSelectedItem()));
 			// Add new Grade objects for each checked gradtype box.
@@ -184,11 +194,18 @@ public class CourseDialog extends GUIPanel {
 				}
 			}
 			controller.activeSemester.addCourse(courseName, course);
-			controller.activeCourse = course;
 			controller.saveUserList();
-			// Show next panel and save data.
-			controller.rootFrame
-					.addPanel(new CourseInfoPanel(controller), this);
+
+			// If final grade hasn't been set, take user to CourseInfoPanel.
+			if (course.getFinalGrade().equals("N/A")) {
+				controller.activeCourse = course;
+				controller.rootFrame.addPanel(new CourseInfoPanel(controller),
+						this);
+			} else {
+				controller.activeCourse = null;
+				controller.rootFrame
+						.addPanel(new CoursePanel(controller), this);
+			}
 		}
 	}
 }

@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 public class SchoolDialog extends GUIPanel {
 
 	private static final long serialVersionUID = -873283817151884443L;
-	private JPanel navigationPanel, newSchoolPanel;
+	private JPanel navigationPanel, newSchoolPanel, radioPanel;
 	private JTextField newSchoolField;
 	private JRadioButton plusMinusRadio, normalRadio;
 
@@ -26,21 +26,26 @@ public class SchoolDialog extends GUIPanel {
 	private void addComponentsToPane() {
 
 		// New school panel.
-		newSchoolPanel = new JPanel(new GridLayout(2, 2));
-		newSchoolPanel.add(new JLabel("Name of new school: "));
+		newSchoolPanel = new JPanel(new GridLayout(1, 2));
+		//newSchoolPanel.add(new JLabel("Name of new school: "));
+		createTitledBorder(newSchoolPanel, "Name of School");
 		newSchoolField = new JTextField(5);
 		newSchoolPanel.add(newSchoolField);
-		// Radio buttons.
+		
+		// Radio buttons panel.
+		radioPanel = new JPanel(new GridLayout(1,2));
+		createTitledBorder(radioPanel, "Grading Scale");
 		ButtonGroup addSchoolBtns = new ButtonGroup();
 		plusMinusRadio = new JRadioButton("Plus/Minus", true);
 		normalRadio = new JRadioButton("Normal");
 		addSchoolBtns.add(plusMinusRadio);
 		addSchoolBtns.add(normalRadio);
-		newSchoolPanel.add(plusMinusRadio);
-		newSchoolPanel.add(normalRadio);
+		radioPanel.add(plusMinusRadio);
+		radioPanel.add(normalRadio);
 
 		// Navigation panel.
-		navigationPanel = new JPanel(new GridLayout(3, 1));
+		navigationPanel = new JPanel(new GridLayout(2, 1));
+		createTitledBorder(navigationPanel, "Navigation");
 		navigationPanel.add(createButton("add", "Add"));
 		navigationPanel.add(createButton("cancel", "Cancel"));
 
@@ -48,6 +53,7 @@ public class SchoolDialog extends GUIPanel {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		// add(instructionPanel);
 		add(newSchoolPanel);
+		add(radioPanel);
 		add(navigationPanel);
 	}
 

@@ -15,6 +15,7 @@ public class Course implements Serializable {
 		this.setCourseName(courseName);
 		this.creditHours = creditHours;
 		grades = new HashMap<String, Grade>();
+		finalGrade = "N/A";
 	}
 
 	protected double getTotalPointsEarned() {
