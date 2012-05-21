@@ -1,6 +1,7 @@
 /*TODO
  * 
- * - Percent worth grades dont work
+ * - Implement a rightClick JMenu for removing elements as opposed to have a popup dialog 
+ * 		 (in other words, get rid of all JDialogs)!!!
  *
  * 
  */
@@ -42,9 +43,9 @@ public class SystemController {
 		}
 
 		loadActiveUser();
-		
+
 		// Bypass login.
-		if (activeUser != null	&& activeUser.getRememberLoginInfo()) {
+		if (activeUser != null && activeUser.getRememberLoginInfo()) {
 			saveActiveUser();
 			rootFrame.addPanel(new MainMenuPanel(this), new GUIPanel(this));
 		} else {
