@@ -86,10 +86,8 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 			controller.rootFrame.addPanel(new CourseDialog(controller), this);
 		} else {
 			// Set active course.
-//			System.out.println(controller.activeSemester.getCourses()
-//					.get(action).getCourseName());
-			controller.activeCourse = controller.activeSemester.getCourses().get(action);
-			System.out.println(controller.activeCourse.getCourseName());
+			controller.activeCourse = controller.activeSemester.getCourses()
+					.get(action);
 			controller.rootFrame
 					.addPanel(new CourseInfoPanel(controller), this);
 		}

@@ -17,8 +17,7 @@ import javax.swing.SwingUtilities;
 public class CourseInfoPanel extends GUIPanel {
 
 	private static final long serialVersionUID = 1488575000302467412L;
-	private JPanel infoPanel, instructionPanel, gradeTypesPanel,
-			navigationPanel;
+	private JPanel infoPanel, gradeTypesPanel, navigationPanel;
 	private JComboBox letterGradeComboBox;
 	private JLabel finalGradeLabel;
 
@@ -83,6 +82,8 @@ public class CourseInfoPanel extends GUIPanel {
 			Arrays.sort(letterGrades);
 			letterGradeComboBox = new JComboBox(letterGrades);
 			setGradePanel.add(letterGradeComboBox);
+			letterGradeComboBox.setSelectedItem(controller.activeCourse
+					.getFinalGrade());
 			int test = JOptionPane.showOptionDialog(this, setGradePanel,
 					"Set Final Grade", JOptionPane.OK_CANCEL_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, null, null);

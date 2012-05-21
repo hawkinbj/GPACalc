@@ -66,4 +66,8 @@ public class User implements Serializable {
 		}
 		return false;
 	}
+	
+	public String toString(){
+		return username;
+	}
 }

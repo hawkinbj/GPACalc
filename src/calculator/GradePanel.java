@@ -19,7 +19,7 @@ public class GradePanel extends GUIPanel {
 	private JPanel instructionPanel, entryPanel, navigationPanel;
 	// Add customization later.
 	private static final String[] PERCENTAGES = { "N/A", "5", "10", "15", "20",
-			"25", "30", "35" };
+			"25", "30", "35", "40", "45" };
 	private static final String[] NUMOFGRADES = { "1", "2", "3", "4", "5", "6",
 			"7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
 	private JComboBox percentComboBox, numOfGradesComboBox;
@@ -35,7 +35,7 @@ public class GradePanel extends GUIPanel {
 	}
 
 	private void addComponentsToPane() {
-		
+
 		// Instructions.
 		instructionPanel = new JPanel(new GridLayout(2, 1));
 		JLabel gradeTypeLbl = new JLabel("Grade Type - " + gradeType);

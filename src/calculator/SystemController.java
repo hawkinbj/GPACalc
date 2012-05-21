@@ -1,6 +1,7 @@
 /*TODO
  * 
- * -Stay logged in feature - remember user/pass. See comments in User.java
+ * - Percent worth grades dont work
+ *
  * 
  */
 
@@ -35,16 +36,15 @@ public class SystemController {
 			new File(ROOTDIR).mkdir();
 			populateSchools();
 			saveUserList();
-		} else{
+		} else {
 			loadSchoolList();
 			loadUserList();
-		}	
+		}
 		activeUser = loadActiveUser();
 		// Bypass login.
-		if (activeUser != null) {
-			if (activeUser.getRememberLoginInfo()) {
-				rootFrame.addPanel(new MainMenuPanel(this), new GUIPanel(this));
-			}
+		if (activeUser != null && activeUser.getRememberLoginInfo()) {
+			saveActiveUser();
+			rootFrame.addPanel(new MainMenuPanel(this), new GUIPanel(this));
 		} else {
 			activeUser = null;
 			rootFrame.addPanel(new WelcomePanel(this), new GUIPanel(this));
@@ -64,7 +64,6 @@ public class SystemController {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private User loadActiveUser() {
 		User user = null;
 		try {
@@ -78,7 +77,8 @@ public class SystemController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return user;
+		// Return the User object from the list to get saved data.
+		return users.get(user.getUsername());
 	}
 
 	protected void logOut() {

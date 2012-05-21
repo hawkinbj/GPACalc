@@ -19,7 +19,7 @@ public class CourseDialog extends GUIPanel {
 	protected JTextField courseNameField, newGradeTypeField;
 	private JPanel namePanel, gradeTypesPanel, newGradeTypePanel,
 			navigationPanel, rootPanel;
-	private JComboBox creditHrsComboBox, letterGradeComboBox;
+	private JComboBox<String> creditHrsComboBox, letterGradeComboBox;
 	protected HashMap<String, JCheckBox> gradeCheckBoxes;
 	protected static final String[] CREDITHOURS = { "0", "1", "2", "3", "4" };
 	private Course course;
@@ -50,7 +50,7 @@ public class CourseDialog extends GUIPanel {
 		namePanel.add(new JLabel("Course name:"));
 		namePanel.add(courseNameField);
 		namePanel.add(new JLabel("Credit hours:"));
-		creditHrsComboBox = new JComboBox(CREDITHOURS);
+		creditHrsComboBox = new JComboBox<String>(CREDITHOURS);
 
 		// Set credit hours if existing course.
 		if (course.getCreditHours() == -1)
@@ -67,7 +67,7 @@ public class CourseDialog extends GUIPanel {
 		Arrays.sort(letterGrades);
 		letterGradeComboBox = new JComboBox(letterGrades);
 		String finalGrade = course.getFinalGrade();
-		System.out.println(finalGrade);
+
 		if (finalGrade.equals("N/A"))
 			letterGradeComboBox.setSelectedIndex(-1);
 		else
@@ -148,6 +148,9 @@ public class CourseDialog extends GUIPanel {
 				return;
 			} else {
 				addGradeCheckBox(newGradeType);
+				// Check the newly added box (last in list).
+				gradeCheckBoxes.get(gradeCheckBoxes.size() - 1).setSelected(
+						true);
 				newGradeTypeField.setText("");
 				revalidate();
 				repaint();
@@ -173,6 +176,7 @@ public class CourseDialog extends GUIPanel {
 								JOptionPane.YES_NO_OPTION,
 								JOptionPane.QUESTION_MESSAGE);
 				if (response == JOptionPane.YES_OPTION) {
+					// NEED TO ONLY OVERWRITE NEW INFO....
 					controller.activeSemester.getCourses().remove(courseName);
 					controller.saveUserList();
 				} else {
