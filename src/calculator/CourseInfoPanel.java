@@ -1,6 +1,5 @@
 package calculator;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -101,46 +100,8 @@ public class CourseInfoPanel extends GUIPanel {
 			// Need to create new as course may have been edited.
 			controller.rootFrame.addPanel(new CoursePanel(controller), this);
 		} else if (action.equals("setFinalGrade")) {
-			// CONSIDER MAKING A NEW CLASS!!!!
-			// Final grade panel.
-			JPanel setGradePanel = new JPanel(new GridLayout(2, 2));
-			setGradePanel.add(new JLabel("Set final letter grade: "));
-			// Convert GradingScale's gradingScaleMap to array of choices.
-			Object[] letterGrades = controller.activeSchool.getGradingScale()
-					.getGradingScaleMap().keySet().toArray();
-			Arrays.sort(letterGrades);
-			letterGradeComboBox = new JComboBox(letterGrades);
-			setGradePanel.add(letterGradeComboBox);
-			letterGradeComboBox.setSelectedItem(controller.activeCourse
-					.getFinalGrade());
-			
-			// Button to clear selection (and a label).
-			setGradePanel.add(new JLabel("Clear grade: "));
-			JButton clearBtn = new JButton("Clear");
-			clearBtn.setActionCommand("clearFinalGrade");
-			clearBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand().equals("clearFinalGrade"))
-						letterGradeComboBox.setSelectedIndex(-1);
-				}
-			});
-			setGradePanel.add(clearBtn);
-			
-			int test = JOptionPane.showOptionDialog(this, setGradePanel,
-					"Set Final Grade", JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, null, null);
-			if (test == JOptionPane.OK_OPTION) {
-				controller.activeCourse
-						.setFinalGrade((String) letterGradeComboBox
-								.getSelectedItem());
-				finalGradeLabel.setText("Final grade: "
-						+ controller.activeCourse.getFinalGrade());
-				controller.saveUserList();
-				validate();
-				repaint();
-			} else
-				// user clicked cancel.
-				return;
+			controller.rootFrame
+					.addPanel(new FinalGradePanel(controller), this);
 		} else if (action.equals("edit")) {
 			controller.rootFrame.addPanel(new CourseDialog(controller), this);
 		} else {
@@ -166,11 +127,7 @@ public class CourseInfoPanel extends GUIPanel {
 				gradeTypesPanel.remove(component);
 				gradeTypesPanel.revalidate();
 				gradeTypesPanel.repaint();
-			} else if (response == JOptionPane.CLOSED_OPTION) {
-				return;
 			}
-			// } else {
-			// return;
 		}
 	}
 }

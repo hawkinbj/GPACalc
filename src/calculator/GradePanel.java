@@ -16,7 +16,7 @@ public class GradePanel extends GUIPanel {
 
 	private static final long serialVersionUID = 1673864396132217214L;
 	private Grade grade;
-	private JPanel instructionPanel, entryPanel, navigationPanel;
+	private JPanel entryPanel, navigationPanel;
 	// Add customization later.
 	private static final String[] PERCENTAGES = { "5", "10", "15", "20", "25",
 			"30", "35", "40", "45" };
@@ -79,13 +79,6 @@ public class GradePanel extends GUIPanel {
 		dropLowestBox = new JCheckBox();
 		entryPanel.add(dropLowestBox);
 
-		// Navigation label/separator.
-		navigationPanel = new JPanel(new GridLayout(3, 1));
-		// Done button.
-		navigationPanel.add(createButton("done", "Done"));
-		// Cancel button.
-		navigationPanel.add(createButton("cancel", "Cancel"));
-
 		// Load existing data (if any).
 		if (grade.getPointsPossiblePer() != 0) {
 			earnedField.setText(Double.toString(grade.getTotalEarned()));
@@ -101,9 +94,16 @@ public class GradePanel extends GUIPanel {
 			}
 		}
 
+		// Navigation label/separator.
+		navigationPanel = new JPanel(new GridLayout(2, 1));
+		createTitledBorder(navigationPanel, "Navigation");
+		// Done button.
+		navigationPanel.add(createButton("done", "Done"));
+		// Cancel button.
+		navigationPanel.add(createButton("cancel", "Cancel"));
+
 		// Layout.
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		// add(instructionPanel);
 		add(entryPanel);
 		add(navigationPanel);
 	}

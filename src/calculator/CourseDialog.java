@@ -20,7 +20,7 @@ public class CourseDialog extends GUIPanel {
 	private static final long serialVersionUID = -6080991655918955653L;
 	protected JTextField courseNameField, newGradeTypeField;
 	private JPanel namePanel, gradeTypesPanel, newGradeTypePanel,
-			navigationPanel, rootPanel, weightedPanel;
+			navigationPanel, weightedPanel;
 	private JComboBox<String> creditHrsComboBox, letterGradeComboBox;
 	protected HashMap<String, JCheckBox> gradeCheckBoxes;
 	protected JRadioButton weightedRdio, notWeightedRdio;
