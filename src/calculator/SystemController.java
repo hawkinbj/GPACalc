@@ -40,13 +40,14 @@ public class SystemController {
 			loadSchoolList();
 			loadUserList();
 		}
-		activeUser = loadActiveUser();
+
+		loadActiveUser();
+		
 		// Bypass login.
-		if (activeUser != null && activeUser.getRememberLoginInfo()) {
+		if (activeUser != null	&& activeUser.getRememberLoginInfo()) {
 			saveActiveUser();
 			rootFrame.addPanel(new MainMenuPanel(this), new GUIPanel(this));
 		} else {
-			activeUser = null;
 			rootFrame.addPanel(new WelcomePanel(this), new GUIPanel(this));
 		}
 	}
@@ -62,9 +63,11 @@ public class SystemController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		saveUserList();
 	}
 
-	private User loadActiveUser() {
+	private void loadActiveUser() {
+		// CAN PROB JUST USE ACTIVEUSER
 		User user = null;
 		try {
 			if (new File(ROOTDIR + "\\activeUser").exists()) {
@@ -78,7 +81,10 @@ public class SystemController {
 			e.printStackTrace();
 		}
 		// Return the User object from the list to get saved data.
-		return users.get(user.getUsername());
+		if (user != null)
+			activeUser = users.get(user.getUsername());
+		else
+			activeUser = null;
 	}
 
 	protected void logOut() {

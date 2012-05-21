@@ -18,8 +18,8 @@ public class GradePanel extends GUIPanel {
 	private Grade grade;
 	private JPanel instructionPanel, entryPanel, navigationPanel;
 	// Add customization later.
-	private static final String[] PERCENTAGES = { "N/A", "5", "10", "15", "20",
-			"25", "30", "35", "40", "45" };
+	private static final String[] PERCENTAGES = { "5", "10", "15", "20", "25",
+			"30", "35", "40", "45" };
 	private static final String[] NUMOFGRADES = { "1", "2", "3", "4", "5", "6",
 			"7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
 	private JComboBox percentComboBox, numOfGradesComboBox;
@@ -58,11 +58,15 @@ public class GradePanel extends GUIPanel {
 		entryPanel.add(new JLabel("Points possible for each: "));
 		possibleField = new JTextField(3);
 		entryPanel.add(possibleField);
-		// Percentage of grade.
-		entryPanel.add(new JLabel("% of grade: "));
-		percentComboBox = new JComboBox(PERCENTAGES);
-		percentComboBox.setSelectedIndex(0);
-		entryPanel.add(percentComboBox);
+
+		// Percentage of grade - only show if Course.getWeighted() == true.
+		if (controller.activeCourse.getWeighted()) {
+			entryPanel.add(new JLabel("% of grade: "));
+			percentComboBox = new JComboBox(PERCENTAGES);
+			percentComboBox.setSelectedIndex(0);
+			entryPanel.add(percentComboBox);
+		}
+
 		// Extra credit allowed?
 		entryPanel.add(new JLabel("Extra credit offered?"));
 		extraCreditBox = new JCheckBox();
@@ -86,13 +90,15 @@ public class GradePanel extends GUIPanel {
 					.getNumOfGrades()));
 			possibleField
 					.setText(Integer.toString(grade.getPointsPossiblePer()));
-			percentComboBox.setSelectedItem(Integer.toString(grade
-					.getPercentWeight()));
+			if (controller.activeCourse.getWeighted())
+				percentComboBox.setSelectedItem(Integer.toString(grade
+						.getPercentWeight()));
 			if (grade.getDropLowest()) {
 				dropLowestBox.setSelected(true);
 			}
 		}
 
+		// Layout.
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		add(instructionPanel);
 		add(entryPanel);
@@ -124,10 +130,9 @@ public class GradePanel extends GUIPanel {
 				}
 				grade.setTotalEarned(totalEarned);
 				grade.setPointsPossiblePer(pointsPossiblePer);
-				// If no percentage selected default to 100.
-				if (percentComboBox.getSelectedItem().equals("N/A")) {
-					grade.setPercentWeight(100);
-				} else {
+				// If course is weighted, get the selected weight.
+				if (controller.activeCourse.getWeighted()) {
+					// Save the percentage.
 					grade.setPercentWeight(Integer
 							.parseInt((String) percentComboBox
 									.getSelectedItem()));

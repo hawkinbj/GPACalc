@@ -6,11 +6,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 public class CourseDialog extends GUIPanel {
@@ -18,9 +20,10 @@ public class CourseDialog extends GUIPanel {
 	private static final long serialVersionUID = -6080991655918955653L;
 	protected JTextField courseNameField, newGradeTypeField;
 	private JPanel namePanel, gradeTypesPanel, newGradeTypePanel,
-			navigationPanel, rootPanel;
+			navigationPanel, rootPanel, weightedPanel;
 	private JComboBox<String> creditHrsComboBox, letterGradeComboBox;
 	protected HashMap<String, JCheckBox> gradeCheckBoxes;
+	protected JRadioButton weightedRdio, notWeightedRdio;
 	protected static final String[] CREDITHOURS = { "0", "1", "2", "3", "4" };
 	private Course course;
 	private GridLayout layout;
@@ -90,11 +93,30 @@ public class CourseDialog extends GUIPanel {
 			gradeCheckBoxes.get(gradeType).setSelected(true);
 		}
 
+		// Add new grade type panel.
 		newGradeTypePanel = new JPanel(new GridLayout(1, 2));
 		createTitledBorder(newGradeTypePanel, "New Grade Type");
 		newGradeTypeField = new JTextField(10);
 		newGradeTypePanel.add(newGradeTypeField);
 		newGradeTypePanel.add(createButton("add", "Add"));
+
+		// Use weighted grades or not.
+		weightedPanel = new JPanel(new GridLayout(1, 3));
+		// weightedPanel.add(new JLabel("Are grades weighted?: "));
+		createTitledBorder(weightedPanel, "Are Grades Weighted?");
+		ButtonGroup weightedGroup = new ButtonGroup();
+		weightedRdio = new JRadioButton("Yes");
+		notWeightedRdio = new JRadioButton("No", true);
+
+		// If course is being edited, set weighted settings.
+		if (course.getWeighted()) {
+			weightedRdio.setSelected(true);
+		}
+		
+		weightedGroup.add(weightedRdio);
+		weightedGroup.add(notWeightedRdio);
+		weightedPanel.add(weightedRdio);
+		weightedPanel.add(notWeightedRdio);
 
 		// Nav panel.
 		navigationPanel = new JPanel(new GridLayout(2, 1));
@@ -103,13 +125,12 @@ public class CourseDialog extends GUIPanel {
 		navigationPanel.add(createButton("cancel", "Cancel"));
 
 		// layout.
-		rootPanel = new JPanel();
-		rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.PAGE_AXIS));
-		rootPanel.add(namePanel);
-		rootPanel.add(gradeTypesPanel);
-		rootPanel.add(newGradeTypePanel);
-		rootPanel.add(navigationPanel);
-		add(rootPanel);
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		add(namePanel);
+		add(gradeTypesPanel);
+		add(newGradeTypePanel);
+		add(weightedPanel);
+		add(navigationPanel);
 	}
 
 	// Helper to add checkboxes to internal list and check status.
@@ -148,8 +169,8 @@ public class CourseDialog extends GUIPanel {
 				return;
 			} else {
 				addGradeCheckBox(newGradeType);
-				// Check the newly added box (last in list).
-				gradeCheckBoxes.get(gradeCheckBoxes.size() - 1).setSelected(
+				// Check the newly added box.
+				gradeCheckBoxes.get(newGradeType).setSelected(
 						true);
 				newGradeTypeField.setText("");
 				revalidate();
@@ -197,6 +218,12 @@ public class CourseDialog extends GUIPanel {
 							false));
 				}
 			}
+			// Set if course is weighted.
+			if (weightedRdio.isSelected())
+				course.setWeighted(true);
+			else
+				course.setWeighted(false);
+
 			controller.activeSemester.addCourse(courseName, course);
 			controller.saveUserList();
 

@@ -10,6 +10,8 @@ public class Course implements Serializable {
 	private HashMap<String, Grade> grades;
 	private int creditHours;
 	private String finalGrade;
+	// Are the grades weighted? (i.e. - 30%)
+	private boolean weighted;
 
 	public Course(String courseName, int creditHours) {
 		this.setCourseName(courseName);
@@ -66,18 +68,30 @@ public class Course implements Serializable {
 		return creditHours;
 	}
 
-	public void setCreditHours(int creditHours) {
+	protected void setCreditHours(int creditHours) {
 		this.creditHours = creditHours;
 	}
 
-	public String getFinalGrade() {
+	protected String getFinalGrade() {
 		if (finalGrade == null) {
 			return "N/A";
 		}
 		return finalGrade;
 	}
 
-	public void setFinalGrade(String finalGrade) {
+	protected void setFinalGrade(String finalGrade) {
 		this.finalGrade = finalGrade;
+	}
+
+	protected boolean getWeighted() {
+		return weighted;
+	}
+
+	protected void setWeighted(boolean weighted) {
+		this.weighted = weighted;
+	}
+	
+	public String toString(){
+		return courseName;
 	}
 }

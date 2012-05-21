@@ -37,6 +37,18 @@ public class CourseInfoPanel extends GUIPanel {
 		finalGradeLabel = new JLabel("Final grade: "
 				+ controller.activeCourse.getFinalGrade());
 		infoPanel.add(finalGradeLabel);
+		// Display current average. Depends on weighted or not.
+		JLabel currentAvg = new JLabel();
+		if (controller.activeCourse.getWeighted()) {
+			currentAvg.setText("Current average: "
+					+ controller.activeCourse.getWeightedTotalPointsEarned()
+					/ controller.activeCourse.getTotalPointsPossible());
+		} else {
+			currentAvg.setText("Current average: "
+					+ controller.activeCourse.getTotalPointsEarned()
+					/ controller.activeCourse.getTotalPointsPossible());
+		}
+		infoPanel.add(currentAvg);
 
 		// Grade types panel.
 		gradeTypesPanel = new JPanel();
