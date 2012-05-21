@@ -2,6 +2,9 @@
  * 
  * - Implement a rightClick JMenu for removing elements as opposed to have a popup dialog 
  * 		 (in other words, get rid of all JDialogs)!!!
+ * 
+ * MAYBE:
+ * - Add a "simulate semester" feature/button to CoursePanel (enter num of hours and gpa)
  *
  * 
  */
