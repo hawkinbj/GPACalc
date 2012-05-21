@@ -36,24 +36,26 @@ public class GradePanel extends GUIPanel {
 
 	private void addComponentsToPane() {
 
-		// Instructions.
-		instructionPanel = new JPanel(new GridLayout(2, 1));
-		JLabel gradeTypeLbl = new JLabel("Grade Type - " + gradeType);
-		gradeTypeLbl.setForeground(Color.blue);
-		instructionPanel.add(gradeTypeLbl);
-		instructionPanel.add(new JLabel("Enter values."));
+		// // Instructions.
+		// instructionPanel = new JPanel(new GridLayout(2, 1));
 
 		// Entry panel.
-		entryPanel = new JPanel(new GridLayout(6, 2));
+		entryPanel = new JPanel();
+		GridLayout entryLayout = new GridLayout(5, 2);
+		entryPanel.setLayout(entryLayout);
+		createTitledBorder(entryPanel, gradeType);
+
 		// Points earned.
 		entryPanel.add(new JLabel("Cumulative points earned: "));
 		earnedField = new JTextField(3);
 		entryPanel.add(earnedField);
+
 		// Number of grades.
 		entryPanel.add(new JLabel("Number of grades: "));
 		numOfGradesComboBox = new JComboBox(NUMOFGRADES);
 		numOfGradesComboBox.setSelectedIndex(0);
 		entryPanel.add(numOfGradesComboBox);
+
 		// Points possible for each.
 		entryPanel.add(new JLabel("Points possible for each: "));
 		possibleField = new JTextField(3);
@@ -61,6 +63,7 @@ public class GradePanel extends GUIPanel {
 
 		// Percentage of grade - only show if Course.getWeighted() == true.
 		if (controller.activeCourse.getWeighted()) {
+			entryLayout.setRows(6);
 			entryPanel.add(new JLabel("% of grade: "));
 			percentComboBox = new JComboBox(PERCENTAGES);
 			percentComboBox.setSelectedIndex(0);
@@ -100,7 +103,7 @@ public class GradePanel extends GUIPanel {
 
 		// Layout.
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		add(instructionPanel);
+		// add(instructionPanel);
 		add(entryPanel);
 		add(navigationPanel);
 	}
@@ -142,7 +145,8 @@ public class GradePanel extends GUIPanel {
 				if (dropLowestBox.isSelected())
 					grade.setDropLowest(true);
 				controller.saveUserList();
-				controller.rootFrame.showPanel("CourseInfoPanel", this);
+				controller.rootFrame.addPanel(new CourseInfoPanel(controller),
+						this);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"You left some values blank. Try again.", "Error",

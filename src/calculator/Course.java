@@ -41,7 +41,7 @@ public class Course implements Serializable {
 		for (Grade grade : grades.values()) {
 			total += (grade.getTotalEarned() * grade.getPercentWeight());
 		}
-		return total;
+		return total / 100;
 	}
 
 	protected void addGrade(String type, Grade grade) {

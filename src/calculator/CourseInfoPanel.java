@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,6 +29,7 @@ public class CourseInfoPanel extends GUIPanel {
 	}
 
 	private void addComponentsToPane() {
+
 		// Info panel.
 		infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
@@ -39,14 +42,28 @@ public class CourseInfoPanel extends GUIPanel {
 		infoPanel.add(finalGradeLabel);
 		// Display current average. Depends on weighted or not.
 		JLabel currentAvg = new JLabel();
+		Double average = 0.0;
+		// Format correctly.
 		if (controller.activeCourse.getWeighted()) {
-			currentAvg.setText("Current average: "
-					+ controller.activeCourse.getWeightedTotalPointsEarned()
-					/ controller.activeCourse.getTotalPointsPossible());
+			average = controller.activeCourse.getWeightedTotalPointsEarned();
+			if (Double.isNaN(average))
+				currentAvg.setText("Current average: N/A");
+			else
+				currentAvg.setText("Current average: "
+						+ String.format("%.2f", average));
 		} else {
-			currentAvg.setText("Current average: "
-					+ controller.activeCourse.getTotalPointsEarned()
-					/ controller.activeCourse.getTotalPointsPossible());
+			average = controller.activeCourse.getTotalPointsEarned()
+					/ controller.activeCourse.getTotalPointsPossible();
+			if (Double.isNaN(average))
+				currentAvg.setText("Current average: N/A");
+			else
+				currentAvg
+						.setText("Current average: "
+								+ String.format(
+										"%.2f",
+										(controller.activeCourse
+												.getTotalPointsEarned() / controller.activeCourse
+												.getTotalPointsPossible())));
 		}
 		infoPanel.add(currentAvg);
 
@@ -86,7 +103,7 @@ public class CourseInfoPanel extends GUIPanel {
 		} else if (action.equals("setFinalGrade")) {
 			// CONSIDER MAKING A NEW CLASS!!!!
 			// Final grade panel.
-			JPanel setGradePanel = new JPanel(new GridLayout(1, 2));
+			JPanel setGradePanel = new JPanel(new GridLayout(2, 2));
 			setGradePanel.add(new JLabel("Set final letter grade: "));
 			// Convert GradingScale's gradingScaleMap to array of choices.
 			Object[] letterGrades = controller.activeSchool.getGradingScale()
@@ -96,6 +113,19 @@ public class CourseInfoPanel extends GUIPanel {
 			setGradePanel.add(letterGradeComboBox);
 			letterGradeComboBox.setSelectedItem(controller.activeCourse
 					.getFinalGrade());
+			
+			// Button to clear selection (and a label).
+			setGradePanel.add(new JLabel("Clear grade: "));
+			JButton clearBtn = new JButton("Clear");
+			clearBtn.setActionCommand("clearFinalGrade");
+			clearBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (e.getActionCommand().equals("clearFinalGrade"))
+						letterGradeComboBox.setSelectedIndex(-1);
+				}
+			});
+			setGradePanel.add(clearBtn);
+			
 			int test = JOptionPane.showOptionDialog(this, setGradePanel,
 					"Set Final Grade", JOptionPane.OK_CANCEL_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, null, null);
