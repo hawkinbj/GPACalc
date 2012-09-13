@@ -40,7 +40,7 @@ public class User implements Serializable {
 		this.coursesToTake.put(c.getCourseName(), c);
 	}
 
-	public void removeCourseToTake(Course c) {
+	public void removeCourseToTake(String c) {
 		if (this.coursesToTake == null) {
 			this.coursesToTake = new TreeMap<String, Course>();
 		}

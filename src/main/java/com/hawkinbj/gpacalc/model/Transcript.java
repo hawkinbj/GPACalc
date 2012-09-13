@@ -13,7 +13,7 @@ public class Transcript implements Serializable {
 	public Transcript(School school) {
 		this.school = school;
 		this.semesters = new TreeMap<String, Semester>();
-		this.GPA = 0.0D;
+		this.GPA = 0;
 	}
 
 	public School getSchool() {
@@ -32,6 +32,16 @@ public class Transcript implements Serializable {
 
 	public Map<String, Semester> getSemesters() {
 		return this.semesters;
+	}
+
+	public double getCreditHoursCompleted() {
+		double totalHours = 0;
+
+		for (Semester s : semesters.values()) {
+			totalHours += s.getTotalHoursAttempted();
+		}
+
+		return totalHours;
 	}
 
 	public double getGPA() {

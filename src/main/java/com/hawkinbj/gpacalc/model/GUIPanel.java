@@ -50,8 +50,9 @@ public class GUIPanel extends JPanel implements ActionListener, MouseListener {
 				BorderFactory.createEtchedBorder(1), borderTxt, 1, 2));
 	}
 
-	protected JLabel createLabel(String panelText) {
+	protected JLabel createLabel(String labelName, String panelText) {
 		JLabel newLabel = new JLabel(panelText);
+		newLabel.setName(labelName);
 		newLabel.setAlignmentX(0.0F);
 		newLabel.setMaximumSize(new Dimension(200, 50));
 		return newLabel;

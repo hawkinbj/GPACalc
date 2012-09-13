@@ -89,9 +89,7 @@ public class MainMenuPanel extends GUIPanel {
 				this.controller.saveUserList();
 				this.controller.getRootFrame().addPanel(
 						new MainMenuPanel(this.controller), this);
-			} else if (response != -1)
-				;
-		} else
-			;
+			}
+		}
 	}
 }
