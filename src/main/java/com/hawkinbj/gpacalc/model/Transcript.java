@@ -9,6 +9,7 @@ public class Transcript implements Serializable {
 	private Map<String, Semester> semesters;
 	private School school;
 	private double GPA;
+	private double majorGPA;
 
 	public Transcript(School school) {
 		this.school = school;
@@ -50,5 +51,13 @@ public class Transcript implements Serializable {
 
 	public void setGPA(double GPA) {
 		this.GPA = GPA;
+	}
+
+	public double getMajorGPA() {
+		return majorGPA;
+	}
+
+	public void setMajorGPA(double majorGPA) {
+		this.majorGPA = majorGPA;
 	}
 }

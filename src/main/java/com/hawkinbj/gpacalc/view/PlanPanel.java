@@ -49,10 +49,13 @@ public class PlanPanel extends GUIPanel implements ActionListener {
 		this.infoPanel = new JPanel();
 		this.infoPanel.setLayout(new BoxLayout(this.infoPanel, 3));
 
-		createTitledBorder(infoPanel, schoolName);
+		this.createTitledBorder(infoPanel, schoolName);
 
 		double creditHoursCompleted = controller.getActiveTranscript()
 				.getCreditHoursCompleted();
+
+		infoPanel.add(new JLabel("Major: "
+				+ controller.getActiveUser().getMajor()));
 
 		infoPanel.add(new JLabel("Credit Hours Completed: "
 				+ creditHoursCompleted));
@@ -122,7 +125,7 @@ public class PlanPanel extends GUIPanel implements ActionListener {
 		if (coursesToTake.size() == 0) {
 			JLabel instructionLbl = new JLabel("Add a course to get started.");
 			instructionLbl.setForeground(Color.blue);
-			this.coursesToTakePanel.add(instructionLbl);
+			coursesToTakePanel.add(instructionLbl);
 		} else {
 			for (Course c : coursesToTake.values()) {
 				coursesToTakePanel.add(createLabel(c.getCourseName(),
@@ -130,8 +133,9 @@ public class PlanPanel extends GUIPanel implements ActionListener {
 			}
 		}
 
-		this.navigationPanel = new JPanel();
-		navigationPanel.setLayout(new BoxLayout(this.navigationPanel, 3));
+		navigationPanel = new JPanel();
+		navigationPanel.setLayout(new BoxLayout(navigationPanel, 3));
+		navigationPanel.add(createButton("selectMajor", "Select Major"));
 		navigationPanel.add(createButton("addCourse", "Add Course"));
 		navigationPanel.add(createButton("back", "Back"));
 
@@ -146,10 +150,15 @@ public class PlanPanel extends GUIPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		if (action.equals("addCourse"))
+
+		if (action.equals("addCourse")) {
 			controller.getRootFrame()
 					.addPanel(new PlanDialog(controller), this);
-		else if (action.equals("back"))
-			controller.getRootFrame().showPanel("SemesterPanel", this);
+		} else if (action.equals("selectMajor")) {
+			controller.getRootFrame().addPanel(new MajorDialog(controller),
+					this);
+		} else if (action.equals("back"))
+			controller.getRootFrame().addPanel(new SemesterPanel(controller),
+					this);
 	}
 }

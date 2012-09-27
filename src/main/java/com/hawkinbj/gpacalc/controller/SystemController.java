@@ -31,13 +31,17 @@ public class SystemController {
 	private Transcript activeTranscript;
 	private Map<String, User> users;
 	private Map<String, School> schools;
+	private Map<String, String> majors;
 	private final RootFrame rootFrame = new RootFrame(this);
 	private final Set<String> gradeTypes = new HashSet<String>();
 
 	public SystemController() {
 		this.users = new HashMap<String, User>();
 		this.schools = new HashMap<String, School>();
-		populateGradeTypes();
+		this.majors = new HashMap<String, String>();
+
+		this.populateGradeTypes();
+		this.populateMajors();
 
 		if (!new File(this.ROOTDIR).exists()) {
 			new File(this.ROOTDIR).mkdir();
@@ -117,6 +121,13 @@ public class SystemController {
 		this.gradeTypes.add("Essay");
 	}
 
+	private void populateMajors() {
+		this.majors = new HashMap<String, String>();
+		this.majors.put("Computer Science", "CS");
+		this.majors.put("Biology", "BIO");
+		this.majors.put("Math", "MATH");
+	}
+
 	private void populateSchools() {
 		this.schools.put("GMU", new School("GMU", new GradingScale(true)));
 		this.schools.put("UTSA", new School("UTSA", new GradingScale(true)));
@@ -186,6 +197,7 @@ public class SystemController {
 	}
 
 	public void saveUserList() {
+		System.out.println("Saving user list");
 		try {
 			FileOutputStream fos = new FileOutputStream(this.ROOTDIR
 					+ "\\userlist");
@@ -212,36 +224,84 @@ public class SystemController {
 	}
 
 	public double calcSemseterGPA() {
-		double qualityPoints = 0.0D;
-		for (Course course : this.activeSemester.getCourses().values()) {
+		double qualityPoints = 0;
+
+		for (Course course : activeSemester.getCourses().values()) {
 			if (course.getFinalGrade().equals("N/A")) {
-				this.activeSemester.setGPA(-1.0D);
-				return -1.0D;
+				activeSemester.setGPA(-1);
+				return -1;
 			}
 
 			qualityPoints = qualityPoints
-					+ ((Double) this.activeSchool.getGradingScale()
+					+ ((Double) activeSchool.getGradingScale()
 							.getGradingScaleMap().get(course.getFinalGrade()))
 							.doubleValue() * course.getCreditHours();
 		}
-		this.activeSemester.setGPA(qualityPoints
-				/ this.activeSemester.getTotalHoursAttempted());
+
+		double gpa = (qualityPoints / activeSemester.getTotalHoursAttempted());
+
+		activeSemester.setGPA(gpa);
 		saveUserList();
-		return this.activeSemester.getGPA();
+
+		return gpa;
 	}
 
 	public double calcTranscriptGPA() {
-		double gpaTotal = 0.0D;
+		double gpaTotal = 0;
 		int numOfSemesters = 0;
-		for (Semester semester : this.activeTranscript.getSemesters().values()) {
-			if (semester.getGPA() != -1.0D) {
+
+		for (Semester semester : activeTranscript.getSemesters().values()) {
+			if (semester.getGPA() != -1) {
 				numOfSemesters++;
 				gpaTotal += semester.getGPA();
 			}
 		}
-		this.activeTranscript.setGPA(gpaTotal / numOfSemesters);
+
+		double gpa = (gpaTotal / numOfSemesters);
+
+		activeTranscript.setGPA(gpa);
 		saveUserList();
-		return this.activeTranscript.getGPA();
+
+		return gpa;
+	}
+
+	public double calcMajorGPA() {
+		double qualityPoints = 0;
+		double totalCreditHours = 0;
+
+		System.out.println(activeUser.getMajor());
+
+		for (Semester semester : activeTranscript.getSemesters().values()) {
+			for (Course course : semester.getCourses().values()) {
+
+				String activeUserMajor = majors.get(activeUser.getMajor());
+
+				if (activeUserMajor != null
+						&& !course.getFinalGrade().equals("N/A")
+						&& course.getCourseName().startsWith(activeUserMajor)) {
+
+					qualityPoints = qualityPoints
+							+ ((Double) activeSchool.getGradingScale()
+									.getGradingScaleMap()
+									.get(course.getFinalGrade())).doubleValue()
+							* course.getCreditHours();
+
+					totalCreditHours += course.getCreditHours();
+				}
+			}
+		}
+
+		double gpa = (qualityPoints / totalCreditHours);
+
+		System.out.println("qualityPoints: " + qualityPoints);
+		System.out.println("totalCreditHours: " + totalCreditHours);
+		System.out.println("gpa: " + gpa);
+
+		activeTranscript.setMajorGPA(gpa);
+		saveUserList();
+
+		return gpa;
+
 	}
 
 	public Semester getActiveSemester() {
@@ -290,6 +350,10 @@ public class SystemController {
 
 	public void setActiveTranscript(Transcript activeTranscript) {
 		this.activeTranscript = activeTranscript;
+	}
+
+	public Map<String, String> getMajors() {
+		return majors;
 	}
 
 	public Map<String, School> getSchools() {

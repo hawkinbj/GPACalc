@@ -9,6 +9,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -5899680116199753971L;
 	private String username;
 	private String password;
+	private String major;
 	private boolean rememberLoginInfo;
 	private Map<String, Transcript> transcripts;
 	protected Map<String, Course> coursesToTake;
@@ -87,5 +88,13 @@ public class User implements Serializable {
 
 	public String toString() {
 		return this.username;
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
 	}
 }

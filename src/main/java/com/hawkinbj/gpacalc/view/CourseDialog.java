@@ -81,6 +81,7 @@ public class CourseDialog extends GUIPanel {
 			this.letterGradeComboBox.setSelectedIndex(-1);
 		else
 			this.letterGradeComboBox.setSelectedItem(finalGrade);
+		
 		this.namePanel.add(this.letterGradeComboBox);
 
 		this.gradeTypesPanel = new JPanel();

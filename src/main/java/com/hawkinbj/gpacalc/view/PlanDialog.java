@@ -32,30 +32,31 @@ public class PlanDialog extends GUIPanel implements ActionListener {
 	private void addComponentsToPane() {
 		this.courseNameField = new JTextField(10);
 
-		this.namePanel = new JPanel(new GridLayout(3, 2));
-		this.namePanel.add(new JLabel("Course name:"));
-		this.namePanel.add(this.courseNameField);
-		this.namePanel.add(new JLabel("Credit hours:"));
+		namePanel = new JPanel(new GridLayout(3, 2));
+		namePanel.add(new JLabel("Course name:"));
+		namePanel.add(this.courseNameField);
+		namePanel.add(new JLabel("Credit hours:"));
 
-		this.creditHrsComboBox = new JComboBox(CREDITHOURS);
+		creditHrsComboBox = new JComboBox(CREDITHOURS);
 		this.creditHrsComboBox.setSelectedItem("3");
 
-		this.namePanel.add(this.creditHrsComboBox);
+		namePanel.add(this.creditHrsComboBox);
 
-		this.navigationPanel = new JPanel(new GridLayout(2, 1));
-		createTitledBorder(this.navigationPanel, "Navigation");
-		this.navigationPanel.add(createButton("add", "Add"));
-		this.navigationPanel.add(createButton("cancel", "Cancel"));
+		navigationPanel = new JPanel(new GridLayout(2, 1));
+		createTitledBorder(navigationPanel, "Navigation");
+		navigationPanel.add(createButton("add", "Add"));
+		navigationPanel.add(createButton("cancel", "Cancel"));
 
-		setLayout(new BoxLayout(this, 3));
-		add(this.namePanel);
-		add(this.navigationPanel);
+		this.setLayout(new BoxLayout(this, 3));
+		add(namePanel);
+		add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
+
 		if (action.equals("cancel")) {
-			this.controller.getRootFrame().showPanel("planPanel", this);
+			controller.getRootFrame().showPanel("PlanPanel", this);
 		} else if (action.equals("add")) {
 			String courseName = this.courseNameField.getText();
 
@@ -64,7 +65,7 @@ public class PlanDialog extends GUIPanel implements ActionListener {
 						"Please enter a course name.", "Error", 0);
 			}
 
-			if (this.controller.getActiveUser().getCoursesToTake().keySet()
+			if (controller.getActiveUser().getCoursesToTake().keySet()
 					.contains(courseName)) {
 				JOptionPane.showMessageDialog(this, "Course already exists.",
 						"Error", 0);
@@ -73,11 +74,13 @@ public class PlanDialog extends GUIPanel implements ActionListener {
 						.parseInt((String) this.creditHrsComboBox
 								.getSelectedItem());
 
-				this.controller.getActiveUser().addCourseToTake(
+				controller.getActiveUser().addCourseToTake(
 						new Course(courseName, creditHours));
 
-				this.controller.getRootFrame().addPanel(
-						new PlanPanel(this.controller), this);
+				controller.saveActiveUser();
+
+				controller.getRootFrame().addPanel(new PlanPanel(controller),
+						this);
 			}
 		}
 	}

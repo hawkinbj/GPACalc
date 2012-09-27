@@ -19,11 +19,13 @@ public class GradePanel extends GUIPanel {
 	private Grade grade;
 	private JPanel entryPanel;
 	private JPanel navigationPanel;
+
 	private static final String[] PERCENTAGES = { "5", "10", "15", "20", "25",
 			"30", "35", "40", "45" };
 
 	private static final String[] NUMOFGRADES = { "1", "2", "3", "4", "5", "6",
 			"7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
+
 	private JComboBox percentComboBox;
 	private JComboBox numOfGradesComboBox;
 	private JCheckBox dropLowestBox;
@@ -90,16 +92,15 @@ public class GradePanel extends GUIPanel {
 
 		}
 
-		this.navigationPanel = new JPanel(new GridLayout(2, 1));
-		createTitledBorder(this.navigationPanel, "Navigation");
+		navigationPanel = new JPanel(new GridLayout(2, 1));
+		navigationPanel.add(createButton("done", "Done"));
+		navigationPanel.add(createButton("cancel", "Cancel"));
 
-		this.navigationPanel.add(createButton("done", "Done"));
-
-		this.navigationPanel.add(createButton("cancel", "Cancel"));
+		this.createTitledBorder(this.navigationPanel, "Navigation");
 
 		setLayout(new BoxLayout(this, 3));
-		add(this.entryPanel);
-		add(this.navigationPanel);
+		add(entryPanel);
+		add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -116,6 +117,7 @@ public class GradePanel extends GUIPanel {
 								.getSelectedItem());
 				int pointsPossiblePer = Integer.parseInt(pointsPer);
 				double totalEarned = Double.parseDouble(total);
+
 				if ((totalEarned > pointsPossiblePer * numOfGrades)
 						&& (!this.extraCreditBox.isSelected())) {
 					JOptionPane

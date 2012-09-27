@@ -24,84 +24,96 @@ public class SemesterPanel extends GUIPanel {
 	protected JPanel infoPanel;
 	protected JPanel semestersPanel;
 	protected JPanel navigationPanel;
+	private JLabel overallGPALbl;
+	private JLabel majorGPALbl;
 
 	public SemesterPanel(SystemController controller) {
 		super(controller);
-		this.schoolName = controller.getActiveSchool().getName();
-		addComponentsToPane();
+		schoolName = controller.getActiveSchool().getName();
+		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
-		this.infoPanel = new JPanel();
-		this.infoPanel.setLayout(new BoxLayout(this.infoPanel, 3));
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(this.infoPanel, 3));
 
-		createTitledBorder(this.infoPanel, this.schoolName);
+		this.createTitledBorder(this.infoPanel, this.schoolName);
 
-		double gpa = this.controller.calcTranscriptGPA();
-		JLabel gpaLbl = new JLabel();
+		overallGPALbl = this.formatGPADisplay("Overall GPA: ",
+				controller.calcTranscriptGPA());
 
-		if (Double.isNaN(gpa))
-			gpaLbl.setText("GPA: N/A");
-		else {
-			gpaLbl.setText("GPA: "
-					+ String.format("%.2f",
-							new Object[] { Double.valueOf(gpa) }));
-		}
-		this.infoPanel.add(gpaLbl);
+		majorGPALbl = this.formatGPADisplay("Major GPA: ",
+				controller.calcMajorGPA());
 
-		this.semestersPanel = new JPanel();
-		this.semestersPanel.setLayout(new BoxLayout(this.semestersPanel, 3));
+		infoPanel.add(overallGPALbl);
+		infoPanel.add(majorGPALbl);
 
-		createTitledBorder(this.semestersPanel, "Select Semester");
+		semestersPanel = new JPanel();
+		semestersPanel.setLayout(new BoxLayout(semestersPanel, 3));
 
-		Object[] sortedSemesters = this.controller.getActiveTranscript()
+		this.createTitledBorder(semestersPanel, "Select Semester");
+
+		Object[] sortedSemesters = controller.getActiveTranscript()
 				.getSemesters().keySet().toArray();
 
 		if (sortedSemesters.length == 0) {
 			JLabel instructionLbl = new JLabel(
 					"Add a new semester to get started.");
 			instructionLbl.setForeground(Color.blue);
-			this.semestersPanel.add(instructionLbl);
+			semestersPanel.add(instructionLbl);
 		} else {
 			Arrays.sort(sortedSemesters, Collections.reverseOrder());
 
 			for (Object semester : sortedSemesters) {
-				this.semestersPanel.add(createButton((String) semester));
+				semestersPanel.add(createButton((String) semester));
 			}
 		}
 
-		this.navigationPanel = new JPanel();
-		this.navigationPanel.setLayout(new BoxLayout(this.navigationPanel, 3));
+		navigationPanel = new JPanel();
+		navigationPanel.setLayout(new BoxLayout(navigationPanel, 3));
 
-		createTitledBorder(this.navigationPanel, "Navigation");
+		createTitledBorder(navigationPanel, "Navigation");
 
-		this.navigationPanel
-				.add(createButton("newSemesterPanel", "Add new..."));
-		this.navigationPanel.add(createButton("newPlanPanel", "Plan of study"));
-		this.navigationPanel.add(createButton("back", "Back"));
+		navigationPanel.add(createButton("newSemesterPanel", "Add new..."));
+		navigationPanel.add(createButton("newPlanPanel", "Plan of study"));
+		navigationPanel.add(createButton("back", "Back"));
 
 		setLayout(new BoxLayout(this, 3));
-		add(this.infoPanel);
-		add(this.semestersPanel);
-		add(this.navigationPanel);
+		add(infoPanel);
+		add(semestersPanel);
+		add(navigationPanel);
+	}
+
+	private JLabel formatGPADisplay(String baseText, double GPA) {
+		JLabel gpaLabel = new JLabel();
+
+		if (Double.isNaN(GPA))
+			gpaLabel.setText(baseText + "N/A");
+		else {
+			gpaLabel.setText(baseText
+					+ String.format("%.2f",
+							new Object[] { Double.valueOf(GPA) }));
+		}
+
+		return gpaLabel;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
+
 		if (action.equals("back")) {
-			this.controller.setActiveTranscript(null);
-			this.controller.getRootFrame().showPanel("MainMenuPanel", this);
+			controller.setActiveTranscript(null);
+			controller.getRootFrame().showPanel("MainMenuPanel", this);
 		} else if (action.equals("newSemesterPanel")) {
-			this.controller.getRootFrame().addPanel(
-					new SemesterDialog(this.controller), this);
+			controller.getRootFrame().addPanel(new SemesterDialog(controller),
+					this);
 		} else if (action.equals("newPlanPanel")) {
-			this.controller.getRootFrame().addPanel(
-					new PlanPanel(this.controller), this);
+			controller.getRootFrame().addPanel(new PlanPanel(controller), this);
 		} else {
-			this.controller.setActiveSemester(((Semester) this.controller
+			controller.setActiveSemester(((Semester) controller
 					.getActiveTranscript().getSemesters().get(action)));
-			this.controller.getRootFrame().addPanel(
-					new CoursePanel(this.controller), this);
+			controller.getRootFrame().addPanel(new CoursePanel(controller),
+					this);
 		}
 	}
 
@@ -114,13 +126,12 @@ public class SemesterPanel extends GUIPanel {
 					"Are you sure you wish to remove this semester?",
 					"Confirm", 0, 3);
 			if (response == 0) {
-				((Transcript) this.controller.getActiveUser().getTranscripts()
-						.get(this.schoolName)).removeSemester(component
-						.getName());
-				this.controller.saveUserList();
+				((Transcript) controller.getActiveUser().getTranscripts()
+						.get(schoolName)).removeSemester(component.getName());
+				controller.saveUserList();
 
-				this.controller.getRootFrame().addPanel(
-						new SemesterPanel(this.controller), this);
+				controller.getRootFrame().addPanel(
+						new SemesterPanel(controller), this);
 			}
 		}
 	}
