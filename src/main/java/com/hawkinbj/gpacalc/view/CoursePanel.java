@@ -17,10 +17,18 @@ import com.hawkinbj.gpacalc.model.Course;
 import com.hawkinbj.gpacalc.model.GUIPanel;
 
 public class CoursePanel extends GUIPanel implements ActionListener {
+
 	private static final long serialVersionUID = -6768153191699813450L;
+
 	protected JPanel infoPanel;
+
 	protected JPanel coursePanel;
+
 	protected JPanel navigationPanel;
+
+	private JLabel gpaLbl;
+
+	private JLabel creditHoursLbl;
 
 	public CoursePanel(SystemController controller) {
 		super(controller);
@@ -28,74 +36,82 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 	}
 
 	private void addComponentsToPane() {
-		this.infoPanel = new JPanel();
-		this.infoPanel.setLayout(new BoxLayout(this.infoPanel, 3));
-		createTitledBorder(this.infoPanel, this.controller.getActiveSemester()
-				.getSchoolName() + " " + this.controller.getActiveSemester());
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(infoPanel, 3));
 
-		JLabel creditHoursLbl = new JLabel("Credit hours: "
-				+ Integer.toString(this.controller.getActiveSemester()
+		creditHoursLbl = new JLabel("Credit hours: "
+				+ Integer.toString(controller.getActiveSemester()
 						.getTotalHoursAttempted()));
-		this.infoPanel.add(creditHoursLbl);
 
-		double gpa = this.controller.calcSemseterGPA();
-		JLabel gpaLbl = new JLabel();
+		gpaLbl = this.formatGPADisplay("Semester GPA: ",
+				controller.calcSemseterGPA());
 
-		if ((gpa == -1.0D) || (Double.isNaN(gpa)))
-			gpaLbl.setText("Semester GPA: N/A");
-		else {
-			gpaLbl.setText("Semester GPA: "
-					+ String.format("%.2f",
-							new Object[] { Double.valueOf(gpa) }));
-		}
+		infoPanel.add(creditHoursLbl);
+		infoPanel.add(gpaLbl);
 
-		this.infoPanel.add(gpaLbl);
+		this.createTitledBorder(infoPanel, controller.getActiveSemester()
+				.getSchoolName() + " " + controller.getActiveSemester());
 
-		this.coursePanel = new JPanel();
-		this.coursePanel.setLayout(new BoxLayout(this.coursePanel, 3));
-		createTitledBorder(this.coursePanel, "Select Course");
+		coursePanel = new JPanel();
+		coursePanel.setLayout(new BoxLayout(coursePanel, 3));
 
-		if (this.controller.getActiveSemester().getCourses().size() == 0) {
+		this.createTitledBorder(coursePanel, "Select Course");
+
+		if (controller.getActiveSemester().getCourses().size() == 0) {
 			JLabel instructionLbl = new JLabel(
 					"Add a new course to get started.");
 			instructionLbl.setForeground(Color.blue);
-			this.coursePanel.add(instructionLbl);
+			coursePanel.add(instructionLbl);
 		} else {
-			for (String key : this.controller.getActiveSemester().getCourses()
+			for (String key : controller.getActiveSemester().getCourses()
 					.keySet()) {
-				this.coursePanel.add(createButton(key));
+				coursePanel.add(createButton(key));
 			}
 
 		}
 
-		this.navigationPanel = new JPanel();
-		this.navigationPanel.setLayout(new BoxLayout(this.navigationPanel, 3));
-		createTitledBorder(this.navigationPanel, "Navigation");
+		navigationPanel = new JPanel();
+		navigationPanel.setLayout(new BoxLayout(navigationPanel, 3));
+		navigationPanel.add(createButton("addCourse", "Add new..."));
+		navigationPanel.add(createButton("back", "Back"));
 
-		this.navigationPanel.add(createButton("addCourse", "Add new..."));
+		this.createTitledBorder(navigationPanel, "Navigation");
 
-		this.navigationPanel.add(createButton("back", "Back"));
+		this.setLayout(new BoxLayout(this, 3));
+		this.add(infoPanel);
+		this.add(coursePanel);
+		this.add(navigationPanel);
+	}
 
-		setLayout(new BoxLayout(this, 3));
-		add(this.infoPanel);
-		add(this.coursePanel);
-		add(this.navigationPanel);
+	private JLabel formatGPADisplay(String baseText, double GPA) {
+		JLabel gpaLabel = new JLabel();
+
+		if (GPA == -1 || Double.isNaN(GPA)) {
+			gpaLabel.setText(baseText + "N/A");
+		} else {
+			gpaLabel.setText(baseText
+					+ String.format("%.2f",
+							new Object[] { Double.valueOf(GPA) }));
+		}
+
+		return gpaLabel;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
+
 		if (action.equals("back")) {
-			this.controller.setActiveSemester(null);
-			this.controller.getRootFrame().addPanel(
-					new SemesterPanel(this.controller), this);
+			controller.setActiveSemester(null);
+			controller.getRootFrame().addPanel(new SemesterPanel(controller),
+					this);
 		} else if (action.equals("addCourse")) {
-			this.controller.getRootFrame().addPanel(
-					new CourseDialog(this.controller), this);
+			controller.getRootFrame().addPanel(new CourseDialog(controller),
+					this);
 		} else {
-			this.controller.setActiveCourse(((Course) this.controller
-					.getActiveSemester().getCourses().get(action)));
-			this.controller.getRootFrame().addPanel(
-					new CourseInfoPanel(this.controller), this);
+			controller.setActiveCourse(((Course) controller.getActiveSemester()
+					.getCourses().get(action)));
+			controller.getRootFrame().addPanel(new CourseInfoPanel(controller),
+					this);
 		}
 	}
 
@@ -104,18 +120,18 @@ public class CoursePanel extends GUIPanel implements ActionListener {
 
 		if ((SwingUtilities.isRightMouseButton(e))
 				&& (component.getName() != null)) {
+
 			int response = JOptionPane.showConfirmDialog(this,
 					"Are you sure you wish to remove this course?", "Confirm",
 					0, 3);
+
 			if (response == 0) {
-				this.controller.getActiveSemester().getCourses()
+				controller.getActiveSemester().getCourses()
 						.remove(component.getName());
-				this.controller.saveUserList();
-				this.controller.getRootFrame().addPanel(
-						new CoursePanel(this.controller), this);
-			} else if (response != -1)
-				;
-		} else
-			;
+				controller.saveUserList();
+				controller.getRootFrame().addPanel(new CoursePanel(controller),
+						this);
+			}
+		}
 	}
 }

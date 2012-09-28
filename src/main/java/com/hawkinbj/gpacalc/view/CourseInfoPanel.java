@@ -15,98 +15,110 @@ import com.hawkinbj.gpacalc.model.GUIPanel;
 import com.hawkinbj.gpacalc.model.Grade;
 
 public class CourseInfoPanel extends GUIPanel {
+
 	private static final long serialVersionUID = 1488575000302467412L;
+
 	private JPanel infoPanel;
+
 	private JPanel gradeTypesPanel;
+
 	private JPanel navigationPanel;
+
 	private JLabel finalGradeLabel;
+
+	private JLabel currentAverage;
+
+	private Double average;
 
 	public CourseInfoPanel(SystemController controller) {
 		super(controller);
-		addComponentsToPane();
+		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
-		this.infoPanel = new JPanel();
-		this.infoPanel.setLayout(new BoxLayout(this.infoPanel, 3));
-		createTitledBorder(this.infoPanel, this.controller.getActiveCourse()
-				.getCourseName());
-		this.infoPanel.add(new JLabel("Credit hours: "
-				+ Integer.toString(this.controller.getActiveCourse()
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(infoPanel, 3));
+		infoPanel.add(new JLabel("Credit hours: "
+				+ Integer.toString(controller.getActiveCourse()
 						.getCreditHours())));
 
-		this.finalGradeLabel = new JLabel("Final grade: "
-				+ this.controller.getActiveCourse().getFinalGrade());
-		this.infoPanel.add(this.finalGradeLabel);
+		finalGradeLabel = new JLabel("Final grade: "
+				+ controller.getActiveCourse().getFinalGrade());
 
-		JLabel currentAvg = new JLabel();
-		Double average = Double.valueOf(0.0D);
+		infoPanel.add(this.finalGradeLabel);
 
-		if (this.controller.getActiveCourse().getWeighted()) {
-			average = Double.valueOf(this.controller.getActiveCourse()
+		this.createTitledBorder(infoPanel, controller.getActiveCourse()
+				.getCourseName());
+
+		if (controller.getActiveCourse().getWeighted()) {
+			average = Double.valueOf(controller.getActiveCourse()
 					.getWeightedTotalPointsEarned());
-			if (Double.isNaN(average.doubleValue()))
-				currentAvg.setText("Current average: N/A");
-			else
-				currentAvg.setText("Current average: "
-						+ String.format("%.2f", new Object[] { average }));
 		} else {
-			average = Double.valueOf(this.controller.getActiveCourse()
+			average = Double.valueOf(controller.getActiveCourse()
 					.getTotalPointsEarned()
-					/ this.controller.getActiveCourse()
-							.getTotalPointsPossible());
-			if (Double.isNaN(average.doubleValue()))
-				currentAvg.setText("Current average: N/A");
-			else
-				currentAvg.setText("Current average: "
-						+ String.format("%.2f", new Object[] { Double
-								.valueOf(this.controller.getActiveCourse()
-										.getTotalPointsEarned()
-										/ this.controller.getActiveCourse()
-												.getTotalPointsPossible()) }));
+					/ controller.getActiveCourse().getTotalPointsPossible());
 		}
-		this.infoPanel.add(currentAvg);
 
-		this.gradeTypesPanel = new JPanel();
-		this.gradeTypesPanel.setLayout(new BoxLayout(this.gradeTypesPanel, 3));
-		createTitledBorder(this.gradeTypesPanel, "Select Grade Type");
-		for (String gradeType : this.controller.getActiveCourse().getGrades()
+		currentAverage = this.formatAverage("Current average: ", average);
+
+		infoPanel.add(currentAverage);
+
+		gradeTypesPanel = new JPanel();
+		gradeTypesPanel.setLayout(new BoxLayout(gradeTypesPanel, 3));
+
+		this.createTitledBorder(gradeTypesPanel, "Select Grade Type");
+
+		for (String gradeType : controller.getActiveCourse().getGrades()
 				.keySet()) {
-			this.gradeTypesPanel.add(createButton(gradeType));
+			gradeTypesPanel.add(createButton(gradeType));
 		}
 
-		this.gradeTypesPanel.add(createButton("setFinalGrade", "Final Grade"));
+		gradeTypesPanel.add(createButton("setFinalGrade", "Final Grade"));
 
-		this.navigationPanel = new JPanel();
-		this.navigationPanel.setLayout(new BoxLayout(this.navigationPanel, 3));
-		createTitledBorder(this.navigationPanel, "Navigation");
+		navigationPanel = new JPanel();
+		navigationPanel.setLayout(new BoxLayout(navigationPanel, 3));
+		navigationPanel.add(createButton("edit", "Edit Course..."));
+		navigationPanel.add(createButton("back", "Back"));
 
-		this.navigationPanel.add(createButton("edit", "Edit Course..."));
+		this.createTitledBorder(navigationPanel, "Navigation");
 
-		this.navigationPanel.add(createButton("back", "Back"));
+		this.setLayout(new BoxLayout(this, 3));
+		this.add(infoPanel);
+		this.add(gradeTypesPanel);
+		this.add(navigationPanel);
+	}
 
-		setLayout(new BoxLayout(this, 3));
-		add(this.infoPanel);
-		add(this.gradeTypesPanel);
-		add(this.navigationPanel);
+	private JLabel formatAverage(String baseText, double average) {
+		JLabel averageLbl = new JLabel();
+
+		if (Double.isNaN(average))
+			averageLbl.setText(baseText + "N/A");
+		else {
+			averageLbl.setText(baseText
+					+ String.format("%.2f",
+							new Object[] { Double.valueOf(average) }));
+		}
+
+		return averageLbl;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		if (action.equals("back")) {
-			this.controller.setActiveCourse(null);
 
-			this.controller.getRootFrame().addPanel(
-					new CoursePanel(this.controller), this);
+		if (action.equals("back")) {
+			controller.setActiveCourse(null);
+
+			controller.getRootFrame().addPanel(new CoursePanel(controller),
+					this);
 		} else if (action.equals("setFinalGrade")) {
-			this.controller.getRootFrame().addPanel(
-					new FinalGradePanel(this.controller), this);
+			controller.getRootFrame().addPanel(new FinalGradePanel(controller),
+					this);
 		} else if (action.equals("edit")) {
-			this.controller.getRootFrame().addPanel(
-					new CourseDialog(this.controller), this);
+			controller.getRootFrame().addPanel(new CourseDialog(controller),
+					this);
 		} else {
-			this.controller.getRootFrame().addPanel(
-					new GradePanel(this.controller, (Grade) this.controller
+			controller.getRootFrame().addPanel(
+					new GradePanel(controller, (Grade) controller
 							.getActiveCourse().getGrades().get(action)), this);
 		}
 	}
@@ -115,19 +127,19 @@ public class CourseInfoPanel extends GUIPanel {
 		Component component = e.getComponent();
 
 		if ((SwingUtilities.isRightMouseButton(e))
-				&& (component.getName() != null)) {
-			if (component.getName().equals("setFinalGrade"))
-				return;
+				&& (component.getName() != null && !component.getName().equals(
+						"setFinalGrade"))) {
+
 			int response = JOptionPane.showConfirmDialog(this,
 					"Are you sure you wish to remove this grade type?",
 					"Confirm", 0, 3);
+
 			if (response == 0) {
-				this.controller.getActiveCourse().removeGrade(
-						component.getName());
-				this.controller.saveUserList();
-				this.gradeTypesPanel.remove(component);
-				this.gradeTypesPanel.revalidate();
-				this.gradeTypesPanel.repaint();
+				controller.getActiveCourse().removeGrade(component.getName());
+				controller.saveUserList();
+				gradeTypesPanel.remove(component);
+				gradeTypesPanel.revalidate();
+				gradeTypesPanel.repaint();
 			}
 		}
 	}
