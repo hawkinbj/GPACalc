@@ -15,70 +15,79 @@ import com.hawkinbj.gpacalc.model.GUIPanel;
 
 public class LoginPanel extends GUIPanel {
 	private static final long serialVersionUID = 2318278158794448042L;
+
 	private JLabel usernameLabel;
+
 	private JLabel passwordLabel;
+
 	private JTextField usernameField;
+
 	private JTextField passwordField;
+
 	private JPanel entryPanel;
+
 	private JPanel rememberInfoPanel;
+
 	private JPanel navigationPanel;
+
 	private JCheckBox rememberInfoBox;
 
 	public LoginPanel(SystemController controller) {
 		super(controller);
-		addComponentsToPane();
+		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
-		this.usernameLabel = new JLabel("Username:");
-		this.usernameField = new JTextField(15);
-		this.passwordLabel = new JLabel("Password:");
-		this.passwordField = new JPasswordField(15);
+		usernameLabel = new JLabel("Username:");
+		usernameField = new JTextField(15);
+		passwordLabel = new JLabel("Password:");
+		passwordField = new JPasswordField(15);
 
-		this.entryPanel = new JPanel(new GridLayout(4, 2));
+		entryPanel = new JPanel(new GridLayout(4, 2));
+		entryPanel.add(usernameLabel);
+		entryPanel.add(usernameField);
+		entryPanel.add(passwordLabel);
+		entryPanel.add(passwordField);
 
-		this.entryPanel.add(this.usernameLabel);
-		this.entryPanel.add(this.usernameField);
-		this.entryPanel.add(this.passwordLabel);
-		this.entryPanel.add(this.passwordField);
-		createTitledBorder(this.entryPanel, "Login");
+		this.createTitledBorder(entryPanel, "Login");
 
-		this.rememberInfoPanel = new JPanel();
-		this.rememberInfoPanel.setLayout(new BoxLayout(this.rememberInfoPanel,
-				3));
+		rememberInfoPanel = new JPanel();
+		rememberInfoPanel.setLayout(new BoxLayout(rememberInfoPanel, 3));
+		rememberInfoBox = new JCheckBox("Stay logged in?");
+		rememberInfoPanel.add(rememberInfoBox);
 
-		this.rememberInfoBox = new JCheckBox("Stay logged in?");
-		this.rememberInfoPanel.add(this.rememberInfoBox);
+		navigationPanel = new JPanel(new GridLayout(2, 1));
+		navigationPanel.add(createButton("submit", "Submit"));
+		navigationPanel.add(createButton("back", "Back"));
 
-		this.navigationPanel = new JPanel(new GridLayout(2, 1));
-		createTitledBorder(this.navigationPanel, "Navigation");
-		this.navigationPanel.add(createButton("submit", "Submit"));
-		this.navigationPanel.add(createButton("back", "Back"));
+		this.createTitledBorder(navigationPanel, "Navigation");
 
-		setLayout(new BoxLayout(this, 3));
-		add(this.entryPanel);
-		add(this.rememberInfoPanel);
-		add(this.navigationPanel);
+		this.setLayout(new BoxLayout(this, 3));
+		this.add(entryPanel);
+		this.add(rememberInfoPanel);
+		this.add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		String username = usernameField.getText();
+		String password = passwordField.getText();
 		String action = e.getActionCommand();
-		String username = this.usernameField.getText();
-		String password = this.passwordField.getText();
+
 		if (action.equals("submit")) {
-			if (this.controller.login(username, password)) {
-				if (this.rememberInfoBox.isSelected()) {
-					this.controller.getActiveUser().setRememberLoginInfo(true);
-					this.controller.saveActiveUser();
+			if (controller.login(username, password)) {
+				if (rememberInfoBox.isSelected()) {
+					controller.getActiveUser().setRememberLoginInfo(true);
+					controller.saveActiveUser();
 				}
-				this.controller.getRootFrame().addPanel(
-						new MainMenuPanel(this.controller), this);
+
+				controller.getRootFrame().addPanel(
+						new MainMenuPanel(controller), this);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"Incorrect login or password", "Error", 0);
 			}
+		} else if (action.equals("back")) {
+			controller.getRootFrame().showPanel("WelcomePanel", this);
 		}
-		if (action.equals("back"))
-			this.controller.getRootFrame().showPanel("WelcomePanel", this);
 	}
 }

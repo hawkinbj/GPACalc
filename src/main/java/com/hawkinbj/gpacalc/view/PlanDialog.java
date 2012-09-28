@@ -17,39 +17,46 @@ import com.hawkinbj.gpacalc.model.GUIPanel;
 
 public class PlanDialog extends GUIPanel implements ActionListener {
 	private static final long serialVersionUID = 8646422403970117818L;
+
 	protected static final String[] CREDITHOURS = { "0", "1", "2", "3", "4" };
+
 	protected JTextField courseNameField;
+
 	protected JTextField newGradeTypeField;
+
 	private JPanel namePanel;
+
 	private JPanel navigationPanel;
+
 	private JComboBox<String> creditHrsComboBox;
 
 	public PlanDialog(SystemController controller) {
 		super(controller);
-		addComponentsToPane();
+		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
-		this.courseNameField = new JTextField(10);
+		courseNameField = new JTextField(10);
 
 		namePanel = new JPanel(new GridLayout(3, 2));
 		namePanel.add(new JLabel("Course name:"));
-		namePanel.add(this.courseNameField);
+		namePanel.add(courseNameField);
 		namePanel.add(new JLabel("Credit hours:"));
 
-		creditHrsComboBox = new JComboBox(CREDITHOURS);
-		this.creditHrsComboBox.setSelectedItem("3");
+		creditHrsComboBox = new JComboBox<String>(CREDITHOURS);
+		creditHrsComboBox.setSelectedItem("3");
 
-		namePanel.add(this.creditHrsComboBox);
+		namePanel.add(creditHrsComboBox);
 
 		navigationPanel = new JPanel(new GridLayout(2, 1));
-		createTitledBorder(navigationPanel, "Navigation");
 		navigationPanel.add(createButton("add", "Add"));
 		navigationPanel.add(createButton("cancel", "Cancel"));
 
+		createTitledBorder(navigationPanel, "Navigation");
+
 		this.setLayout(new BoxLayout(this, 3));
-		add(namePanel);
-		add(navigationPanel);
+		this.add(namePanel);
+		this.add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {

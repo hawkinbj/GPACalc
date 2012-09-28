@@ -3,7 +3,6 @@ package com.hawkinbj.gpacalc.view;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -16,25 +15,31 @@ import com.hawkinbj.gpacalc.model.GUIPanel;
 public class MajorDialog extends GUIPanel implements ActionListener {
 
 	private static final long serialVersionUID = 5163970549266948075L;
-	private JComboBox majorComboBox;
+
+	private JComboBox<String> majorComboBox;
 
 	private JPanel majorPanel;
+
 	private JPanel navigationPanel;
+
+	private String activeUserMajor;
 
 	public MajorDialog(SystemController controller) {
 		super(controller);
 
-		majorComboBox = new JComboBox(controller.getMajors().keySet().toArray());
+		controller.getMajors().keySet()
+				.toArray(new String[controller.getMajors().size()]);
 
-		addComponentsToPane();
+		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
+		majorComboBox = new JComboBox<String>();
 
 		majorPanel = new JPanel(new GridLayout(1, 2));
 		majorPanel.add(new JLabel("Select major: "));
 
-		String activeUserMajor = controller.getActiveUser().getMajor();
+		activeUserMajor = controller.getActiveUser().getMajor();
 
 		if (activeUserMajor != null) {
 			majorComboBox.setSelectedItem(activeUserMajor);
@@ -50,9 +55,9 @@ public class MajorDialog extends GUIPanel implements ActionListener {
 
 		this.createTitledBorder(this.navigationPanel, "Navigation");
 
-		setLayout(new BoxLayout(this, 3));
-		add(majorPanel);
-		add(navigationPanel);
+		this.setLayout(new BoxLayout(this, 3));
+		this.add(majorPanel);
+		this.add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {

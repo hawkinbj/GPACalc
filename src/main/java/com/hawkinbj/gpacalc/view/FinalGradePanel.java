@@ -61,6 +61,7 @@ public class FinalGradePanel extends GUIPanel {
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
+
 		if (action.equals("clearFinalGrade")) {
 			this.letterGradeComboBox.setSelectedIndex(-1);
 		} else if (action.equals("done")) {

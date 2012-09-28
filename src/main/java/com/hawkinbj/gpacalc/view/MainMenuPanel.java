@@ -17,78 +17,84 @@ import com.hawkinbj.gpacalc.model.GUIPanel;
 
 public class MainMenuPanel extends GUIPanel {
 	private static final long serialVersionUID = 997821906993439522L;
+
 	protected JPanel instructionPanel;
+
 	protected JPanel schoolsPanel;
+
 	protected JPanel navigationPanel;
 
 	public MainMenuPanel(SystemController controller) {
 		super(controller);
-		addComponentsToPane();
+		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
-		this.schoolsPanel = new JPanel();
-		this.schoolsPanel.setLayout(new BoxLayout(this.schoolsPanel, 3));
-		createTitledBorder(this.schoolsPanel, "Select School");
+		schoolsPanel = new JPanel();
+		schoolsPanel.setLayout(new BoxLayout(schoolsPanel, 3));
 
-		if (this.controller.getActiveUser().getTranscripts().size() == 0) {
+		this.createTitledBorder(schoolsPanel, "Select School");
+
+		if (controller.getActiveUser().getTranscripts().size() == 0) {
 			JLabel instructionLbl = new JLabel(
 					"Add a new school to get started.");
 			instructionLbl.setForeground(Color.blue);
-			this.schoolsPanel.add(instructionLbl);
+			schoolsPanel.add(instructionLbl);
 		} else {
-			Iterator<String> localIterator = this.controller.getActiveUser()
+			Iterator<String> localIterator = controller.getActiveUser()
 					.getTranscripts().keySet().iterator();
 
 			while (localIterator.hasNext()) {
 				String schoolName = (String) localIterator.next();
-				this.schoolsPanel.add(createButton(schoolName));
+				schoolsPanel.add(createButton(schoolName));
 			}
 
 		}
 
-		this.navigationPanel = new JPanel();
-		this.navigationPanel.setLayout(new BoxLayout(this.navigationPanel, 3));
-		createTitledBorder(this.navigationPanel, "Navigation");
+		navigationPanel = new JPanel();
+		navigationPanel.setLayout(new BoxLayout(navigationPanel, 3));
+		navigationPanel.add(createButton("selectSchool", "Add new..."));
 
-		this.navigationPanel.add(createButton("selectSchool", "Add new..."));
+		this.createTitledBorder(navigationPanel, "Navigation");
 
-		setLayout(new BoxLayout(this, 3));
-
-		add(this.schoolsPanel);
-		add(this.navigationPanel);
+		this.setLayout(new BoxLayout(this, 3));
+		this.add(schoolsPanel);
+		this.add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
+
 		if (action.equals("selectSchool")) {
-			this.controller.getRootFrame().addPanel(
-					new SchoolPanel(this.controller), this);
+			controller.getRootFrame().addPanel(new SchoolPanel(controller),
+					this);
 		} else {
-			this.controller.setActiveTranscript(this.controller.getActiveUser()
+			controller.setActiveTranscript(controller.getActiveUser()
 					.getTranscript(action));
-			this.controller.setActiveSchool(this.controller.getActiveUser()
+
+			controller.setActiveSchool(controller.getActiveUser()
 					.getTranscript(action).getSchool());
-			this.controller.getRootFrame().addPanel(
-					new SemesterPanel(this.controller), this);
+
+			controller.getRootFrame().addPanel(new SemesterPanel(controller),
+					this);
 		}
 	}
 
 	public void mouseClicked(MouseEvent e) {
 		Component component = e.getComponent();
-		System.out.println(component.getName());
 
 		if ((SwingUtilities.isRightMouseButton(e))
 				&& (component.getName() != null)) {
 			int response = JOptionPane.showConfirmDialog(this,
 					"Are you sure you wish to remove this school?", "Confirm",
 					0, 3);
+
 			if (response == 0) {
-				this.controller.getActiveUser().removeTranscript(
-						component.getName());
-				this.controller.saveUserList();
-				this.controller.getRootFrame().addPanel(
-						new MainMenuPanel(this.controller), this);
+				controller.getActiveUser()
+						.removeTranscript(component.getName());
+				controller.saveUserList();
+				controller.getRootFrame().addPanel(
+						new MainMenuPanel(controller), this);
 			}
 		}
 	}

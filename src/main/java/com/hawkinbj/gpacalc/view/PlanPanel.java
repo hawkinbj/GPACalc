@@ -36,27 +36,30 @@ public class PlanPanel extends GUIPanel implements ActionListener {
 
 	protected JPanel navigationPanel;
 
+	private double creditHoursCompleted;
+
+	private Map<String, Course> sortedCourseMap;
+
 	private static final int CREDITHOURSTOGRADUATE = 120;
 
 	public PlanPanel(SystemController controller) {
 		super(controller);
 		this.schoolName = controller.getActiveSchool().getName();
 		this.coursesToTake = controller.getActiveUser().getCoursesToTake();
-		addComponentsToPane();
+		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
-		this.infoPanel = new JPanel();
-		this.infoPanel.setLayout(new BoxLayout(this.infoPanel, 3));
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(infoPanel, 3));
 
 		this.createTitledBorder(infoPanel, schoolName);
 
-		double creditHoursCompleted = controller.getActiveTranscript()
+		creditHoursCompleted = controller.getActiveTranscript()
 				.getCreditHoursCompleted();
 
 		infoPanel.add(new JLabel("Major: "
 				+ controller.getActiveUser().getMajor()));
-
 		infoPanel.add(new JLabel("Credit Hours Completed: "
 				+ creditHoursCompleted));
 		infoPanel.add(new JLabel("Credit Hours Remaining: "
@@ -67,13 +70,13 @@ public class PlanPanel extends GUIPanel implements ActionListener {
 
 		this.createTitledBorder(this.coursesTakenPanel, "Courses Taken");
 
-		TreeMap<String, Course> sortedCourseMap = new TreeMap<String, Course>();
+		sortedCourseMap = new TreeMap<String, Course>();
 
-		Iterator<Semester> localIterator = controller.getActiveTranscript()
+		Iterator<Semester> iter = controller.getActiveTranscript()
 				.getSemesters().values().iterator();
 
-		while (localIterator.hasNext()) {
-			Semester s = (Semester) localIterator.next();
+		while (iter.hasNext()) {
+			Semester s = (Semester) iter.next();
 			sortedCourseMap.putAll(s.getCourses());
 		}
 
