@@ -1,48 +1,32 @@
-/*******************************************************************************
- * Copyright (c) 2012 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
-/*    */ package com.hawkinbj.gpacalc.model;
-/*    */ 
-/*    */ import java.io.Serializable;
-/*    */ 
-/*    */ public class School
-/*    */   implements Serializable
-/*    */ {
-/*    */   private static final long serialVersionUID = 8843646586868126972L;
-/*    */   private String name;
-/*    */   private GradingScale gradingScale;
-/*    */ 
-/*    */   public School(String name, GradingScale gradingScale)
-/*    */   {
-/* 12 */     this.name = name;
-/* 13 */     this.gradingScale = gradingScale;
-/*    */   }
-/*    */ 
-/*    */   public String getName() {
-/* 17 */     return this.name;
-/*    */   }
-/*    */ 
-/*    */   public void setName(String name) {
-/* 21 */     this.name = name;
-/*    */   }
-/*    */ 
-/*    */   public GradingScale getGradingScale() {
-/* 25 */     return this.gradingScale;
-/*    */   }
-/*    */ 
-/*    */   public void setGradingScale(GradingScale gradingScale) {
-/* 29 */     this.gradingScale = gradingScale;
-/*    */   }
-/*    */ }
+package com.hawkinbj.gpacalc.model;
 
-/* Location:           C:\Users\Brandon\Development\git\gpacalc\bin\
- * Qualified Name:     com.hawkinbj.gpacalc.School
- * JD-Core Version:    0.6.1
- */
+import java.io.Serializable;
+
+public class School implements Serializable {
+	private static final long serialVersionUID = 8843646586868126972L;
+
+	private String name;
+
+	private GradingScale gradingScale;
+
+	public School(String name, GradingScale gradingScale) {
+		this.name = name;
+		this.gradingScale = gradingScale;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public GradingScale getGradingScale() {
+		return gradingScale;
+	}
+
+	public void setGradingScale(GradingScale gradingScale) {
+		this.gradingScale = gradingScale;
+	}
+}

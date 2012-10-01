@@ -16,9 +16,13 @@ import java.util.TreeMap;
 
 public class Transcript implements Serializable {
 	private static final long serialVersionUID = 6258413269754654426L;
+
 	private Map<String, Semester> semesters;
+
 	private School school;
+
 	private double GPA;
+
 	private double majorGPA;
 
 	public Transcript(School school) {
@@ -28,21 +32,22 @@ public class Transcript implements Serializable {
 	}
 
 	public School getSchool() {
-		return this.school;
+		return school;
 	}
 
 	public void addSemester(String semesterName, Semester semester) {
-		this.semesters.put(semesterName, semester);
-		((Semester) this.semesters.get(semesterName)).setSchoolName(this.school
-				.getName());
+		semesters.put(semesterName, semester);
+
+		((Semester) semesters.get(semesterName))
+				.setSchoolName(school.getName());
 	}
 
 	public void removeSemester(String semesterName) {
-		this.semesters.remove(semesterName);
+		semesters.remove(semesterName);
 	}
 
 	public Map<String, Semester> getSemesters() {
-		return this.semesters;
+		return semesters;
 	}
 
 	public double getCreditHoursCompleted() {
@@ -56,7 +61,7 @@ public class Transcript implements Serializable {
 	}
 
 	public double getGPA() {
-		return this.GPA;
+		return GPA;
 	}
 
 	public void setGPA(double GPA) {

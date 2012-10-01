@@ -17,11 +17,17 @@ import java.util.TreeMap;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = -5899680116199753971L;
+
 	private String username;
+
 	private String password;
+
 	private String major;
+
 	private boolean rememberLoginInfo;
+
 	private Map<String, Transcript> transcripts;
+
 	protected Map<String, Course> coursesToTake;
 
 	public User(String username, String password) {
@@ -33,10 +39,11 @@ public class User implements Serializable {
 	}
 
 	public Map<String, Course> getCoursesToTake() {
-		if (this.coursesToTake == null) {
-			this.coursesToTake = new TreeMap<String, Course>();
+		if (coursesToTake == null) {
+			coursesToTake = new TreeMap<String, Course>();
 		}
-		return this.coursesToTake;
+
+		return coursesToTake;
 	}
 
 	public void setCoursesToTake(HashMap<String, Course> coursesToTake) {
@@ -44,26 +51,27 @@ public class User implements Serializable {
 	}
 
 	public void addCourseToTake(Course c) {
-		if (this.coursesToTake == null) {
-			this.coursesToTake = new TreeMap<String, Course>();
+		if (coursesToTake == null) {
+			coursesToTake = new TreeMap<String, Course>();
 		}
 
-		this.coursesToTake.put(c.getCourseName(), c);
+		coursesToTake.put(c.getCourseName(), c);
 	}
 
 	public void removeCourseToTake(String c) {
-		if (this.coursesToTake == null) {
-			this.coursesToTake = new TreeMap<String, Course>();
+		if (coursesToTake == null) {
+			coursesToTake = new TreeMap<String, Course>();
 		}
-		this.coursesToTake.remove(c);
+
+		coursesToTake.remove(c);
 	}
 
 	public String getUsername() {
-		return this.username;
+		return username;
 	}
 
 	public boolean getRememberLoginInfo() {
-		return this.rememberLoginInfo;
+		return rememberLoginInfo;
 	}
 
 	public void setRememberLoginInfo(boolean rememberLoginInfo) {
@@ -71,33 +79,37 @@ public class User implements Serializable {
 	}
 
 	public boolean addTranscript(String schoolName, Transcript t) {
-		if (this.transcripts.keySet().contains(schoolName))
+		if (transcripts.keySet().contains(schoolName)) {
 			return false;
-		this.transcripts.put(schoolName, t);
+		}
+
+		transcripts.put(schoolName, t);
+
 		return true;
 	}
 
 	public void removeTranscript(String schoolName) {
-		this.transcripts.remove(schoolName);
+		transcripts.remove(schoolName);
 	}
 
 	public Transcript getTranscript(String schoolName) {
-		return (Transcript) this.transcripts.get(schoolName);
+		return (Transcript) transcripts.get(schoolName);
 	}
 
 	public Map<String, Transcript> getTranscripts() {
-		return this.transcripts;
+		return transcripts;
 	}
 
 	public boolean checkPassword(String pass) {
-		if (pass.equals(this.password)) {
+		if (pass.equals(password)) {
 			return true;
 		}
+
 		return false;
 	}
 
 	public String toString() {
-		return this.username;
+		return username;
 	}
 
 	public String getMajor() {
