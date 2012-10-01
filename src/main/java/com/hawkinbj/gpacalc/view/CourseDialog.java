@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -59,7 +60,7 @@ public class CourseDialog extends GUIPanel {
 
 	protected static final String[] CREDITHOURS = { "0", "1", "2", "3", "4" };
 
-	private String[] letterGrades;
+	private Object[] letterGrades;
 
 	private String finalGrade;
 
@@ -91,7 +92,6 @@ public class CourseDialog extends GUIPanel {
 		namePanel = new JPanel(new GridLayout(3, 2));
 		namePanel.add(new JLabel("Course name:"));
 		namePanel.add(courseNameField);
-		namePanel.add(new JLabel("Course name:"));
 		namePanel.add(new JLabel("Credit hours:"));
 
 		creditHrsComboBox = new JComboBox<String>(CREDITHOURS);
@@ -106,12 +106,12 @@ public class CourseDialog extends GUIPanel {
 		namePanel.add(creditHrsComboBox);
 		namePanel.add(new JLabel("Set final grade: "));
 
-		letterGrades = (String[]) controller.getActiveSchool()
-				.getGradingScale().getGradingScaleMap().keySet().toArray();
+		letterGrades = controller.getActiveSchool().getGradingScale()
+				.getGradingScaleMap().keySet().toArray();
 
 		Arrays.sort(letterGrades);
 
-		letterGradeComboBox = new JComboBox<String>(letterGrades);
+		letterGradeComboBox = new JComboBox(letterGrades);
 
 		finalGrade = course.getFinalGrade();
 
