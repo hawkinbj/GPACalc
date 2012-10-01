@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2012 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package com.hawkinbj.gpacalc.view;
 
 import java.awt.GridLayout;
@@ -14,39 +24,47 @@ import com.hawkinbj.gpacalc.model.GUIPanel;
 
 public class RegisterPanel extends GUIPanel {
 	private static final long serialVersionUID = -5184321484494774189L;
-	private JLabel usernameLabel;
-	private JLabel passwordLabel;
+
+	private JLabel usernameLbl;
+
+	private JLabel passwordLbl;
+
 	private JTextField usernameField;
+
 	private JTextField passwordField;
+
 	private JPanel entryPanel;
+
 	private JPanel navigationPanel;
 
 	public RegisterPanel(SystemController controller) {
 		super(controller);
-		addComponentsToPane();
+		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
-		this.usernameLabel = new JLabel("Username:");
-		this.usernameField = new JTextField(15);
-		this.passwordLabel = new JLabel("Password:");
-		this.passwordField = new JPasswordField(15);
+		usernameLbl = new JLabel("Username:");
+		usernameField = new JTextField(15);
+		passwordLbl = new JLabel("Password:");
+		passwordField = new JPasswordField(15);
 
-		this.entryPanel = new JPanel(new GridLayout(4, 2));
+		entryPanel = new JPanel(new GridLayout(4, 2));
+		entryPanel.add(usernameLbl);
+		entryPanel.add(usernameField);
+		entryPanel.add(passwordLbl);
+		entryPanel.add(passwordField);
 
-		this.entryPanel.add(this.usernameLabel);
-		this.entryPanel.add(this.usernameField);
-		this.entryPanel.add(this.passwordLabel);
-		this.entryPanel.add(this.passwordField);
-		createTitledBorder(this.entryPanel, "Register");
+		this.createTitledBorder(entryPanel, "Register");
 
-		this.navigationPanel = new JPanel(new GridLayout(2, 1));
-		createTitledBorder(this.navigationPanel, "Navigation");
-		this.navigationPanel.add(createButton("submit", "Submit"));
-		this.navigationPanel.add(createButton("back", "Back"));
-		setLayout(new BoxLayout(this, 3));
-		add(this.entryPanel);
-		add(this.navigationPanel);
+		navigationPanel = new JPanel(new GridLayout(2, 1));
+		navigationPanel.add(createButton("submit", "Submit"));
+		navigationPanel.add(createButton("back", "Back"));
+
+		this.createTitledBorder(navigationPanel, "Navigation");
+
+		this.setLayout(new BoxLayout(this, 3));
+		this.add(entryPanel);
+		this.add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {

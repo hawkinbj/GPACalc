@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2012 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package com.hawkinbj.gpacalc.view;
 
 import java.awt.event.ActionEvent;
@@ -13,50 +23,51 @@ import com.hawkinbj.gpacalc.model.Transcript;
 
 public class SchoolPanel extends GUIPanel {
 	private static final long serialVersionUID = 1029559901433692231L;
+
 	private JPanel schoolsPanel;
+
 	private JPanel navigationPanel;
 
 	public SchoolPanel(SystemController controller) {
 		super(controller);
-		addComponentsToPane();
+		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
-		this.schoolsPanel = new JPanel();
-		this.schoolsPanel.setLayout(new BoxLayout(this.schoolsPanel, 3));
-		createTitledBorder(this.schoolsPanel, "Select School");
+		schoolsPanel = new JPanel();
+		schoolsPanel.setLayout(new BoxLayout(schoolsPanel, 3));
 
-		for (School school : this.controller.getSchools().values()) {
-			this.schoolsPanel.add(createButton(school.getName()));
+		this.createTitledBorder(schoolsPanel, "Select School");
+
+		for (School school : controller.getSchools().values()) {
+			schoolsPanel.add(createButton(school.getName()));
 		}
 
-		this.navigationPanel = new JPanel();
-		this.navigationPanel.setLayout(new BoxLayout(this.navigationPanel, 3));
-		createTitledBorder(this.navigationPanel, "Navigation");
+		navigationPanel = new JPanel();
+		navigationPanel.setLayout(new BoxLayout(navigationPanel, 3));
+		navigationPanel.add(createButton("newSchoolPanel", "Add new..."));
+		navigationPanel.add(createButton("cancel", "Cancel"));
 
-		this.navigationPanel.add(createButton("newSchoolPanel", "Add new..."));
+		this.createTitledBorder(navigationPanel, "Navigation");
 
-		this.navigationPanel.add(createButton("cancel", "Cancel"));
-
-		setLayout(new BoxLayout(this, 3));
-		add(this.schoolsPanel);
-		add(this.navigationPanel);
+		this.setLayout(new BoxLayout(this, 3));
+		this.add(schoolsPanel);
+		this.add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
+
 		if (action.equals("cancel")) {
-			this.controller.getRootFrame().showPanel("MainMenuPanel", this);
+			controller.getRootFrame().showPanel("MainMenuPanel", this);
 		} else if (action.equals("newSchoolPanel")) {
-			this.controller.getRootFrame().addPanel(
-					new SchoolDialog(this.controller), this);
-		} else if (this.controller.getActiveUser().addTranscript(
-				action,
-				new Transcript((School) this.controller.getSchools()
-						.get(action)))) {
-			this.controller.saveUserList();
-			this.controller.getRootFrame().addPanel(
-					new MainMenuPanel(this.controller), this);
+			controller.getRootFrame().addPanel(new SchoolDialog(controller),
+					this);
+		} else if (controller.getActiveUser().addTranscript(action,
+				new Transcript((School) controller.getSchools().get(action)))) {
+			controller.saveUserList();
+			controller.getRootFrame().addPanel(new MainMenuPanel(controller),
+					this);
 		} else {
 			JOptionPane.showMessageDialog(this, "That school already exists.",
 					"Error", 0);

@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2012 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package com.hawkinbj.gpacalc.model;
 
 import java.io.Serializable;
@@ -6,57 +16,70 @@ import java.util.TreeMap;
 
 public class Course implements Comparable<Course>, Serializable {
 	private static final long serialVersionUID = -4379223235756969208L;
+
 	private String courseName;
+
 	private Map<String, Grade> grades;
+
 	private int creditHours;
+
 	private String finalGrade;
+
 	private boolean weighted;
 
 	public Course(String courseName, int creditHours) {
-		setCourseName(courseName);
+		this.setCourseName(courseName);
 		this.creditHours = creditHours;
-		this.grades = new TreeMap<String, Grade>();
-		this.finalGrade = "N/A";
+
+		grades = new TreeMap<String, Grade>();
+
+		finalGrade = "N/A";
 	}
 
 	public double getTotalPointsEarned() {
-		double total = 0.0D;
-		for (Grade grade : this.grades.values()) {
+		double total = 0;
+
+		for (Grade grade : grades.values()) {
 			total += grade.getTotalEarned();
 		}
+
 		return total;
 	}
 
 	public int getTotalPointsPossible() {
 		int total = 0;
-		for (Grade grade : this.grades.values()) {
+
+		for (Grade grade : grades.values()) {
 			total += grade.getTotalPossible();
 		}
+
 		return total;
 	}
 
 	public double getWeightedTotalPointsEarned() {
-		double total = 0.0D;
-		for (Grade grade : this.grades.values()) {
+		double total = 0;
+
+		for (Grade grade : grades.values()) {
 			total += grade.getTotalEarned() * grade.getPercentWeight();
 		}
-		return total / 100.0D;
+
+		return total / 100;
 	}
 
 	public void addGrade(String type, Grade grade) {
-		this.grades.put(type, grade);
+		grades.put(type, grade);
 	}
 
 	public void removeGrade(String type) {
-		this.grades.remove(type);
+		grades.remove(type);
 	}
 
 	public Map<String, Grade> getGrades() {
-		return this.grades;
+		return grades;
 	}
 
 	public String getCourseName() {
-		return this.courseName;
+		return courseName;
 	}
 
 	public void setCourseName(String courseName) {
@@ -72,10 +95,10 @@ public class Course implements Comparable<Course>, Serializable {
 	}
 
 	public String getFinalGrade() {
-		if (this.finalGrade == null) {
+		if (finalGrade == null) {
 			return "N/A";
 		}
-		return this.finalGrade;
+		return finalGrade;
 	}
 
 	public void setFinalGrade(String finalGrade) {
@@ -91,7 +114,7 @@ public class Course implements Comparable<Course>, Serializable {
 	}
 
 	public String toString() {
-		return this.courseName;
+		return courseName;
 	}
 
 	public int compareTo(Course c) {

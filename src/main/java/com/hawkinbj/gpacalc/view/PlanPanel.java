@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2012 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package com.hawkinbj.gpacalc.view;
 
 import java.awt.Color;
@@ -65,10 +75,10 @@ public class PlanPanel extends GUIPanel implements ActionListener {
 		infoPanel.add(new JLabel("Credit Hours Remaining: "
 				+ (CREDITHOURSTOGRADUATE - creditHoursCompleted)));
 
-		this.coursesTakenPanel = new JPanel();
+		coursesTakenPanel = new JPanel();
 		coursesTakenPanel.setLayout(new BoxLayout(coursesTakenPanel, 3));
 
-		this.createTitledBorder(this.coursesTakenPanel, "Courses Taken");
+		this.createTitledBorder(coursesTakenPanel, "Courses Taken");
 
 		sortedCourseMap = new TreeMap<String, Course>();
 
@@ -142,13 +152,13 @@ public class PlanPanel extends GUIPanel implements ActionListener {
 		navigationPanel.add(createButton("addCourse", "Add Course"));
 		navigationPanel.add(createButton("back", "Back"));
 
-		createTitledBorder(navigationPanel, "Navigation");
+		this.createTitledBorder(navigationPanel, "Navigation");
 
-		setLayout(new BoxLayout(this, 3));
-		add(infoPanel);
-		add(coursesTakenPanel);
-		add(coursesToTakePanel);
-		add(navigationPanel);
+		this.setLayout(new BoxLayout(this, 3));
+		this.add(infoPanel);
+		this.add(coursesTakenPanel);
+		this.add(coursesToTakePanel);
+		this.add(navigationPanel);
 	}
 
 	public void actionPerformed(ActionEvent e) {

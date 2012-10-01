@@ -1,28 +1,46 @@
+/*******************************************************************************
+ * Copyright (c) 2012 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package com.hawkinbj.gpacalc.model;
 
 import java.io.Serializable;
 
 public class Grade implements Serializable {
 	private static final long serialVersionUID = 9191538844602888225L;
+
 	private String type;
+
 	private int pointsPossiblePer;
+
 	double totalEarned;
+
 	private int percentWeight;
+
 	private boolean dropLowest;
+
 	private int numOfGrades;
 
 	public Grade(String type, int pointsPossiblePer, double totalEarned,
 			int numOfGrades, int percentWeight, boolean dropLowest) {
-		setType(type);
-		setPointsPossiblePer(pointsPossiblePer);
-		setTotalEarned(totalEarned);
-		setDropLowest(dropLowest);
+
+		this.setType(type);
+		this.setPointsPossiblePer(pointsPossiblePer);
+		this.setTotalEarned(totalEarned);
+		this.setDropLowest(dropLowest);
 	}
 
 	public int getTotalPossible() {
-		int total = this.numOfGrades * this.pointsPossiblePer;
+		int total = this.numOfGrades * pointsPossiblePer;
+
 		if (this.dropLowest)
-			total -= this.pointsPossiblePer;
+			total -= pointsPossiblePer;
 		return total;
 	}
 
@@ -35,7 +53,7 @@ public class Grade implements Serializable {
 	}
 
 	public int getPercentWeight() {
-		return this.percentWeight;
+		return percentWeight;
 	}
 
 	public void setPercentWeight(int percentWeight) {
@@ -43,7 +61,7 @@ public class Grade implements Serializable {
 	}
 
 	public int getPointsPossiblePer() {
-		return this.pointsPossiblePer;
+		return pointsPossiblePer;
 	}
 
 	public void setPointsPossiblePer(int pointsPossiblePer) {

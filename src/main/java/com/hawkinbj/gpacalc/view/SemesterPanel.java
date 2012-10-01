@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2012 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package com.hawkinbj.gpacalc.view;
 
 import java.awt.Color;
@@ -20,16 +30,22 @@ import com.hawkinbj.gpacalc.model.Transcript;
 
 public class SemesterPanel extends GUIPanel {
 	private static final long serialVersionUID = -3839021242565662981L;
+
 	private String schoolName;
+
 	protected JPanel infoPanel;
+
 	protected JPanel semestersPanel;
+
 	protected JPanel navigationPanel;
+
 	private JLabel overallGPALbl;
+
 	private JLabel majorGPALbl;
 
 	public SemesterPanel(SystemController controller) {
 		super(controller);
-		schoolName = controller.getActiveSchool().getName();
+		this.schoolName = controller.getActiveSchool().getName();
 		this.addComponentsToPane();
 	}
 
@@ -71,17 +87,16 @@ public class SemesterPanel extends GUIPanel {
 
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(new BoxLayout(navigationPanel, 3));
-
-		createTitledBorder(navigationPanel, "Navigation");
-
 		navigationPanel.add(createButton("newSemesterPanel", "Add new..."));
 		navigationPanel.add(createButton("newPlanPanel", "Plan of study"));
 		navigationPanel.add(createButton("back", "Back"));
 
-		setLayout(new BoxLayout(this, 3));
-		add(infoPanel);
-		add(semestersPanel);
-		add(navigationPanel);
+		this.createTitledBorder(navigationPanel, "Navigation");
+
+		this.setLayout(new BoxLayout(this, 3));
+		this.add(infoPanel);
+		this.add(semestersPanel);
+		this.add(navigationPanel);
 	}
 
 	private JLabel formatGPADisplay(String baseText, double GPA) {
@@ -125,9 +140,11 @@ public class SemesterPanel extends GUIPanel {
 			int response = JOptionPane.showConfirmDialog(this,
 					"Are you sure you wish to remove this semester?",
 					"Confirm", 0, 3);
+
 			if (response == 0) {
 				((Transcript) controller.getActiveUser().getTranscripts()
 						.get(schoolName)).removeSemester(component.getName());
+
 				controller.saveUserList();
 
 				controller.getRootFrame().addPanel(
