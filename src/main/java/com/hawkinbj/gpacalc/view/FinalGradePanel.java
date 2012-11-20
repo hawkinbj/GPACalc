@@ -3,6 +3,7 @@ package com.hawkinbj.gpacalc.view;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -17,7 +18,7 @@ public class FinalGradePanel extends GUIPanel {
 
 	private JComboBox<String> letterGradeComboBox;
 
-	private Object[] letterGrades;
+	private String[] letterGrades;
 
 	private JPanel setGradePanel;
 
@@ -32,12 +33,14 @@ public class FinalGradePanel extends GUIPanel {
 		setGradePanel = new JPanel(new GridLayout(2, 2));
 		setGradePanel.add(new JLabel("Set final letter grade: "));
 
-		letterGrades = controller.getActiveSchool().getGradingScale()
-				.getGradingScaleMap().keySet().toArray();
+		Set<String> gradeMapKeys = controller.getActiveSchool()
+				.getGradingScale().getGradingScaleMap().keySet();
+
+		letterGrades = gradeMapKeys.toArray(new String[gradeMapKeys.size()]);
 
 		Arrays.sort(letterGrades);
 
-		letterGradeComboBox = new JComboBox(letterGrades);
+		letterGradeComboBox = new JComboBox<String>(letterGrades);
 		letterGradeComboBox.setSelectedItem(controller.getActiveCourse()
 				.getFinalGrade());
 
