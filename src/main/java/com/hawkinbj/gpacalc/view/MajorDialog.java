@@ -1,18 +1,9 @@
-/*******************************************************************************
- * Copyright (c) 2012 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package com.hawkinbj.gpacalc.view;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -33,18 +24,21 @@ public class MajorDialog extends GUIPanel implements ActionListener {
 	private JPanel navigationPanel;
 
 	private String activeUserMajor;
+	private String[] majors;
 
 	public MajorDialog(SystemController controller) {
 		super(controller);
 
-		controller.getMajors().keySet()
+		majors = controller.getMajors().keySet()
 				.toArray(new String[controller.getMajors().size()]);
+
+		Arrays.sort(majors);
 
 		this.addComponentsToPane();
 	}
 
 	private void addComponentsToPane() {
-		majorComboBox = new JComboBox<String>();
+		majorComboBox = new JComboBox<String>(majors);
 
 		majorPanel = new JPanel(new GridLayout(1, 2));
 		majorPanel.add(new JLabel("Select major: "));

@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2012 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package com.hawkinbj.gpacalc.view;
 
 import java.awt.GridLayout;
@@ -27,7 +17,7 @@ public class FinalGradePanel extends GUIPanel {
 
 	private JComboBox<String> letterGradeComboBox;
 
-	private String[] letterGrades;
+	private Object[] letterGrades;
 
 	private JPanel setGradePanel;
 
@@ -42,12 +32,12 @@ public class FinalGradePanel extends GUIPanel {
 		setGradePanel = new JPanel(new GridLayout(2, 2));
 		setGradePanel.add(new JLabel("Set final letter grade: "));
 
-		letterGrades = (String[]) controller.getActiveSchool()
-				.getGradingScale().getGradingScaleMap().keySet().toArray();
+		letterGrades = controller.getActiveSchool().getGradingScale()
+				.getGradingScaleMap().keySet().toArray();
 
 		Arrays.sort(letterGrades);
 
-		letterGradeComboBox = new JComboBox<String>(letterGrades);
+		letterGradeComboBox = new JComboBox(letterGrades);
 		letterGradeComboBox.setSelectedItem(controller.getActiveCourse()
 				.getFinalGrade());
 

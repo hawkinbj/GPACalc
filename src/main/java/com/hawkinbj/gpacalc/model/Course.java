@@ -60,7 +60,10 @@ public class Course implements Comparable<Course>, Serializable {
 		double total = 0;
 
 		for (Grade grade : grades.values()) {
-			total += grade.getTotalEarned() * grade.getPercentWeight();
+			if (grade.getNumOfGrades() != 0) {
+				total += (grade.getTotalEarned() * grade.getPercentWeight())
+						/ grade.getNumOfGrades();
+			}
 		}
 
 		return total / 100;
