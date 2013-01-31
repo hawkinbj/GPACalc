@@ -54,9 +54,9 @@ public class CourseInfoPanel extends GUIPanel {
 			average = Double.valueOf(controller.getActiveCourse()
 					.getWeightedTotalPointsEarned());
 		} else {
-			average = Double.valueOf(controller.getActiveCourse()
+			average = Double.valueOf((controller.getActiveCourse()
 					.getTotalPointsEarned()
-					/ controller.getActiveCourse().getTotalPointsPossible());
+					/ controller.getActiveCourse().getTotalPointsPossible()) * 100);
 		}
 
 		currentAverage = this.formatAverage("Current average: ", average);

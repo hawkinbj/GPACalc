@@ -238,42 +238,44 @@ public class CourseDialog extends GUIPanel {
 					controller.getActiveSemester().getCourses()
 							.remove(courseName);
 					controller.saveUserList();
-				}
-			} else {
-				course.setCourseName(courseName);
-				course.setFinalGrade((String) this.letterGradeComboBox
-						.getSelectedItem());
-				course.setCreditHours(Integer
-						.parseInt((String) creditHrsComboBox.getSelectedItem()));
-
-				for (JCheckBox checkBox : this.gradeCheckBoxes.values()) {
-					String gradeType = checkBox.getName();
-
-					if (checkBox.isSelected()) {
-						course.addGrade(gradeType, new Grade(gradeType, 0,
-								0.0D, 0, 0, false));
-					}
-				}
-
-				if (this.weightedRdio.isSelected()) {
-					course.setWeighted(true);
 				} else {
-					course.setWeighted(false);
-				}
-
-				controller.getActiveSemester().addCourse(courseName, course);
-				controller.saveUserList();
-
-				if (course.getFinalGrade().equals("N/A")) {
-					controller.setActiveCourse(course);
-					controller.getRootFrame().addPanel(
-							new CourseInfoPanel(controller), this);
-				} else {
-					controller.setActiveCourse(null);
-					controller.getRootFrame().addPanel(
-							new CoursePanel(controller), this);
+					return;
 				}
 			}
+			course.setCourseName(courseName);
+			course.setFinalGrade((String) this.letterGradeComboBox
+					.getSelectedItem());
+			course.setCreditHours(Integer.parseInt((String) creditHrsComboBox
+					.getSelectedItem()));
+
+			for (JCheckBox checkBox : this.gradeCheckBoxes.values()) {
+				String gradeType = checkBox.getName();
+
+				if (checkBox.isSelected()) {
+					course.addGrade(gradeType, new Grade(gradeType, 0, 0.0D, 0,
+							0, false));
+				}
+			}
+
+			if (this.weightedRdio.isSelected()) {
+				course.setWeighted(true);
+			} else {
+				course.setWeighted(false);
+			}
+
+			controller.getActiveSemester().addCourse(courseName, course);
+			controller.saveUserList();
+
+			if (course.getFinalGrade().equals("N/A")) {
+				controller.setActiveCourse(course);
+				controller.getRootFrame().addPanel(
+						new CourseInfoPanel(controller), this);
+			} else {
+				controller.setActiveCourse(null);
+				controller.getRootFrame().addPanel(new CoursePanel(controller),
+						this);
+			}
+
 		}
 	}
 }

@@ -27,6 +27,8 @@ public class Grade implements Serializable {
 
 	private int numOfGrades;
 
+	private boolean isExtraCreditOffered;
+
 	public Grade(String type, int pointsPossiblePer, double totalEarned,
 			int numOfGrades, int percentWeight, boolean dropLowest) {
 
@@ -90,5 +92,13 @@ public class Grade implements Serializable {
 
 	public void setNumOfGrades(int numOfGrades) {
 		this.numOfGrades = numOfGrades;
+	}
+
+	public boolean isExtraCreditOffered() {
+		return isExtraCreditOffered;
+	}
+
+	public void setExtraCreditOffered(boolean isExtraCreditOffered) {
+		this.isExtraCreditOffered = isExtraCreditOffered;
 	}
 }

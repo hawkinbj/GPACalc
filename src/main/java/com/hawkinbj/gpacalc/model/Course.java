@@ -61,12 +61,17 @@ public class Course implements Comparable<Course>, Serializable {
 
 		for (Grade grade : grades.values()) {
 			if (grade.getNumOfGrades() != 0) {
+				System.out.println("Grade totalearned: "
+						+ grade.getTotalEarned());
+				System.out.println("Num of grades: " + grade.getNumOfGrades());
+				System.out.println(grade.getPercentWeight());
 				total += (grade.getTotalEarned() * grade.getPercentWeight())
-						/ grade.getNumOfGrades();
+						/ (grade.getPointsPossiblePer() * grade
+								.getNumOfGrades());
 			}
 		}
 
-		return total / 100;
+		return total;
 	}
 
 	public void addGrade(String type, Grade grade) {
@@ -121,6 +126,6 @@ public class Course implements Comparable<Course>, Serializable {
 	}
 
 	public int compareTo(Course c) {
-		return getCourseName().compareTo(c.getCourseName());
+		return this.getCourseName().compareTo(c.getCourseName());
 	}
 }

@@ -111,11 +111,16 @@ public class GradePanel extends GUIPanel {
 
 			possibleField
 					.setText(Integer.toString(grade.getPointsPossiblePer()));
-			if (controller.getActiveCourse().getWeighted())
+			
+			if (controller.getActiveCourse().getWeighted()) {
 				this.percentComboBox.setSelectedItem(Integer.toString(grade
 						.getPercentWeight()));
+			}
 			if (grade.getDropLowest()) {
 				dropLowestBox.setSelected(true);
+			}
+			if (grade.isExtraCreditOffered()) {
+				extraCreditBox.setSelected(true);
 			}
 		}
 
@@ -147,6 +152,10 @@ public class GradePanel extends GUIPanel {
 								.getSelectedItem());
 				int pointsPossiblePer = Integer.parseInt(pointsPer);
 				double totalEarned = Double.parseDouble(total);
+				
+				if (extraCreditBox.isSelected()) {
+					grade.setExtraCreditOffered(true);
+				}
 
 				if ((totalEarned > pointsPossiblePer * numOfGrades)
 						&& (!this.extraCreditBox.isSelected())) {
